@@ -1,0 +1,611 @@
+towhee_ff Version
+          14
+Number of Nonbonded Types
+           9
+Potential Type
+Lennard-Jones                 
+Classical Mixrule
+Explicit                      
+Atom Type Number
+           1
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3470000000E+01
+    0.1150000000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3480000000E+01
+    0.9300000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3580000000E+01
+    0.6050000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3920000000E+01
+    0.4000000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4560000000E+01
+    0.1000000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3400000000E+01
+    0.2300000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1599900000E+02
+Element
+ O
+Bond Pattern
+ion  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+O         
+O         
+O         
+O         
+Atom Type Number
+           2
+Nonbond Coefficients
+    0.3720000000E+01
+    0.1585000000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3740000000E+01
+    0.1308400000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3840000000E+01
+    0.9421000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4170000000E+01
+    0.5191000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4870000000E+01
+    0.1126000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.2720000000E+01
+    0.5821700000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1603260000E+02
+Element
+ C
+Bond Pattern
+ion  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+CH4       
+CH4       
+CH4       
+CH4       
+Atom Type Number
+           3
+Nonbond Coefficients
+    0.3760000000E+01
+    0.1080000000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.3860000000E+01
+    0.7777000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4190000000E+01
+    0.4285000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4900000000E+01
+    0.9300000000E+01
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.2650000000E+01
+    0.4437300000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1502470000E+02
+Element
+ C
+Bond Pattern
+sp3  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+CH3       
+Csp3      
+Csp3      
+CH3       
+Atom Type Number
+           4
+Nonbond Coefficients
+    0.3960000000E+01
+    0.5600000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.4300000000E+01
+    0.3085000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.5030000000E+01
+    0.6690000000E+01
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.2950000000E+01
+    0.3100000000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1401680000E+02
+Element
+ C
+Bond Pattern
+sp3  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+CH2       
+Csp3      
+Csp3      
+CH2       
+Atom Type Number
+           5
+Nonbond Coefficients
+    0.4670000000E+01
+    0.1700000000E+02
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.5460000000E+01
+    0.3690000000E+01
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1300890000E+02
+Element
+ C
+Bond Pattern
+sp3  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+CH        
+Csp3      
+Csp3      
+CH        
+Atom Type Number
+           6
+Nonbond Coefficients
+    0.6380000000E+01
+    0.8000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.1200100000E+02
+Element
+ C
+Bond Pattern
+sp3  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+C         
+Csp3      
+Csp3      
+C         
+Atom Type Number
+           7
+Nonbond Coefficients
+    0.2160000000E+01
+    0.1244000000E+03
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.2299000000E+02
+Element
+Na
+Bond Pattern
+ion  
+Base Charge 
+    0.1000000000E+01
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+Na        
+Na        
+Na        
+Na        
+Atom Type Number
+           8
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.2698200000E+02
+Element
+Al
+Bond Pattern
+sp3  
+Base Charge 
+   -0.1000000000E+01
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+Al        
+Al        
+Al        
+Al        
+Atom Type Number
+           9
+Nonbond Coefficients
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+    0.0000000000E+00
+Mass
+    0.2808600000E+02
+Element
+Si
+Bond Pattern
+sp3  
+Base Charge 
+    0.0000000000E+00
+Polarizability
+    0.1000000000E+01
+Force Field Name
+Dubb2004  
+Atom Names
+Si        
+Si        
+Si        
+Si        
+Number of Bonded Terms
+           2
+Bond Type Number
+           1
+Bond Style
+           2
+Bond Coefficients
+    0.1540000000E+01
+    0.4825000000E+05
+Vibration Order
+wild      
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           1
+Atom Names
+Csp3       Csp3      
+Bond Type Number
+           2
+Bond Style
+           8
+Bond Coefficients
+Vibration Order
+wild      
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           2
+Atom Names
+Al         O         
+Si         O         
+Number of Angle Terms
+           2
+Angle Type Number
+           1
+Angle Style
+           3
+Angle Coefficients
+    0.1140000000E+03
+    0.3125000000E+05
+Angle Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           1
+Atom Names
+Csp3       Csp3       Csp3      
+Angle Type Number
+           2
+Angle Style
+          11
+Angle Coefficients
+Angle Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           4
+Atom Names
+Si         O          Si        
+Si         O          Al        
+O          Si         O         
+O          Al         O         
+Number of Torsion Terms
+           5
+Torsion Type Number
+           1
+Torsion Style
+          10
+One-Four Nonbond Logical
+ F
+Number of Torsion Loops
+           5
+Torsion Coefficients
+    0.1204654000E+04
+    0.1947740000E+04
+   -0.3578450000E+03
+   -0.1944666000E+04
+    0.7156900000E+03
+   -0.1565572000E+04
+Torsion Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           1
+Atom Names
+Cwild      CH2        CH2        Cwild     
+Torsion Type Number
+           2
+Torsion Style
+          10
+One-Four Nonbond Logical
+ F
+Number of Torsion Loops
+           3
+Torsion Coefficients
+    0.1293324000E+04
+    0.3879849000E+04
+    0.0000000000E+00
+   -0.5173163000E+04
+Torsion Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           1
+Atom Names
+Cwild      C          CH2        Cwild     
+Torsion Type Number
+           3
+Torsion Style
+          10
+One-Four Nonbond Logical
+ F
+Number of Torsion Loops
+           3
+Torsion Coefficients
+    0.2045657000E+04
+    0.6136797000E+04
+    0.0000000000E+00
+   -0.8182447000E+04
+Torsion Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           1
+Atom Names
+Cwild      C          C          Cwild     
+Torsion Type Number
+           4
+Torsion Style
+          11
+One-Four Nonbond Logical
+ T
+One-Four Coulombic Scaling
+    0.5000000000E+00
+Torsion Coefficients
+   -0.2510600000E+03
+    0.4287300000E+03
+   -0.1118500000E+03
+    0.4412700000E+03
+Torsion Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           2
+Atom Names
+Cwild      CH         CH2        Cwild     
+Cwild      CH         CH         Cwild     
+Torsion Type Number
+           5
+Torsion Style
+           8
+One-Four Nonbond Logical
+ F
+Torsion Coefficients
+Torsion Order
+wild           
+Force Field Name
+Dubb2004  
+Number of Atoms with Same Parameters  
+           2
+Atom Names
+wild       Al         O          wild      
+wild       Si         O          wild      
+Number of Improper Terms
+           0
+Number of Angle-Angle Terms
+           0
+Number of One-Five Types
+           0
+Number of Bond Increments
+           3
+Bond Increment Type Number
+           1
+Bond Increment Value
+    0.5125000000E+00
+Bond Increment Order
+wild      
+Force Field Name
+Dubb2004  
+Atom Names
+Si         O         
+Bond Increment Type Number
+           2
+Bond Increment Value
+    0.6875000000E+00
+Bond Increment Order
+wild      
+Force Field Name
+Dubb2004  
+Atom Names
+Al         O         
+Bond Increment Type Number
+           3
+Bond Increment Value
+    0.0000000000E+00
+Bond Increment Order
+wild      
+Force Field Name
+Dubb2004  
+Atom Names
+Csp3       Csp3      

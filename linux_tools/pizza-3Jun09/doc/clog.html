@@ -1,0 +1,62 @@
+<HTML>
+<CENTER><A HREF = "http://www.cs.sandia.gov/~sjplimp/pizza.html">Pizza.py WWW Site</A> - <A HREF = "Manual.html">Pizza.py Documentation</A> - <A HREF = "Section_tools.html">Pizza.py Tools</A> 
+</CENTER>
+
+
+
+
+
+
+<HR>
+
+<H3>clog tool 
+</H3>
+<P><B>Purpose:</B>
+</P>
+<P>Read ChemCell and SPPARKS log files and extract time-series data.
+</P>
+<P><B>Description:</B>
+</P>
+<P>Read one or more ChemCell log files and combine their species
+statistical data into long, named vectors (versus time).  The vectors
+can be used in Python for further processing and plotting, or they can
+be output to a file.
+</P>
+<P>The log constructor reads one or more log files.  If 2 arguments are
+specified, a single file is specified, and it is assumed to contain
+data for multiple runs, which are averaged.
+</P>
+<P>The nvec, nlen, and names values give the # of vectors, their length,
+and names.  The get() method returns one of more vectors as a Python
+list.  The write() method outputs the numeric vectors to a file.
+</P>
+<P><B>Usage:</B>
+</P>
+<PRE>c = clog("file1")                    read in one or more log files
+c = clog("log1 log2.gz")             can be gzipped
+c = clog("file*")                    wildcard expands to multiple files
+c = clog("log.cell","Time")          2nd arg = start string for time section
+c = clog("log.cell","",0)            3rd arg = average all runs 
+</PRE>
+<PRE>  incomplete and duplicate thermo entries are deleted
+  if specify 2nd arg, it delimits a time section
+  no 2nd arg or empty string, use default which is ChemCell specific
+  if specify any 3rd arg, average all runs, assume all start at time 0 
+</PRE>
+<PRE>nvec = c.nvec                        # of vectors of thermo info
+nlen = c.nlen                        length of each vectors
+names = c.names                      list of vector names
+a,b,... = c.get("A","B",...)         return one or more vectors of values
+c.write("file.txt")	 	     write all vectors to a file
+c.write("file.txt","A","B",...)      write listed vectors to a file 
+</PRE>
+<PRE>  get and write allow abbreviated (uniquely) vector names 
+</PRE>
+<P><B>Related tools:</B>
+</P>
+<P><A HREF = "plotview.html">plotview</A>, <A HREF = "gnu.html">gnu</A>, <A HREF = "log.html">log</A>,
+<A HREF = "matlab.html">matlab</A>
+</P>
+<P><B>Prerequisites:</B> none
+</P>
+</HTML>

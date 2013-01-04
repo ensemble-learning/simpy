@@ -1,0 +1,184 @@
+"""basic data structures of molecule and atoms
+@version: 1.0
+@author: hawkweedcheng
+@contact: chengtao@sjtu.edu.cn
+"""
+
+class Atom():
+    """Basic class for atom 
+    @todo: extend to general class
+    """
+    def __init__(self, ):
+        self.number = 0
+        """@ivar: atom number from input file
+        @type: int
+        """
+        self.name = ''
+        """@ivar: atom name from input file
+        @type: char
+        """
+        self.an = 0
+        """@ivar: atomic number
+        @type: int
+        """
+        self.type1 = 0
+        """@ivar: apparent atom type (DFF)
+        @type: int
+        """
+        self.type2 = 0
+        """@ivar: default atom type (DFF)
+        @type: int
+        """
+        self.resn = 0
+        """@ivar: residue number belong to
+        @type: char
+        """
+        self.resname = ''
+        """@ivar: resname belong to
+        @type: char
+        """
+        self.x = [0, 0, 0]
+        """@ivar: atom coordination
+        @type: list
+        """
+        self.element = ''
+        """@ivar: element
+        @type: char 
+        """
+        self.charge = 0.0
+        """@ivar: charge
+        @type: float
+        """
+        self.cg = 0
+        """@ivar: charge group belong to
+        @type: int
+        """
+
+class Bond():
+    """Basic class for bond
+    """
+    def __init__(self,):
+        self.b1 = 0
+        """@ivar: atom number of atom1 in bond"""
+        self.b2 = 0
+        """@ivar: atom number of atom2 in bond"""
+        self.type = 0
+        """@ivar: bond type number"""
+    def getDistance(self,):
+        """Return bond distance
+        @todo: doing.....
+        """
+        pass
+
+class System():
+    """Basic class for system
+    @todo:
+    """
+    def __init__(self,):
+        self.name = ''
+        """@ivar: system name
+        @type: char
+        """
+        self.atoms = []
+        """@ivar: atoms in system
+        @type: list
+        """
+        self.mols = []
+        """@ivar: molecules in system
+        @type: list
+        @note: parseToMol()"""
+        self.mlist = {}
+        """@ivar: molecule list (format {resname: [ 1, 2, ....]})
+        @type: dict 
+        @note: """
+        self.bonds = []
+        """@ivar: bonds list 
+        @type: list 
+        @note: """
+    def parseToMol(self,):
+        """Catalog atoms in system to molecules according to resname. 
+        The bonds also parsed into each molecules"""
+
+        #catalog atoms according to resname
+        for i in self.atoms:
+            if i.resn in self.mlist.keys():
+                m.atoms.append(i)
+                self.mlist[i.resn].append(i.number)
+            else:
+                if len(self.mlist.keys()) > 0:
+                    self.mols.append(m)
+                m = Molecule()
+                m.name = i.resn
+                m.atoms.append(i)
+                self.mlist[i.resn] = []
+                self.mlist[i.resn].append(i.number)
+        self.mols.append(m)
+        self.mlist[i.resn].append(i.number)
+
+        #catalog bonds according to molecule list (self.mlist)
+        for i in self.mols:
+            for j in self.bonds:
+                if j.b1 in self.mlist[i.name] and j.b2 in self.mlist[i.name]:
+                    i.bonds.append(j)
+
+class Molecule():
+    """Basic class for molecular includes (name, atoms(list of atoms), 
+    conn (connectivity))
+    @todo:
+    """
+    def __init__(self, ):
+        self.name = ''
+        """@ivar: molecule name from input file
+        @type: char
+        """
+        self.atoms = []
+        """@ivar: atoms in molecule
+        @type: list 
+        """
+        self.bonds = []
+        """@ivar: bonds in molecule
+        @type: list 
+        """
+        self.nb = {}
+        """@ivar: neighbour list
+        @type: dict
+        """
+
+    def getNB(self):
+        """Get neighbour list from bond list according to atom number
+        @todo:
+        """
+        if self.bonds:
+            for i in self.atoms:
+                n = i.number
+                if n not in self.nb.keys():
+                    self.nb[n] = []
+                for j in self.bonds:
+                    if j.b1 == n:
+                        self.nb[n].append(j.b2)
+                    elif j.b2 == n:
+                        self.nb[n].append(j.b1)
+                    else:
+                        pass
+        else:
+            print "Note : There is no bond info in inputfile!"
+
+    def getMaxCoord(self, n=0):
+        """return the maximun coordinate value in x, y or z ( n = 0, 1, 2)
+        direction. Default is x direction"""
+        max = -10000
+        for i in self.mol:
+            if max < i.x[n]:
+                max = i.x[n]
+        print max
+
+    def getMinCoord(self, n=0):
+        """return the min coordinate value in x, y or z ( n = 0, 1, 2)
+        direction. Default is x direction"""
+        min = 10000
+        for i in self.mol:
+            if min > i.x[n]:
+                min = i.x[n]
+        print min
+
+

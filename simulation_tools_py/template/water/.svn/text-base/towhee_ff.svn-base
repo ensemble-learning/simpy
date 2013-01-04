@@ -1,0 +1,95 @@
+towhee_ff Version
+ 9
+Number of Nonbonded Types
+ 2
+Potential Type
+Lennard-Jones                 
+Classical Mixrule
+Lorentz-Berthelot             
+Atom Type Number
+ 1
+Nonbond Coefficients
+     0.0001
+     0.0503
+     0.0001
+     0.0252
+Mass
+     1.0079
+Element
+H 
+Bond Pattern
+s    
+Base Charge 
+  0
+Force Field Name
+AMBER     
+Atom Names
+h_1w      
+h_1w      
+h_1w      
+h_1w      
+Atom Type Number
+ 2
+Nonbond Coefficients
+     3.1655
+    78.1495
+     3.1655
+    39.0748
+Mass
+    15.9994
+Element
+O 
+Bond Pattern
+sp3  
+Base Charge 
+  0
+Force Field Name
+AMBER     
+Atom Names
+o_2w      
+o_2w      
+o_2w      
+o_2w      
+Number of Bonded Terms
+ 1
+Bond Type Number
+ 1
+Bond Style
+  2
+Bond Coefficients
+    1.0000
+226447.4700
+Force Field Name
+AMBER
+Number of Atoms with Same Parameters  
+ 1
+Atom Names
+h_1w       o_2w       
+Number of Angle Terms
+ 1
+Angle Type Number
+ 1
+Angle Style
+  1
+Angle Coefficients
+   109.4700
+ 27676.9130
+Force Field Name
+AMBER
+Number of Atoms with Same Parameters  
+ 1
+Atom Names
+h_1w       o_2w       h_1w       
+Number of Torsion Terms
+ 0
+Number of Improper Terms
+ 0
+Number of Angle-Angle Terms
+ 0
+Number One-Five Types
+ 0
+Number of Bond Increments
+ 0
+Number of Bond Increments
+ 0
+

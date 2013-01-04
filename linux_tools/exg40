@@ -1,0 +1,26 @@
+#
+echo '#PBS -S /bin/bash' > $1.sh
+echo '#PBS -l nodes=1:ppn=1' >> $1.sh
+echo 'source /home/chengtao/bin/gromacs-4.0.7/bin/GMXRC' >> $1.sh
+echo ' ' >> $1.sh
+
+echo 'cd '$PWD >> $1.sh
+echo 'echo $HOSTNAME > host.log' >> $1.sh
+echo 'mkdir /state/partition1/'$USER >> $1.sh
+echo 'mkdir /state/partition1/'$USER'/'$1 >> $1.sh
+echo 'cp *.tpr /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cd /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'mdrun -s '$1'.tpr' >> $1.sh
+echo ' ' >> $1.sh
+
+echo 'cp *' $PWD >> $1.sh
+echo 'if [ $status != 0 ]' >> $1.sh
+echo 'then' >> $1.sh
+echo '        echo "Copying results from `hostname`:/state/partition1/'$USER'/'$1'/ back to $PBS_O_WORKDIR failed." ' >> $1.sh
+echo '        echo "After fixing the problem be sure to remove the directory `hostname`:/state/partition1/'$USER'/'$1'/"' >> $1.sh
+echo 'else' >> $1.sh
+echo '        cd ' $PWD >> $1.sh
+echo '        rm -rf /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'fi' >> $1.sh
+echo ' '>> $1.sh
+

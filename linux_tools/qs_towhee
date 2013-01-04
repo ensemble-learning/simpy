@@ -1,0 +1,9 @@
+#/bin/sh 
+# It qsub the job of GROMACS
+echo "#!/bin/bash" >> towhee.sh
+echo "#PBS -l nodes=1:ppn=1" >> towhee.sh
+echo "cd $PWD" >> towhee.sh
+echo "cp towhee_final towhee_initial"
+echo "towhee > result1.log" >> towhee.sh
+qsub towhee.sh 
+rm towhee.sh

@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+"""This script submit the gaussian job to PBS system.
+usage qsg03.py [-nproc] jobfile1.gjf jobfile2.gjf ...
+    -nproc: the number of processes you want to use. default is 1.
+    jobfile: the gjf file to be submit
+Attention:
+    U should never assign the number of processes in your gjf file
+    Use this script with an -nproc argument to do it.
+"""
+
+import os
+import sys
+import subprocess
+from random import randint
+
+nprocess = 1
+JOB_HOME = os.getcwd()
+GAU_HOME = "/state/partition1/apps/g03"
+JOB_DIR = "/state/partition1/jobs"
+
+def updateGJF(filename, nprocess):
+    file = open(filename)
+    if nprocess > 1:
+        result = "%nprocshared=" + str(nprocess) + "\n"
+    else:
+        result = ""
+    for line in file:
+        if not line.lower().startswith("%nproc"):
+            result += line
+    file.close()
+    file = open(filename, "wt")
+    file.write(result)
+    file.close()
+
+
+if __name__ == '__main__':
+    if len(sys.argv) == 1:
+        print __doc__
+    else:
+        if os.getgid() == 504:
+            GAU_HOME = GAU_HOME + "sun"
+        else:
+            GAU_HOME = GAU_HOME + "wang"
+        
+        start = 1
+        if sys.argv[start][0] == "-":
+            nprocess = int(sys.argv[start][1:])
+            start = 2
+
+        qsg03job = "#!/bin/bash\n\n"
+        if nprocess > 1:
+            qsg03job += "#PBS -l nodes=1:ppn=%d\n\n" % nprocess
+
+        qsg03job += "echo PBS work @ $PBS_NODEFILE\n"
+            
+        qsg03job += "JOB_HOME=%s\n" % JOB_HOME
+
+        qsg03job += "JOB_DIR=%s/${USER}\n" % JOB_DIR
+        qsg03job += "mkdir ${JOB_DIR} &\n"
+        qsg03job += "JOB_DIR=${JOB_DIR}/GAU\n"
+        qsg03job += "mkdir ${JOB_DIR} &\n"
+        qsg03job += "JOB_DIR=${JOB_DIR}/%d\n" % randint(10000, 99999)
+        qsg03job += "while [ -d $JOB_DIR ];do\n"
+        qsg03job += "    JOB_DIR=${JOB_DIR}X\n"
+        qsg03job += "done\n"
+        qsg03job += "mkdir ${JOB_DIR}\n"
+        
+        qsg03job += "export GAUSS_EXEDIR=%s:%s/bsd\n" % (GAU_HOME, GAU_HOME)
+        qsg03job += "export GAUSS_ARCHDIR=${JOB_DIR}\n"
+        qsg03job += "export PATH=$PATH:%s\n" % GAU_HOME
+        qsg03job += "export LD_LIBRARY_PATH=%s\n" % GAU_HOME
+        qsg03job += "export GAUSS_SCRDIR=${JOB_DIR}\n"
+        qsg03job += "export G03BASIS=%s/basis\n\n" % GAU_HOME
+
+        qsg03job += "cd ${JOB_DIR}\n"
+
+        for i in sys.argv[start:]:
+            updateGJF(i, nprocess)
+            qsg03job += "cp $JOB_HOME/%s .\n" % i
+
+        for i in sys.argv[start:]:
+            qsg03job += "g03 %s\n" % i
+            qsg03job += "rm -f *.rwf\n"
+
+        qsg03job += "cp $JOB_DIR/*.* $JOB_HOME\n"
+        qsg03job += "cd $JOB_HOME\n"
+        qsg03job += "rm -rf $JOB_DIR\n"
+
+        shellname = "g03." + os.path.split(JOB_HOME)[1] + ".sh"
+        file = open(shellname, "wt")
+        file.write(qsg03job)
+        file.close()
+

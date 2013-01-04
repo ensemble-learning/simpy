@@ -1,0 +1,6 @@
+d = dump("dump.kinase")
+r = gl(d)
+r.zoom(1.3)
+r.q(12)
+r.acol([1,4,6,8,9],["white","red","green","blue","purple"])
+r.show(0)

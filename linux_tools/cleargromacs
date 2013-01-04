@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+import os
+
+i = ''
+for root, dirs, files in os.walk('.'):
+    #print root, dirs, files
+    if len(files) < 1:
+        pass
+    else:
+        for i in files:
+            fullname = os.path.join(root, i)
+            print fullname
+            if '#' in i:
+                os.remove(fullname)
+            elif '.trr' in i:
+                os.remove(fullname)
+            elif '.edr' in i:
+                os.remove(fullname)
+            elif '.xvg' in i:
+                os.remove(fullname)
+            elif '.sh.' in i:
+                os.remove(fullname)
+            elif '.cpt' in i:
+                os.remove(fullname)
+            elif '.tpr' in i:
+                os.remove(fullname)
+            elif '.log' in i:
+                os.remove(fullname)
+            elif 'test.gro' in i:
+                os.remove(fullname)
+            elif 'mdout' in i:
+                os.remove(fullname)
+            else:
+                pass

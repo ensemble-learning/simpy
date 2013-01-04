@@ -1,0 +1,13 @@
+#/bin/sh 
+# It qsub the job of GROMACS
+# $1 for cpu core
+# $2 input gro file
+# $3 input top file
+
+echo "#!/bin/bash" > grompp.sh
+#echo "#PBS -l nodes=1:ppn=$1" >> grompp.sh
+echo "cd \$PWD" >> grompp.sh
+echo "grompp_mpi -np $1 -f equil.mdp -c $2 -p $3 -o equil" >> grompp.sh
+echo "mpirun -np $1 mdrun_mpi -s equil"  >> grompp.sh
+bash grompp.sh &
+rm grompp.sh

@@ -1,0 +1,71 @@
+K 25
+svn:wc:ra_dav:version-url
+V 69
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water
+END
+towhee_backup
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_backup
+END
+water_input
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/water_input
+END
+towhee_altinp
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_altinp
+END
+towhee_coords
+K 25
+svn:wc:ra_dav:version-url
+V 83
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_coords
+END
+towhee_final
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_final
+END
+box_01_step_00000000000000.pdb
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/box_01_step_00000000000000.pdb
+END
+towhee_ff
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_ff
+END
+box_01_step_00000000000200.pdb
+K 25
+svn:wc:ra_dav:version-url
+V 100
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/box_01_step_00000000000200.pdb
+END
+towhee_ostwald
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_ostwald
+END
+towhee_input
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/towhee_input
+END
+water_coords
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/ms-tools-python~source-code-repository/!svn/ver/8/template/water/water_coords
+END

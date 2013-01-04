@@ -1,0 +1,32 @@
+#
+echo '#PBS -S /bin/bash' > $1.sh
+echo '#PBS -l nodes=1,walltime=5000:00:00' >> $1.sh
+echo ' ' >> $1.sh
+
+echo 'export PATH=/home/liulc/src/openmpi/my-openmpi/bin:$PATH' >> $1.sh
+echo 'export LD_LIBRARY_PATH=/home/liulc/src/openmpi/my-openmpi/lib:$LD_LIBRARY_PATH' >> $1.sh
+
+echo 'cd '$PWD >> $1.sh
+echo 'echo $HOSTNAME > host.log' >> $1.sh
+echo 'mkdir /state/partition1/'$USER >> $1.sh
+echo 'mkdir /state/partition1/'$USER'/'$1 >> $1.sh
+echo 'cp lammps_input /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cp data_lammps /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cp ffield /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cp lammps_restart /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cp control /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'cd /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo '/home/liulc/bin/lammps < lammps_input ' >> $1.sh
+echo ' ' >> $1.sh
+
+echo 'cp *' $PWD >> $1.sh
+echo 'if [ $status != 0 ]' >> $1.sh
+echo 'then' >> $1.sh
+echo '        echo "Copying results from `hostname`:/state/partition1/'$USER'/'$1'/ back to $PBS_O_WORKDIR failed." ' >> $1.sh
+echo '        echo "After fixing the problem be sure to remove the directory `hostname`:/state/partition1/'$USER'/'$1'/"' >> $1.sh
+echo 'else' >> $1.sh
+echo '        cd ' $PWD >> $1.sh
+echo '        rm -rf /state/partition1/'$USER'/'$1'/' >> $1.sh
+echo 'fi' >> $1.sh
+echo ' '>> $1.sh
+

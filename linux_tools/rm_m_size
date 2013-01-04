@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import os
+import os.path
+A1M = 1048576
+def parseFolder(folder):
+    for i in os.listdir(folder):
+        fullname = os.path.join(folder,i)
+        if os.path.isdir(fullname):
+            parseFolder(fullname)
+        elif os.path.getsize(fullname) > 3*A1M:
+            os.remove(fullname)
+        else:
+            pass
+
+if __name__ == "__main__":
+    parseFolder('.')

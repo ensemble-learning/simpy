@@ -1,0 +1,8 @@
+cd $PWD
+cat ./*/result.log > result.log
+echo "Density" > vle.log
+grep "Specific Density            g/ml        1 " result.log >> vle.log
+echo "Hv" >> vle.log
+grep "H_vap (Direct)            kJ/mol" result.log >> vle.log
+echo "Pressure" >> vle.log
+grep "Thermodynamic Pressure       kPa        2" result.log >> vle.log

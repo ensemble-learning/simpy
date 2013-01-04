@@ -1,0 +1,57 @@
+"Pizza.py WWW Site"_pws - "Pizza.py Documentation"_pd - "Pizza.py Tools"_pc :c
+
+:link(pws,http://www.cs.sandia.gov/~sjplimp/pizza.html)
+:link(pd,Manual.html)
+:link(pc,Section_tools.html)
+
+:line
+
+clog tool :h3
+
+[Purpose:]
+
+Read ChemCell and SPPARKS log files and extract time-series data.
+
+[Description:]
+
+Read one or more ChemCell log files and combine their species
+statistical data into long, named vectors (versus time).  The vectors
+can be used in Python for further processing and plotting, or they can
+be output to a file.
+
+The log constructor reads one or more log files.  If 2 arguments are
+specified, a single file is specified, and it is assumed to contain
+data for multiple runs, which are averaged.
+
+The nvec, nlen, and names values give the # of vectors, their length,
+and names.  The get() method returns one of more vectors as a Python
+list.  The write() method outputs the numeric vectors to a file.
+
+[Usage:]
+
+c = clog("file1")                    read in one or more log files
+c = clog("log1 log2.gz")             can be gzipped
+c = clog("file*")                    wildcard expands to multiple files
+c = clog("log.cell","Time")          2nd arg = start string for time section
+c = clog("log.cell","",0)            3rd arg = average all runs :pre
+
+  incomplete and duplicate thermo entries are deleted
+  if specify 2nd arg, it delimits a time section
+  no 2nd arg or empty string, use default which is ChemCell specific
+  if specify any 3rd arg, average all runs, assume all start at time 0 :pre
+
+nvec = c.nvec                        # of vectors of thermo info
+nlen = c.nlen                        length of each vectors
+names = c.names                      list of vector names
+a,b,... = c.get("A","B",...)         return one or more vectors of values
+c.write("file.txt")	 	     write all vectors to a file
+c.write("file.txt","A","B",...)      write listed vectors to a file :pre
+
+  get and write allow abbreviated (uniquely) vector names :pre
+
+[Related tools:]
+
+"plotview"_plotview.html, "gnu"_gnu.html, "log"_log.html,
+"matlab"_matlab.html
+
+[Prerequisites:] none

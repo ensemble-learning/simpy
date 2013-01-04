@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import os
+import os.path
+
+root_folder = os.getcwd()
+
+def dos2unix(folder):
+    listall = os.listdir(folder)
+    for i in listall:
+        current_dir = os.path.join(folder, i)
+        if os.path.isdir(current_dir):
+            dos2unix(current_dir)
+        else:
+            if os.path.getsize(current_dir):
+                os.system("dos2unix %s"%current_dir)
+            else :
+                pass
+
+if __name__ == "__main__":
+    dos2unix(root_folder)

@@ -1,0 +1,51 @@
+# Input files
+# Type : Grasp, Reax, Reax2
+Type		Reax
+Config		/net/hulk/home6/liulc/ettringite/decomposition/test/xmolout
+#Config		/ul/peng/HE/shear/PETN/p0/cmprshear/noNVT/05ps/shk110d011/000.out
+Bonds		/net/hulk/home6/liulc/ettringite/decomposition/test/fort.7
+#Bonds		/ul/peng/HE/shear/PETN/p0/cmprshear/noNVT/05ps/shk110d011/000b.out
+
+# Simulation Information (fs)
+Timestep        0.25
+
+# Dictionaries
+#Atoms		/ul/linus/MolFra/linus/Atom.dic
+Atoms		Atom.dic
+Bond-CutOff	Cutoff.dic
+# Bond-CutOff	Cutoff.dic
+
+# Analysis Parameters
+# 0: Do not create MoleculeData file. 1: Create MoleculeData file.
+MolDataFlag     1
+# Time window for determining important bond breaking (ps)
+TimeWindow      1.0
+
+# Output files
+MoleculeID	data/molid.out
+MoleculeData	data/moldata.out
+
+NofMolecules	data/nmol.out
+MoleculeChanges	data/molchg.out
+MoleculeAtom	data/mol.atom
+BondLog         data/Bond.log
+NBondChange     data/Nbondchg.log
+NetBonds        data/netBonds.out
+RxnLog          data/rxn.log
+TemperatureLog  data/temperature.log
+
+# Output files for Molecular Statistics
+MolStatPerStep  data/molstat.step
+MolStatTotal    data/molstat.total
+FragmentTable   data/fragtable
+
+# Basic Settings for Memory Allocation (integer type)
+MaxBondsPerAtom			50
+MaxAtomsPerMolecule		1000
+MaxMoleculeChangePerStep	10000
+MaxMoleculeSpecies		100000
+MaxMoleculeTrace		1000
+
+# Analyzing Frequency (integer type)
+# Currently Frequency=1 case is only tested.
+Frequency			1

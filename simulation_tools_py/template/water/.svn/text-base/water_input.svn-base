@@ -1,0 +1,161 @@
+randomseed
+1558
+inputformat
+'Towhee'
+ensemble
+'npt'
+temperature
+298.2d0
+pressure 
+101.3d0
+nmolty
+1
+nmolectyp
+1
+numboxes
+1
+stepstyle
+'moves'
+nstep
+20000
+printfreq 
+1000   
+blocksize 
+2000
+moviefreq
+100000
+backupfreq  
+1000
+runoutput
+'blocks'
+pdb_output_freq
+0
+loutdft 
+.false.  
+loutlammps
+.false.
+pressurefreq
+10
+trmaxdispfreq
+10
+volmaxdispfreq
+10
+chempotperstep
+0
+potentialstyle
+'classical'
+ffnumber
+1
+ff_filename
+towhee_ff
+classical_potential
+'Lennard-Jones'      
+classical_mixrule
+'Lorentz-Berthelot'
+lshift
+.false.
+ltailc
+.true.
+rmin  
+1.0d0 
+rcut  
+10.0d0
+rcutin 
+10.0d0 
+coulombstyle
+'ewald_fixed_kmax'
+kalp
+5.6d0
+kmax
+5
+dielect
+1.0d0
+nfield
+0
+isolvtype
+0
+linit   
+.true. 
+initboxtype
+'dimensions'
+initstyle
+'coords'
+initlattice
+'none'
+initmol
+1
+inix iniy iniz
+10    10    10
+hmatrix
+20.000000d0 0.0d0 0.0d0
+0.0d0 20.000000d0 0.0d0
+0.0d0 0.0d0 20.000000d0
+pmvol           
+0.01d0          
+          pmvlpr
+          1.0d0 
+          rmvol 
+          0.1d0 
+          tavol 
+          0.5d0 
+pmcb
+0.33d0
+          pmcbmt
+          1.0d0
+          pmall
+          1.0d0
+pmtracm
+0.67d0
+          pmtcmt
+          1.0d0
+          rmtrac
+          0.5d0
+          tatrac
+          0.5d0
+pmrotate
+1.0d0
+          pmromt  
+          1.0d0
+          rmrot
+          0.05d0
+          tarot
+          0.5d0
+cbmc_style
+'coupled-decoupled'
+coupled_decoupled_form
+'Martin and Siepmann JPCB 1999'
+cbmc_setting_style
+'default ideal'
+inpstyle TEAM water-1
+2
+nunit
+3
+nmaxcbmc
+3
+lpdbnames
+F
+forcefield
+'AMBER'
+charge_assignment
+'manual'
+unit ntype qqatom         
+1    'o_2w'   -0.847600d0 
+vibration                 
+2                         
+2 3                       
+improper torsion          
+0                         
+unit ntype qqatom         
+2    'h_1w'   0.423800d0  
+vibration                 
+1                         
+1                         
+improper torsion          
+0                         
+unit ntype qqatom         
+3    'h_1w'   0.423800d0  
+vibration                 
+1                         
+1                         
+improper torsion          
+0                         

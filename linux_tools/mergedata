@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+import getopt
+import sys
+from parse_xvg import parse_xvg
+
+def usage():
+    print "mergedata -o outfile -t type input files."
+
+def merge(func, flist, ofile):
+    data = []
+    d = []
+    flist.sort()
+    for i in flist:
+        d = func(i)
+        data.append(d)
+
+    max = 0
+    for i in data:
+        if max < len(i[0]):
+            max = len(i[0])
+
+    o = open(ofile, 'w')
+    for i in range(max):
+        for j in range(len(data)):
+            if len(data[j][0]) <= i:
+                x = ''
+                y = ''
+            else:
+                x = "%15.4f"%data[j][0][i]
+                y = "%15.4f"%data[j][1][i]
+            o.write("%15s%15s"%(x, y))
+        o.write('\n')
+    o.close()
+        
+
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "ht:i:o:", \
+                ["help", "type", "input", "output"])
+    except getopt.GetoptError:
+        usage()
+        sys.exit(2)
+    for opt, arg in opts:
+        if opt in ("-h", "--help"):
+            usage()
+            sys.exit()
+        elif opt in ("-t", "--type"):       
+            t = arg
+            if t == "xvg":
+                func = parseXvg
+        elif opt in ("-o", "--output"):       
+            outfile = arg
+    merge(func, args, outfile)
+    
+if __name__ == "__main__":
+    main(sys.argv[1:]) 

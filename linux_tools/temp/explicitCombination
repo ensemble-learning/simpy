@@ -1,0 +1,58 @@
+import sys
+import os
+import math
+
+def usage():
+    print "this code is to"
+
+if __name__ == "__main__":
+
+    n = 0
+    atom_list = []
+
+    if len(sys.argv[1:]) == 0:
+        usage()
+    else:
+        os.system("cp %s %s_bak.itp"%(sys.argv[1], sys.argv[1][:-4]))
+        f = open("%s_bak.itp"%sys.argv[1][:-4], 'r')
+        o = open(sys.argv[1], 'w') 
+        for i in f:
+            o.write(i)
+            if i.strip().startswith("[ atomtypes ]"):
+                break
+        for i in f:
+            if i.startswith('\n'):
+                o.write(i)
+                break
+            else:
+                if i.strip().startswith(";"):
+                    pass
+                else:
+                    atom_list.append([])
+                    atom_list[n].append(i.split()[0])
+                    atom_list[n].append(float(i.split()[4]))
+                    atom_list[n].append(float(i.split()[5]))
+                    n += 1
+                    c6 = 4 * float(i.split()[4])**6 * float(i.split()[5]) 
+                    c12 = 4 * float(i.split()[4])**12 * float(i.split()[5])
+                    o.write("%8s%12.4f%12.4f%8s%12.4e%12.4e\n"%(\
+                           i.split()[0],float(i.split()[1]),float(i.split()[2]),i.split()[3],c6,c12))
+                
+        o.write('[ nonbond_params ]\n')
+        for i in range(len(atom_list)):
+            for j in range(len(atom_list)):
+                if j > i:
+                    o.write("%8s"%atom_list[i][0])
+                    o.write("%8s"%atom_list[j][0])
+                    epsil = math.sqrt(atom_list[i][2] * atom_list[j][2])
+                    delta = 0.5 * (atom_list[i][1] + atom_list[j][1])
+                    c6 = 4 * epsil * delta**6 
+                    c12 = 4 * epsil * delta**12
+                    o.write("    1     %12.4e%12.4e\n"%(c6, c12))
+        for i in f:
+            o.write(i)
+        o.close()
+        f.close()
+        
+
+    

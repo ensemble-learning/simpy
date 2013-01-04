@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import time
+import os
+core = 8
+o = open('subjob.sh', 'w')
+o.write("#!/bin/bash\n")
+o.write("#PBS -l nodes=1:ppn=%d\n"%core)
+o.write("cd $PBS_O_WORKDIR\n")
+current = os.getcwd()
+node_folder = os.path.join("/state/partition1", "gromacs_chengtao_%d"%int(time.time()))
+o.write("mkdir %s\n"%node_folder)
+o.write("cp * %s\n"%node_folder)
+o.write("cd %s\n"%node_folder)
+o.write("mpirun -np %d mdrun -s run -c run\n"%core)
+o.write("cp * %s\n"%current)
+o.write("cd %s\n"%current)
+o.write("rm -rf %s\n"%node_folder)
+o.close()
+
+

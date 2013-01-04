@@ -1,0 +1,10 @@
+[epydoc]
+name: scipy
+
+modules: mol.py, pdb.py, msd.py
+output: html
+target: ./docs/
+graph: all
+dotpath: /usr/bin/dot
+
+

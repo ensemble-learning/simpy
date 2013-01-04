@@ -1,0 +1,15 @@
+beginmacro
+%
+% version      : 3.23
+% compile date    : Dec 15 2006 16:26
+%
+% Macro created on 10/07/10   17:32:09
+%
+Top menu/simulate
+   Display
+      return
+   Simulate/return
+Top menu/exit
+  "OK"
+%
+endmacro

@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+
+def parseGeo():
+    box = ''
+    nmol = 0
+    coord = []
+    counter = 0
+    f = open("geo", 'r')
+    for i in f:
+        if counter < 3:
+            pass
+        elif len(i.split()) == 7:
+            box = i
+        elif i.startswith("END"):
+            break
+        else:
+            coord.append(i.split())
+        counter += 1
+    f.close()
+    return [box, counter-4, coord]
+
+def outputGeoPallel(geo):
+    o = open("geo_p", 'w')
+    o.write(geo[0])
+    o.write('%d\n'%geo[1])
+    for i in geo[2]:
+        o.write(i[1] + '  ')
+        o.write(i[2].upper() + '  ')
+        o.write(i[2].upper() + '  ')
+        o.write(i[3] + '  ')
+        o.write(i[4] + '  ')
+        o.write(i[5] + '\n')
+    o.write('\n')
+    o.close()
+
+if __name__ == "__main__":
+    geo = parseGeo()
+    outputGeoPallel(geo)
+
