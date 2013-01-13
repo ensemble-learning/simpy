@@ -24,4 +24,36 @@ def dumpBlock(dumpfile, outfile="dump.sep"):
         o.write(j)
     o.close()
 
+def geoBlock(geofile, ext="geo"):
+    """parse the geo file into blocks
+    """
+    f = open(geofile, 'r')
+    lines = ''
+    block = []
+    out = ''
+    counter = 0
+    for i in f:
+        if counter > 0:
+            if "BIOGRF" in i:
+                o = open("%s"%out + ".%s"%ext, 'w')
+                for j in block:
+                    o.write(j)
+                o.close()
+                block = []
+            elif "XTLGRF" in i:
+                o = open("%s"%out + ".%s"%ext, 'w')
+                for j in block:
+                    o.write(j)
+                o.close()
+                block = []
+            elif "DESCRP" in i:
+                out = i.strip().split()[-1]
+            block.append(i)
+        counter += 1
+    o = open("%s"%out + ".%s"%ext, 'w')
+    for j in block:
+        o.write(j)
+    o.close()
 
+if __name__ == "__main__":
+    geoBlock("geo")

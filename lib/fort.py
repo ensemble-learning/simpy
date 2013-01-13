@@ -1,5 +1,6 @@
 """ Fortran reactive force field Fort file
 """
+import numpy as np
 
 class Fort73():
     """ data in fort.73 (energy components)
@@ -19,6 +20,8 @@ class Fort73():
         self.ecol = []
         self.echarge = []
         self.efield = []
+
+        self.pot = 0
         self.read(filename)
 
     def read(self, filename):
@@ -44,8 +47,28 @@ class Fort73():
                 self.echarge.append(float(tokens[12]))
                 self.efield.append(float(tokens[13]))
             counter += 1
+    def getAve(self, data):
+        data = np.array(data)
+        return np.average(data)
+        
+    def getPot(self,):
+        ebond = self.getAve(self.ebond)
+        eatom = self.getAve(self.eatom)
+        elp = self.getAve(self.elp)
+        emol = self.getAve(self.emol)
+        eval = self.getAve(self.eval)
+        ecoa = self.getAve(self.ecoa)
+        ehbo = self.getAve(self.ehbo)
+        etors = self.getAve(self.etors)
+        econj = self.getAve(self.econj)
+        evdw = self.getAve(self.evdw)
+        ecol = self.getAve(self.ecol)
+        echarge = self.getAve(self.echarge)
+        efield = self.getAve(self.efield)
 
-        f.close()
+        self.pot = ebond + eatom + elp + emol + eval + \
+                   ecoa + ehbo + etors + econj + evdw + ecol +\
+                   echarge + efield
 
 if __name__ == "__main__":
     print __doc__
