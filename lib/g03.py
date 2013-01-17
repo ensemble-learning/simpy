@@ -49,10 +49,11 @@ class G03tools():
         for i in f:
             if r"\HF" in i:
                 lines = i.strip()
+                break
         for i in f:
             lines += i.strip()
         f.close()
-        
+
         for i in lines.split("\\"):
             if "HF" in i:
                 ener = float(i[3:])
@@ -62,7 +63,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "g03.py logfile"
     else:
-        for i in sys.argv[1:]
+        for i in sys.argv[1:]:
             a = G03LogConf(i)
             b = G03tools(i)
             print b.getEnergy()
