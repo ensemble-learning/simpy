@@ -1,6 +1,6 @@
 """Gaussian 03 file
 """
-
+import sys
 from mytype import System, Molecule, Atom
 from cons import ELEMENT
 
@@ -59,8 +59,12 @@ class G03tools():
         return ener
 
 if __name__ == "__main__":
-    a = G03LogConf('sio4.log')
-    b = G03tools('sio4.log')
-    b.getEnergy()
+    if len(sys.argv) < 2:
+        print "g03.py logfile"
+    else:
+        for i in sys.argv[1:]
+            a = G03LogConf(i)
+            b = G03tools(i)
+            print b.getEnergy()
 
 
