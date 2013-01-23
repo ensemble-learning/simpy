@@ -62,7 +62,7 @@ if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "g03.py logfile"
     else:
-        for i in sys.argv[1:]
+        for i in sys.argv[1:]:
             a = G03LogConf(i)
             b = G03tools(i)
             print b.getEnergy()

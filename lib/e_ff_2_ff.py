@@ -35,17 +35,30 @@ print t[nt]
 
 n = int(raw_input("parameter to change: "))
 
-temp = float(ff.bond[nt][n]) #r0 in eq (2)
+temp = float(t[nt][n]) #r0 in eq (2)
+
+scale = float(raw_input("scale factor: "))
 
 flag = raw_input("Continue:yes(1);no(0): ")
-os.chdir("in")
 if int(flag):
-    t[nt][n] = "%.4f"%(temp*1.10)
+    # Increase
+    os.chdir("in")
+    increase = 1.0 + scale
+    t[nt][n] = "%.4f"%(temp*increase)
     toFfield(ff, "ffield")
     os.system("bash ./run.sh")
     os.chdir("..")
+    # Original
+    os.chdir("or")
+    origin = 1.0
+    t[nt][n] = "%.4f"%(temp*origin)
+    toFfield(ff, "ffield")
+    os.system("bash ./run.sh")
+    os.chdir("..")
+    # Decrease
     os.chdir("de")
-    t[nt][n] = "%.4f"%(temp*0.90)
+    decrease = 1.0 - scale
+    t[nt][n] = "%.4f"%(temp*decrease)
     toFfield(ff, "ffield")
     os.system("./run.sh")
     os.chdir("..")

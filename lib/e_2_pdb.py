@@ -26,7 +26,7 @@ def fortranOut():
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
-    b.pbc = [30.00, 30.00, 30.00, 90.0, 90.0, 90.0]
+    b.pbc = [50.00, 50.00, 50.00, 90.0, 90.0, 90.0]
     b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")

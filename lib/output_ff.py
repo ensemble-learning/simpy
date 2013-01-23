@@ -19,6 +19,7 @@ def toFfield(ff, outfile="out.ffield"):
             if counter == 0:
                 o.write(" %-2s"%j)
             elif counter > 0 and counter % 8 == 0:
+                o.write("%9.4f"%float(j))
                 o.write('\n')
             elif counter > 1 and counter % 8 == 1:
                 o.write("   ")
