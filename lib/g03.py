@@ -49,10 +49,11 @@ class G03tools():
         for i in f:
             if r"\HF" in i:
                 lines = i.strip()
+                break
         for i in f:
             lines += i.strip()
         f.close()
-        
+
         for i in lines.split("\\"):
             if "HF" in i:
                 ener = float(i[3:])
