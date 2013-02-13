@@ -7,7 +7,7 @@ import numpy as np
 
 def usage():
     print """python addtran.py [reference name] [reference energy] [energy unit]
-    @note: Now we only support kcal and ev"""
+    @note: Now we support kcal, hartree and ev"""
 
 if len(sys.argv) < 3:
     usage()
@@ -20,6 +20,10 @@ else:
     else:
         if sys.argv[3] == "ev":
             unit = 23
+        elif sys.argv[3] == "hartree":
+            unit = 623
+        elif sys.argv[3] == "kcal":
+            unit = 1 
         else:
             print "No defined units."
             unit = 1
@@ -41,6 +45,7 @@ else:
             de = (ener[i] - rener) * unit 
             o.write(" 0.1 + %s/1 - %s/1  %9.2f\n"%(conf[i], rname, de))
     else:
+        print len(conf), len(ener)
         print "Error!"
     o.close()
     

@@ -19,6 +19,8 @@ class Pdb():
         for i in f:
             if i.strip().startswith("ATOM"):
                 self.coords.append(i.strip())
+            elif i.strip().startswith("HETATM"):
+                self.coords.append(i.strip())
             elif i.strip().startswith("CRYST1"):
                 self.pbc = i.strip().split()[1:7]
         f.close()
