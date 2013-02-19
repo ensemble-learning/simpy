@@ -29,7 +29,7 @@ class Dump():
         temp = []
         for i in range(self.natom):
             tokens = f.readline().strip().split()
-            a = "%06d"%(int(tokens[0]))
+            a = "%06d"%(int(tokens[1]))
             temp.append([a, tokens])
         temp.sort()
         for i in temp:
@@ -53,16 +53,23 @@ class Dump():
         # [yx, yy, yz] and [zx, zy, zz]
         # caution! A hard coded code for specified dump file
         a = []
+        # some dump file only have xl and xh. Normalize to three terms
+        if len(self.a) == 2:
+            self.a.append(0.0)
         a.append(float(self.a[1]) - float(self.a[0]) + float(self.a[2]))
         a.append(0.0)
         a.append(0.0)
         #print a
         b = []
+        if len(self.b) == 2:
+            self.b.append(0.0)
         b.append(float(self.a[2]))
         b.append(float(self.b[1]) - float(self.b[0]))
         b.append(0.0)
         #print b
         c = []
+        if len(self.c) == 2:
+            self.c.append(0.0)
         c.append(float(self.b[2]))
         c.append(float(self.c[2]))
         c.append(float(self.c[1]) - float(self.c[0]))
