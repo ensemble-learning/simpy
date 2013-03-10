@@ -42,30 +42,82 @@ class G03LogConf():
 class G03tools():
     def __init__(self, filename="g03.log"):
         self.name = filename
+
     def getEnergy(self, ):
+        """get the final energy(hf) and zpe energy from g03 output file
+        """
         ener = 0
+        flag = 1
         f = open(self.name, "r")
-        lines = ""
-        for i in f:
-            if r"\HF" in i:
-                lines = i.strip()
-                break
-        for i in f:
-            lines += i.strip()
+        counter = 0
+        while(flag):
+            flag = 0
+            for i in f:
+                flag = 1
+                if r"|HF" in i:
+                    lines = ""
+                    lines = i.strip()
+                    break
+            for i in f:
+                lines += i.strip()
+                if len(i.strip()) == 0:
+                    break
+            counter += 1
         f.close()
 
-        for i in lines.split("\\"):
+        for i in lines.split(r"|"):
             if "HF" in i:
                 ener = float(i[3:])
-        return ener
+        # get the zpe energy
+        zpe = 0
+        f = open(self.name, "r")
+        for i in f:
+            if "Sum of electronic and zero-point Energies" in i:
+                tokens = i.strip().split("=") 
+                zpe = float(tokens[1])
+        f.close()
+        return ener, zpe
 
+    def getCharge(self,):
+        """get Mulliken charege from QM
+        """
+        charges = []
+        lines = []
+        f = open(self.name, "r")
+        for i in f:
+            if "Mulliken atomic charges" in i:
+                break
+        for i in f:
+            if "Sum of Mulliken charges" in i:
+                break
+            lines.append(i)
+        f.close()
+        for i in lines[1:]:
+            tokens = i.strip().split()
+            charges.append(tokens)
+        return charges
+
+                
 if __name__ == "__main__":
     if len(sys.argv) < 2:
         print "g03.py logfile"
     else:
         for i in sys.argv[1:]:
+            geo = i.split(".")[0]
             a = G03LogConf(i)
             b = G03tools(i)
-            print b.getEnergy()
+            hf, zpe = b.getEnergy()
+            o = open("qm_ener.dat", "w")
+            o.write("%-15s HF %.4f\n"%(geo, hf))
+            o.write("%-15s ZPE %.4f\n"%(geo, zpe))
+            o.close()
+            charges = b.getCharge()
+            o = open("qm_charge.dat", "w")
+            for j in charges:
+                o.write("%-15s%6s%6s%12s  # %s\n"%( geo, "1", j[0], j[2], j[1]))
+            o.close()
+
+            
+
 
 

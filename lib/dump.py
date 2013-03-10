@@ -86,8 +86,14 @@ class Dump():
                 atom.name = n2a[int(i[1])]
             else:
                 atom.name = i[1]
+            """
+            atom.x[0] = float(i[4])
+            atom.x[1] = float(i[5])
+            atom.x[2] = float(i[6])
+            """
             atom.x[0] = float(i[2])
             atom.x[1] = float(i[3])
             atom.x[2] = float(i[4])
             s.atoms.append(atom)
         return s
+
