@@ -6,6 +6,7 @@ from cons import ELEMENT
 
 class G03LogConf():
     def __init__(self, filename='g03.log'):
+        self.name = filename.split(".")[0]
         self.atoms = []
         self.read(filename)
 
@@ -30,6 +31,7 @@ class G03LogConf():
         f.close()
     def parser(self,):
         s = System()
+        s.name = self.name
         for i in self.atoms:
             a = Atom()
             a.name = ELEMENT[int(i[1])]
@@ -48,6 +50,7 @@ class G03tools():
         """
         ener = 0
         flag = 1
+        sym = -1
         f = open(self.name, "r")
         counter = 0
         while(flag):
@@ -55,6 +58,12 @@ class G03tools():
             for i in f:
                 flag = 1
                 if r"|HF" in i:
+                    sym = 0
+                    lines = ""
+                    lines = i.strip()
+                    break
+                elif r"\HF" in i:
+                    sym = 1
                     lines = ""
                     lines = i.strip()
                     break
@@ -65,9 +74,17 @@ class G03tools():
             counter += 1
         f.close()
 
-        for i in lines.split(r"|"):
-            if "HF" in i:
-                ener = float(i[3:])
+        if sym == 0:
+            for i in lines.split(r"|"):
+                if "HF" in i:
+                    ener = float(i[3:])
+        elif sym == 1:
+            for i in lines.split("\\"):
+                if "HF" in i:
+                    ener = float(i[3:])
+        else:
+            print "Error: No energy read"
+
         # get the zpe energy
         zpe = 0
         f = open(self.name, "r")
@@ -85,7 +102,8 @@ class G03tools():
         lines = []
         f = open(self.name, "r")
         for i in f:
-            if "Mulliken atomic charges" in i:
+            if "Mulliken atomic charges" in i or \
+                "Total atomic charges" in i:
                 break
         for i in f:
             if "Sum of Mulliken charges" in i:

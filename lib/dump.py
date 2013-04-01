@@ -26,10 +26,11 @@ class Dump():
         self.b = f.readline().strip().split()
         self.c = f.readline().strip().split()
         f.readline()
+        # sort the data
         temp = []
         for i in range(self.natom):
             tokens = f.readline().strip().split()
-            a = "%06d"%(int(tokens[1]))
+            a = "%06d"%(int(tokens[0]))
             temp.append([a, tokens])
         temp.sort()
         for i in temp:
@@ -56,7 +57,8 @@ class Dump():
         # some dump file only have xl and xh. Normalize to three terms
         if len(self.a) == 2:
             self.a.append(0.0)
-        a.append(float(self.a[1]) - float(self.a[0]) + float(self.a[2]))
+        #a.append(float(self.a[1]) - float(self.a[0]) + float(self.a[2]))
+        a.append(float(self.a[1]) - float(self.a[0]) - float(self.a[2]))
         a.append(0.0)
         a.append(0.0)
         #print a

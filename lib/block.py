@@ -23,6 +23,7 @@ def dumpBlock(dumpfile, outfile="dump.sep"):
     for j in block:
         o.write(j)
     o.close()
+    f.close()
 
 def geoBlock(geofile, ext="geo"):
     """parse the geo file into blocks
