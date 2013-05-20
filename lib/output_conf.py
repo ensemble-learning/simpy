@@ -32,8 +32,15 @@ def toReaxLammps(system, outfile="test.data"):
         o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
         o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
     o.write("Masses\n\n")
+    print system.map
     for i in system.map:
-        o.write("%d %s\n"%(i[0], ELEMENT2MASS[i[1]]))
+        # atom name 
+        atn = ''
+        for j in i[1]:
+            if j.isdigit():
+                break
+            atn += j
+        o.write("%d %s\n"%(i[0], ELEMENT2MASS[atn]))
     o.write("\n")
     o.write("Atoms\n")
     o.write("\n")

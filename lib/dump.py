@@ -57,8 +57,13 @@ class Dump():
         # some dump file only have xl and xh. Normalize to three terms
         if len(self.a) == 2:
             self.a.append(0.0)
-        #a.append(float(self.a[1]) - float(self.a[0]) + float(self.a[2]))
-        a.append(float(self.a[1]) - float(self.a[0]) - float(self.a[2]))
+        #a.append(float(self.a[1]) - float(self.a[0]))
+        #@ref: http://lammps.sandia.gov/doc/Section_howto.html#howto_12
+        xlo = float(self.a[0]) - min(0.0, float(self.a[2]), float(self.b[2]),\
+              float(self.a[2]) + float(self.c[2])) 
+        xhi = float(self.a[1]) - max(0.0, float(self.a[2]), float(self.b[2]),\
+              float(self.a[2]) + float(self.c[2]))
+        a.append(xhi - xlo)
         a.append(0.0)
         a.append(0.0)
         #print a
@@ -66,7 +71,9 @@ class Dump():
         if len(self.b) == 2:
             self.b.append(0.0)
         b.append(float(self.a[2]))
-        b.append(float(self.b[1]) - float(self.b[0]))
+        ylo = float(self.b[0]) - min(0.0, float(self.c[2]))
+        yhi = float(self.b[1]) - max(0.0, float(self.c[2]))
+        b.append(yhi - ylo)
         b.append(0.0)
         #print b
         c = []
