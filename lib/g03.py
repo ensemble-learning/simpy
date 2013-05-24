@@ -89,6 +89,14 @@ class G03LogConf():
     def __init__(self, filename='g03.log'):
         self.name = filename.split(".")[0]
         self.atoms = []
+        self.stat = 0
+        self.methods = []
+        self.redundant = []
+        self.connect = []
+        self.spin = 0
+        self.charge = 0
+        """@var : if simulation quit normally
+        """
         self.read(filename)
 
     def read(self, filename):
@@ -110,9 +118,24 @@ class G03LogConf():
                     self.atoms.append(i.strip().split())
                 counter += 1
         f.close()
+
+        # read the keywords
+        f = open(filename, 'r')
+        for i in f:
+            if i.strip().startswith("#"):
+                self.methods.append(i)
+            elif "Charge" in i and "Multiplicity" in i: 
+                tokens = i.strip().split()
+                self.charge = int(tokens[2])
+                self.spin = int(tokens[5])
+            elif "Normal termination" in i:
+                self.stat = 1
+        f.close()
+
     def parser(self,):
         s = System()
         s.name = self.name
+        s.methods = self.methods
         for i in self.atoms:
             a = Atom()
             a.name = ELEMENT[int(i[1])]
@@ -221,4 +244,5 @@ def testff():
 
 if __name__ == "__main__":
     testff()
+    main()
     
