@@ -104,10 +104,35 @@ class System():
         """@ivar: the element-atom type map
         @type: list 
         @note: """
-        #specified file tag
+        #specify for geo file
         self.geotag = ''
         """@ivar: maps
         @type: list 
+        @note: """
+        #specify for g03 gjf
+        self.options = []
+        """@ivar: options in g03, such as memory
+        @type: list 
+        @note: """
+        self.methods = []
+        """@ivar: computational methods, such as opt
+        @type: list 
+        @note: """
+        self.connect = []
+        """@ivar: connectivity in gjf file
+        @type: list 
+        @note: """
+        self.redundant = []
+        """@ivar: redundant info, such as fix bond distances
+        @type: list 
+        @note: """
+        self.spin = 1
+        """@ivar: spin
+        @type: int
+        @note: """
+        self.charge = 0
+        """@ivar: charge
+        @type: int
         @note: """
 
     def parseToMol(self,):

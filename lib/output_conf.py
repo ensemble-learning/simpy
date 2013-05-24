@@ -32,8 +32,15 @@ def toReaxLammps(system, outfile="test.data"):
         o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
         o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
     o.write("Masses\n\n")
+    print system.map
     for i in system.map:
-        o.write("%d %s\n"%(i[0], ELEMENT2MASS[i[1]]))
+        # atom name 
+        atn = ''
+        for j in i[1]:
+            if j.isdigit():
+                break
+            atn += j
+        o.write("%d %s\n"%(i[0], ELEMENT2MASS[atn]))
     o.write("\n")
     o.write("Atoms\n")
     o.write("\n")
@@ -134,3 +141,40 @@ def toPdb(system, outfile="test.pdb"):
     o.write("TER\n")
     o.write("ENDMDL\n")
     o.close()
+
+def toGjf(system, outfile="g03out.gjf"):
+    """output the gjf file
+    """
+    o = open(outfile, "w")
+    if len(system.options) > 0:
+        for i in system.options:
+            o.write(i.strip() + '\n')
+    if len(system.methods) > 0:
+        for i in system.methods:
+            o.write(i.strip() + '\n')
+    o.write('\n')
+    o.write(system.name + "\n")
+    o.write('\n')
+    o.write('%d %d\n'%(system.charge, system.spin))
+    if len(system.atoms) > 0:
+        for i in system.atoms:
+            o.write("%-5s"%i.name)
+            o.write("%10.5f"%i.x[0])
+            o.write("%10.5f"%i.x[1])
+            o.write("%10.5f"%i.x[2])
+            o.write("\n")
+    o.write('\n')
+    if len(system.connect) > 0:
+        for i in system.connect:
+            o.write(" " + i.strip() + '\n')
+
+    o.write('\n')
+    if len(system.redundant) > 0:
+        for i in system.redundant:
+            o.write(i.strip() + '\n')
+            
+    o.write('\n')
+    o.write('\n')
+    o.write('\n')
+    o.close()
+

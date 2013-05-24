@@ -6,7 +6,7 @@ import sys
 
 def usage():
     print """python addkeys.py keyword atom1 atom2 start step
-    usage: add keys in the geo file (Now only support bond restraint.
+    usage: add keys in the geo file 
     keyword = "bond" or "angle"
     """
 
@@ -56,8 +56,7 @@ def addAngRes(a1, a2, a3, start, step):
             lines.append(key1)
             counter += 1
         elif i.strip().startswith("ANGLE RESTRAINT"):
-            print "ANGLE RESTRAINTs have been added"
-            return 0
+            print "Warning: ANGLE RESTRAINTs have been added"
     f.close()
 
     shutil.copy("geo", "geo.addAng.bak")

@@ -20,6 +20,7 @@ class ReaxData():
         self.read(datafile)
     def read(self, datafile):
         f = open(datafile, "r")
+        tilt = [0, 0, 0]
         for i in f:
             tokens = i.strip().split()
             if "atoms" in i:
@@ -75,12 +76,31 @@ class ReaxData():
         s = System()
         s.pbc = v2lattice(self.a, self.b, self.c)
         for i in self.coords:
+            # n is used to distinguish the type of data file
+            n = 0
+            for j in i:
+                # ignore the comments
+                if "#" in j:
+                    break
+                n += 1
             atom = Atom()
-            atom.name = self.atomtypes[int(i[1]) - 1]
-            atom.x[0] = float(i[3]) 
-            atom.x[1] = float(i[4]) 
-            atom.x[2] = float(i[5]) 
-            s.atoms.append(atom)
+            atom.an = int(i[0])
+            if n == 7:
+                # n = 7 is full type
+                atom.name = self.atomtypes[int(i[2]) - 1]
+                atom.x[0] = float(i[4]) 
+                atom.x[1] = float(i[5]) 
+                atom.x[2] = float(i[6]) 
+                s.atoms.append(atom)
+            elif n == 5 or n == 8:
+                # n = 5 is a charge type, n = 8 is a charge type generated
+                # by restart2data
+                atom.name = self.atomtypes[int(i[1]) - 1]
+                atom.x[0] = float(i[3]) 
+                atom.x[1] = float(i[4]) 
+                atom.x[2] = float(i[5]) 
+                s.atoms.append(atom)
+
         return s
 
 if __name__ == "__main__":
