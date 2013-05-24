@@ -21,10 +21,9 @@ def main(fname, min, max, n):
             tokens[3] = "%bond%"
             line = " ".join(tokens)
         else:
-            line = i
+            line = i.strip() + '\n'
         lines.append(line)
     f.close()
-    print lines
 
     bonds = np.linspace(min, max, n)
 
@@ -34,7 +33,10 @@ def main(fname, min, max, n):
         for j in lines:
             j = j.replace("%bond%", "%.6f"%bond)
             o.write(j)
+        o.write("\n")
+        o.write("\n")
         o.close()
+
 
 if __name__ == "__main__":
     if len(sys.argv) < 5:

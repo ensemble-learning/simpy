@@ -4,6 +4,87 @@ import sys
 from mytype import System, Molecule, Atom
 from cons import ELEMENT
 
+class G03Gjf():
+    def __init__(self, filename="g03.gjf"):
+        """ for gaussian 03 input file (gjf)
+        """
+        self.name = filename.split(".")[0]
+        self.options = []
+        self.methods = []
+        self.title = ''
+        self.spin = 0
+        self.charge = 0
+        self.atoms = []
+        self.connect = []
+        self.redundant = []
+        self.read(filename)
+    def read(self, filename):
+        """ read the gjf file
+        """
+        # if connectivity or not
+        connect_flag = 0
+        f = open(filename, "r")
+        # read the options and methods
+        for i in f:
+            if len(i.strip()) > 0:
+                if i.startswith("%"):
+                    self.options.append(i)
+                elif i.startswith("#"):
+                    self.methods.append(i)
+                    if "connectivity" in i:
+                        connect_flag = 1
+            else:
+                break
+
+        # read the title
+        for i in f:
+            if len(i.strip()) > 0:
+                self.title = i
+            else: 
+                break
+        # read the spin, charge and the atomic coordinations
+        for i in f:
+            if len(i.strip()) > 0:
+                tokens = i.strip().split()
+                if len(tokens) == 2:
+                    self.charge = int(tokens[0])
+                    self.spin= int(tokens[1])
+                else:
+                    self.atoms.append(tokens)
+            else:
+                break
+        # read connectivity if any
+        if connect_flag == 1:
+            for i in f:
+                if len(i.strip()) > 0:
+                    self.connect.append(i)
+                else:
+                    break
+        # read redundant if any
+        for i in f:
+            if len(i.strip()) > 0:
+                self.redundant.append(i)
+
+        f.close()
+    
+    def parser(self,):
+        s = System()
+        s.options = self.options
+        s.methods = self.methods
+        s.redundant = self.redundant
+        s.connect = self.connect
+        s.spin = self.spin
+        s.charge = self.charge
+        s.name = self.title.strip()
+        for i in self.atoms:
+            a = Atom()
+            a.name = i[0]
+            a.x[0] = float(i[1])
+            a.x[1] = float(i[2])
+            a.x[2] = float(i[3])
+            s.atoms.append(a)
+        return s
+            
 class G03LogConf():
     def __init__(self, filename='g03.log'):
         self.name = filename.split(".")[0]
@@ -115,8 +196,7 @@ class G03tools():
             charges.append(tokens)
         return charges
 
-                
-if __name__ == "__main__":
+def main():                
     if len(sys.argv) < 2:
         print "g03.py logfile"
     else:
@@ -135,7 +215,10 @@ if __name__ == "__main__":
                 o.write("%-15s%6s%6s%12s  # %s\n"%( geo, "1", j[0], j[2], j[1]))
             o.close()
 
-            
+def testff():
+    a = G03Gjf() 
+    a.parser()
 
-
-
+if __name__ == "__main__":
+    testff()
+    
