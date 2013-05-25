@@ -12,7 +12,7 @@ def usage():
     n: number of data points
     """
 
-def main(fname, min, max, n):
+def main(fname, opt, min, max, n):
     lines = []
     f = open(fname, "r")
     for i in f:
@@ -25,7 +25,17 @@ def main(fname, min, max, n):
         lines.append(line)
     f.close()
 
-    bonds = np.linspace(min, max, n)
+    bonds = []
+    start = opt - 0.3
+    end = opt + 0.3
+    if min < start:
+        for i in np.linspace(min, start, n):
+            bonds.append(i)
+    for i in np.linspace(start, end, 7):
+        bonds.append(i)
+    if max > end:
+        for i in np.linspace(end, max, n):
+            bonds.append(i)
 
     for i in range(len(bonds)):
         o = open("scan_%02d.gjf"%i, "w")
@@ -43,7 +53,11 @@ if __name__ == "__main__":
         usage()
     else:
         fname = sys.argv[1]
-        min = float(sys.argv[2])
-        max = float(sys.argv[3])
-        n = int(sys.argv[4])
-        main(fname, min, max, n)
+        opt = float(sys.argv[2])
+        min = float(sys.argv[3])
+        max = float(sys.argv[4])
+        if len(sys.argv) == 6:
+            n = int(sys.argv[4])
+        else:
+            n = 3
+        main(fname,opt, min, max, n)
