@@ -26,17 +26,18 @@ def main(fname, opt, min, max, n):
     f.close()
 
     bonds = []
-    start = opt - 0.3
-    end = opt + 0.3
+    start = opt - 0.4
+    end = opt + 0.4
     if min < start:
         for i in np.linspace(min, start, n):
             bonds.append(i)
-    for i in np.linspace(start, end, 7):
+    for i in np.linspace(start + 0.1, end - 0.1, 7):
         bonds.append(i)
     if max > end:
         for i in np.linspace(end, max, n):
             bonds.append(i)
 
+    obond = open("bonds", "w")
     for i in range(len(bonds)):
         o = open("scan_%02d.gjf"%i, "w")
         bond = bonds[i]
@@ -46,6 +47,8 @@ def main(fname, opt, min, max, n):
         o.write("\n")
         o.write("\n")
         o.close()
+        obond.write("%12.6f\n"%bond)
+    obond.close()
 
 
 if __name__ == "__main__":
