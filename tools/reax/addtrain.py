@@ -6,11 +6,40 @@ import sys
 import numpy as np
 
 def usage():
+    print
     print """python addtran.py [reference name] [reference energy] [energy unit]
     @note: Now we support kcal, hartree and ev"""
 
+def preprocess():
+    print
+    print "-----------------------hint----------------------"
+    flag = 1
+    if os.path.exists("results"):
+        data = np.loadtxt("results")
+        print "The lowest energy in results is: ",
+        print data.min()
+        print "The index of the lowest energy in results is: ",
+        n = data.argmin()
+        print data.argmin()
+        flag = 1
+    if os.path.exists("geo"):
+        labels = []
+        f = open("geo", "r")
+        for i in f:
+            if i.startswith("DESCRP"):
+                tokens = i.strip().split()
+                labels.append(tokens[1])
+        if flag == 1:
+            print "possibel reference is: ",
+            print labels[n]
+    print "-----------------------end----------------------"
+        
+
+
+
 if len(sys.argv) < 3:
     usage()
+    preprocess()
 else:
     rname = sys.argv[1]
     rener = float(sys.argv[2])

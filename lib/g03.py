@@ -71,7 +71,8 @@ class G03Gjf():
         s = System()
         s.options = self.options
         s.methods = self.methods
-        s.redundant = self.redundant
+        for i in self.redundant:
+            s.redundant.append(i.strip().split())
         s.connect = self.connect
         s.spin = self.spin
         s.charge = self.charge
@@ -130,12 +131,28 @@ class G03LogConf():
                 self.spin = int(tokens[5])
             elif "Normal termination" in i:
                 self.stat = 1
+            elif "The following ModRedundant input" in i:
+                break
+
+        for i in f:
+            if "Iteration" in i:
+                break
+            else:
+                self.redundant.append(i)
+
+        for i in f:
+            if "Normal termination" in i:
+                self.stat = 1
         f.close()
 
     def parser(self,):
         s = System()
         s.name = self.name
         s.methods = self.methods
+        s.spin = self.spin
+        s.charge = self.charge
+        for i in self.redundant:
+            s.redundant.append(i.strip().split())
         for i in self.atoms:
             a = Atom()
             a.name = ELEMENT[int(i[1])]
