@@ -57,6 +57,7 @@ def main():
                 c.options = ["%mem=800MB"]
                 toGjf(c, "freq.gjf")
             else:
-                print "Warning: unfinished calculation!"
+                runfile = os.path.join(os.getcwd(), i)
+                print "Warning: unfinished calculation!: %s"%runfile
 
 main()
