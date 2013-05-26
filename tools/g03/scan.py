@@ -60,7 +60,7 @@ if __name__ == "__main__":
         min = float(sys.argv[3])
         max = float(sys.argv[4])
         if len(sys.argv) == 6:
-            n = int(sys.argv[4])
+            n = int(sys.argv[5])
         else:
             n = 3
         main(fname,opt, min, max, n)
