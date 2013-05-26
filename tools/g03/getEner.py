@@ -6,9 +6,15 @@
 
 import sys
 import os
-folder = os.path.dirname(os.getcwd())
-folder = os.path.dirname(folder)
-sys.path.insert(0 , os.path.join(folder, "lib"))
+import socket
+
+LIB = ''
+
+if socket.gethostname() == "cluster.hpc.org":
+    LIB = "/home/chengtao/packages/simpy/simpy/lib"
+
+sys.path.insert(0 , LIB)
+
 from g03 import G03LogConf, G03tools
 from output_conf import toGjf
 
