@@ -1,6 +1,8 @@
 """generate the scan files for g03 calculation
 """
 
+import os
+import shutil
 import sys
 import numpy as np
 
@@ -48,8 +50,10 @@ def main(fname, opt, min, max, n):
         o.write("\n")
         o.close()
         obond.write("%12.6f\n"%bond)
+        if not os.path.exists("scan_%02d"%i):
+            os.mkdir("scan_%02d"%i)
+        shutil.copy("scan_%02d.gjf"%i, "scan_%02d"%i)
     obond.close()
-
 
 if __name__ == "__main__":
     if len(sys.argv) < 5:
