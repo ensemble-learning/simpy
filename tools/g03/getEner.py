@@ -59,5 +59,12 @@ def main():
             else:
                 runfile = os.path.join(os.getcwd(), i)
                 print "Warning: unfinished calculation!: %s"%runfile
+                method = " ".join([j.strip() for j in c.methods])
+                tokens = method.strip().split()
+                for n in range(len(tokens)):
+                    if "geo" in tokens[n]:
+                        tokens[n] = ''
+                c.methods = [" ".join(tokens)]
+                toGjf(c, "conti.gjf")
 
 main()
