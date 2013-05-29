@@ -8,3 +8,6 @@ ELEMENT2MASS = {"H": 1.0079, "O": 15.994, "N": 14.007, "Al": 26.982, "AL": 26.98
                 "Si": 28.086, "SI": 28.086, "Mg": 24.305, "Mg": 24.305, "C":12.011}
 # Atom name - Atom mass map
 MASS2ELMENT = {1: "H",12: "C", 14:"N", 16: "O", 24: "Mg",  27: "Al", 28:"Si", 40:"Ca", 32: "S"}
+
+ATOMIC_MASS_CONSTANT = 1.6605389e-27 #kg
+KG2G = 1000

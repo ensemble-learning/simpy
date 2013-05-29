@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>simpy.tools.reax.lianchi.bo</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;simpy ::
+        Package&nbsp;tools ::
+        <a href="simpy.tools.reax-module.html">Package&nbsp;reax</a> ::
+        <a href="simpy.tools.reax.lianchi-module.html">Package&nbsp;lianchi</a> ::
+        Module&nbsp;bo
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="simpy.tools.reax.lianchi.bo-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="simpy.tools.reax.lianchi.bo-module.html">Module simpy.tools.reax.lianchi.bo</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno">  1</tt>  <tt class="py-line"><tt class="py-comment">#!/home/liulc/src/epd-7.1/epd-7.1-2-rh5-x86/bin/python</tt> </tt>
+<a name="L2"></a><tt class="py-lineno">  2</tt>  <tt class="py-line"><tt class="py-comment">#!-*- coding: utf-8 -*-</tt> </tt>
+<a name="L3"></a><tt class="py-lineno">  3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno">  4</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">matplotlib</tt><tt class="py-op">.</tt><tt class="py-name">pyplot</tt> <tt class="py-keyword">as</tt> <tt class="py-name">plt</tt> </tt>
+<a name="L5"></a><tt class="py-lineno">  5</tt>  <tt class="py-line"><tt class="py-keyword">import</tt> <tt class="py-name">os</tt><tt class="py-op">,</tt> <tt class="py-name">sys</tt><tt class="py-op">,</tt> <tt id="link-0" class="py-name" targets="Module simpy.tools.reax.lianchi.ffield=simpy.tools.reax.lianchi.ffield-module.html"><a title="simpy.tools.reax.lianchi.ffield" class="py-name" href="#" onclick="return doclink('link-0', 'ffield', 'link-0');">ffield</a></tt> </tt>
+<a name="L6"></a><tt class="py-lineno">  6</tt>  <tt class="py-line"><tt class="py-keyword">from</tt> <tt class="py-name">math</tt> <tt class="py-keyword">import</tt> <tt class="py-name">exp</tt><tt class="py-op">,</tt> <tt class="py-name">pow</tt><tt class="py-op">,</tt> <tt class="py-name">sqrt</tt> </tt>
+<a name="L7"></a><tt class="py-lineno">  7</tt>  <tt class="py-line"> </tt>
+<a name="FF_PARA"></a><div id="FF_PARA-def"><a name="L8"></a><tt class="py-lineno">  8</tt> <a class="py-toggle" href="#" id="FF_PARA-toggle" onclick="return toggle('FF_PARA');">-</a><tt class="py-line"><tt class="py-keyword">class</tt> <a class="py-def-name" href="simpy.tools.reax.lianchi.bo.FF_PARA-class.html">FF_PARA</a><tt class="py-op">:</tt> </tt>
+</div><div id="FF_PARA-collapsed" style="display:none;" pad="+++" indent="++++"></div><div id="FF_PARA-expanded"><a name="L9"></a><tt class="py-lineno">  9</tt>  <tt class="py-line"> </tt>
+<a name="FF_PARA.__init__"></a><div id="FF_PARA.__init__-def"><a name="L10"></a><tt class="py-lineno"> 10</tt> <a class="py-toggle" href="#" id="FF_PARA.__init__-toggle" onclick="return toggle('FF_PARA.__init__');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="simpy.tools.reax.lianchi.bo.FF_PARA-class.html#__init__">__init__</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">atom_a</tt><tt class="py-op">,</tt> <tt class="py-param">atom_b</tt><tt class="py-op">,</tt> <tt class="py-param">ff</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FF_PARA.__init__-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FF_PARA.__init__-expanded"><a name="L11"></a><tt class="py-lineno"> 11</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-1" class="py-name" targets="Method simpy.tools.reax.lianchi.bo.FF_PARA.cal_bo_pair()=simpy.tools.reax.lianchi.bo.FF_PARA-class.html#cal_bo_pair"><a title="simpy.tools.reax.lianchi.bo.FF_PARA.cal_bo_pair" class="py-name" href="#" onclick="return doclink('link-1', 'cal_bo_pair', 'link-1');">cal_bo_pair</a></tt><tt class="py-op">(</tt><tt class="py-name">atom_a</tt><tt class="py-op">,</tt> <tt class="py-name">atom_b</tt><tt class="py-op">,</tt> <tt class="py-name">ff</tt><tt class="py-op">)</tt> </tt>
+<a name="L12"></a><tt class="py-lineno"> 12</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt id="link-2" class="py-name" targets="Method simpy.tools.reax.lianchi.bo.FF_PARA.cal_inner_pair()=simpy.tools.reax.lianchi.bo.FF_PARA-class.html#cal_inner_pair"><a title="simpy.tools.reax.lianchi.bo.FF_PARA.cal_inner_pair" class="py-name" href="#" onclick="return doclink('link-2', 'cal_inner_pair', 'link-2');">cal_inner_pair</a></tt><tt class="py-op">(</tt><tt class="py-name">atom_a</tt><tt class="py-op">,</tt> <tt class="py-name">atom_b</tt><tt class="py-op">,</tt> <tt class="py-name">ff</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L13"></a><tt class="py-lineno"> 13</tt>  <tt class="py-line">         </tt>
+<a name="FF_PARA.__com_r"></a><div id="FF_PARA.__com_r-def"><a name="L14"></a><tt class="py-lineno"> 14</tt> <a class="py-toggle" href="#" id="FF_PARA.__com_r-toggle" onclick="return toggle('FF_PARA.__com_r');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="simpy.tools.reax.lianchi.bo.FF_PARA-class.html#__com_r">__com_r</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">a</tt><tt class="py-op">,</tt> <tt class="py-param">b</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FF_PARA.__com_r-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FF_PARA.__com_r-expanded"><a name="L15"></a><tt class="py-lineno"> 15</tt>  <tt class="py-line">                <tt class="py-keyword">return</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">a</tt> <tt class="py-op">*</tt> <tt class="py-name">b</tt><tt class="py-op">)</tt> </tt>
+</div><a name="L16"></a><tt class="py-lineno"> 16</tt>  <tt class="py-line">         </tt>
+<a name="FF_PARA.cal_bo_pair"></a><div id="FF_PARA.cal_bo_pair-def"><a name="L17"></a><tt class="py-lineno"> 17</tt> <a class="py-toggle" href="#" id="FF_PARA.cal_bo_pair-toggle" onclick="return toggle('FF_PARA.cal_bo_pair');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="simpy.tools.reax.lianchi.bo.FF_PARA-class.html#cal_bo_pair">cal_bo_pair</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">atom_a</tt><tt class="py-op">,</tt> <tt class="py-param">atom_b</tt><tt class="py-op">,</tt> <tt class="py-param">ff</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FF_PARA.cal_bo_pair-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FF_PARA.cal_bo_pair-expanded"><a name="L18"></a><tt class="py-lineno"> 18</tt>  <tt class="py-line">                <tt class="py-comment">#Get r_sigma, r_pi, r_pipi</tt> </tt>
+<a name="L19"></a><tt class="py-lineno"> 19</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">offpara</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">(</tt><tt class="py-name">atom_a</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_b</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L20"></a><tt class="py-lineno"> 20</tt>  <tt class="py-line">                        <tt class="py-name">para</tt> <tt class="py-op">=</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">offpara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_b</tt><tt class="py-op">]</tt> </tt>
+<a name="L21"></a><tt class="py-lineno"> 21</tt>  <tt class="py-line">                        <tt class="py-name">r_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">r_pi</tt><tt class="py-op">,</tt> <tt class="py-name">r_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">:</tt><tt class="py-number">6</tt><tt class="py-op">]</tt> </tt>
+<a name="L22"></a><tt class="py-lineno"> 22</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">offpara</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">(</tt><tt class="py-name">atom_b</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_a</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L23"></a><tt class="py-lineno"> 23</tt>  <tt class="py-line">                        <tt class="py-name">para</tt> <tt class="py-op">=</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">offpara</tt><tt class="py-op">[</tt><tt class="py-name">atom_b</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt> </tt>
+<a name="L24"></a><tt class="py-lineno"> 24</tt>  <tt class="py-line">                        <tt class="py-name">r_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">r_pi</tt><tt class="py-op">,</tt> <tt class="py-name">r_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">3</tt><tt class="py-op">:</tt><tt class="py-number">6</tt><tt class="py-op">]</tt> </tt>
+<a name="L25"></a><tt class="py-lineno"> 25</tt>  <tt class="py-line">                <tt class="py-keyword">else</tt><tt class="py-op">:</tt> </tt>
+<a name="L26"></a><tt class="py-lineno"> 26</tt>  <tt class="py-line">                        <tt class="py-name">r_sigma</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L27"></a><tt class="py-lineno"> 27</tt>  <tt class="py-line">                        <tt class="py-name">r_pi</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">6</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">6</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L28"></a><tt class="py-lineno"> 28</tt>  <tt class="py-line">                        <tt class="py-name">r_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">16</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">16</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L29"></a><tt class="py-lineno"> 29</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">r_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">r_pi</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">r_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">r_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">r_pi</tt><tt class="py-op">,</tt> <tt class="py-name">r_pipi</tt> </tt>
+<a name="L30"></a><tt class="py-lineno"> 30</tt>  <tt class="py-line">                <tt class="py-comment">#Get bo para</tt> </tt>
+<a name="L31"></a><tt class="py-lineno"> 31</tt>  <tt class="py-line">                <tt class="py-keyword">if</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">bondpara</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">(</tt><tt class="py-name">atom_a</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_b</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L32"></a><tt class="py-lineno"> 32</tt>  <tt class="py-line">                        <tt class="py-name">para</tt> <tt class="py-op">=</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">bondpara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_b</tt><tt class="py-op">]</tt> </tt>
+<a name="L33"></a><tt class="py-lineno"> 33</tt>  <tt class="py-line">                        <tt class="py-name">de_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">de_pi</tt><tt class="py-op">,</tt> <tt class="py-name">de_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L34"></a><tt class="py-lineno"> 34</tt>  <tt class="py-line">                        <tt class="py-name">p_bo1</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo2</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">12</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">13</tt><tt class="py-op">]</tt> </tt>
+<a name="L35"></a><tt class="py-lineno"> 35</tt>  <tt class="py-line">                        <tt class="py-name">p_bo3</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo4</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">9</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">10</tt><tt class="py-op">]</tt> </tt>
+<a name="L36"></a><tt class="py-lineno"> 36</tt>  <tt class="py-line">                        <tt class="py-name">p_bo5</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo6</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">6</tt><tt class="py-op">]</tt> </tt>
+<a name="L37"></a><tt class="py-lineno"> 37</tt>  <tt class="py-line">                <tt class="py-keyword">elif</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">bondpara</tt><tt class="py-op">.</tt><tt class="py-name">keys</tt><tt class="py-op">(</tt><tt class="py-op">)</tt><tt class="py-op">.</tt><tt class="py-name">count</tt><tt class="py-op">(</tt><tt class="py-name">atom_b</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_a</tt><tt class="py-op">)</tt> <tt class="py-op">==</tt> <tt class="py-number">1</tt><tt class="py-op">:</tt> </tt>
+<a name="L38"></a><tt class="py-lineno"> 38</tt>  <tt class="py-line">                        <tt class="py-name">para</tt> <tt class="py-op">=</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">bondpara</tt><tt class="py-op">[</tt><tt class="py-name">atom_b</tt><tt class="py-op">+</tt><tt class="py-string">"-"</tt><tt class="py-op">+</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt> </tt>
+<a name="L39"></a><tt class="py-lineno"> 39</tt>  <tt class="py-line">                        <tt class="py-name">de_sigma</tt><tt class="py-op">,</tt> <tt class="py-name">de_pi</tt><tt class="py-op">,</tt> <tt class="py-name">de_pipi</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">0</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">1</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">2</tt><tt class="py-op">]</tt> </tt>
+<a name="L40"></a><tt class="py-lineno"> 40</tt>  <tt class="py-line">                        <tt class="py-name">p_bo1</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo2</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">12</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">13</tt><tt class="py-op">]</tt> </tt>
+<a name="L41"></a><tt class="py-lineno"> 41</tt>  <tt class="py-line">                        <tt class="py-name">p_bo3</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo4</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">9</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">10</tt><tt class="py-op">]</tt> </tt>
+<a name="L42"></a><tt class="py-lineno"> 42</tt>  <tt class="py-line">                        <tt class="py-name">p_bo5</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo6</tt> <tt class="py-op">=</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">4</tt><tt class="py-op">]</tt><tt class="py-op">,</tt> <tt class="py-name">para</tt><tt class="py-op">[</tt><tt class="py-number">6</tt><tt class="py-op">]</tt> </tt>
+<a name="L43"></a><tt class="py-lineno"> 43</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo1</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo2</tt> <tt class="py-op">=</tt> <tt class="py-name">p_bo1</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo2</tt> </tt>
+<a name="L44"></a><tt class="py-lineno"> 44</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo3</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo4</tt> <tt class="py-op">=</tt> <tt class="py-name">p_bo3</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo4</tt> </tt>
+<a name="L45"></a><tt class="py-lineno"> 45</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo5</tt><tt class="py-op">,</tt> <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">p_bo6</tt> <tt class="py-op">=</tt> <tt class="py-name">p_bo5</tt><tt class="py-op">,</tt> <tt class="py-name">p_bo6</tt> </tt>
+</div><a name="L46"></a><tt class="py-lineno"> 46</tt>  <tt class="py-line">         </tt>
+<a name="FF_PARA.cal_inner_pair"></a><div id="FF_PARA.cal_inner_pair-def"><a name="L47"></a><tt class="py-lineno"> 47</tt> <a class="py-toggle" href="#" id="FF_PARA.cal_inner_pair-toggle" onclick="return toggle('FF_PARA.cal_inner_pair');">-</a><tt class="py-line">        <tt class="py-keyword">def</tt> <a class="py-def-name" href="simpy.tools.reax.lianchi.bo.FF_PARA-class.html#cal_inner_pair">cal_inner_pair</a><tt class="py-op">(</tt><tt class="py-param">self</tt><tt class="py-op">,</tt> <tt class="py-param">atom_a</tt><tt class="py-op">,</tt> <tt class="py-param">atom_b</tt><tt class="py-op">,</tt> <tt class="py-param">ff</tt><tt class="py-op">)</tt><tt class="py-op">:</tt> </tt>
+</div><div id="FF_PARA.cal_inner_pair-collapsed" style="display:none;" pad="+++" indent="++++++++++++"></div><div id="FF_PARA.cal_inner_pair-expanded"><a name="L48"></a><tt class="py-lineno"> 48</tt>  <tt class="py-line">                <tt class="py-comment">#Get inner-wall</tt> </tt>
+<a name="L49"></a><tt class="py-lineno"> 49</tt>  <tt class="py-line">                <tt class="py-name">r_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">29</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_b</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">29</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L50"></a><tt class="py-lineno"> 50</tt>  <tt class="py-line">                <tt class="py-name">d_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">30</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_b</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">30</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L51"></a><tt class="py-lineno"> 51</tt>  <tt class="py-line">                <tt class="py-name">alpha_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">sqrt</tt><tt class="py-op">(</tt><tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_a</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">31</tt><tt class="py-op">]</tt> <tt class="py-op">*</tt> <tt class="py-name">ff</tt><tt class="py-op">.</tt><tt class="py-name">atompara</tt><tt class="py-op">[</tt><tt class="py-name">atom_b</tt><tt class="py-op">]</tt><tt class="py-op">[</tt><tt class="py-number">31</tt><tt class="py-op">]</tt><tt class="py-op">)</tt> </tt>
+<a name="L52"></a><tt class="py-lineno"> 52</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">r_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">r_inner</tt> </tt>
+<a name="L53"></a><tt class="py-lineno"> 53</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">d_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">d_inner</tt> </tt>
+<a name="L54"></a><tt class="py-lineno"> 54</tt>  <tt class="py-line">                <tt class="py-name">self</tt><tt class="py-op">.</tt><tt class="py-name">alpha_inner</tt> <tt class="py-op">=</tt> <tt class="py-name">alpha_inner</tt> </tt>
+</div></div><a name="L55"></a><tt class="py-lineno"> 55</tt>  <tt class="py-line"> </tt>
+<a name="L56"></a><tt class="py-lineno"> 56</tt>  <tt class="py-line"><tt class="py-keyword">if</tt> <tt class="py-name">__name__</tt> <tt class="py-op">==</tt> <tt class="py-string">'__main__'</tt><tt class="py-op">:</tt> </tt>
+<a name="L57"></a><tt class="py-lineno"> 57</tt>  <tt class="py-line">        <tt class="py-name">ff</tt> <tt class="py-op">=</tt> <tt id="link-3" class="py-name"><a title="simpy.tools.reax.lianchi.ffield" class="py-name" href="#" onclick="return doclink('link-3', 'ffield', 'link-0');">ffield</a></tt><tt class="py-op">.</tt><tt id="link-4" class="py-name" targets="Class simpy.tools.reax.lianchi.ffield.FFIELD=simpy.tools.reax.lianchi.ffield.FFIELD-class.html"><a title="simpy.tools.reax.lianchi.ffield.FFIELD" class="py-name" href="#" onclick="return doclink('link-4', 'FFIELD', 'link-4');">FFIELD</a></tt><tt class="py-op">(</tt><tt class="py-string">"ffield"</tt><tt class="py-op">)</tt> </tt>
+<a name="L58"></a><tt class="py-lineno"> 58</tt>  <tt class="py-line">        <tt class="py-name">data</tt> <tt class="py-op">=</tt> <tt id="link-5" class="py-name" targets="Class simpy.tools.reax.lianchi.bo.FF_PARA=simpy.tools.reax.lianchi.bo.FF_PARA-class.html"><a title="simpy.tools.reax.lianchi.bo.FF_PARA" class="py-name" href="#" onclick="return doclink('link-5', 'FF_PARA', 'link-5');">FF_PARA</a></tt><tt class="py-op">(</tt><tt class="py-string">'C'</tt><tt class="py-op">,</tt> <tt class="py-string">'C'</tt><tt class="py-op">,</tt> <tt class="py-name">ff</tt><tt class="py-op">)</tt> </tt>
+<a name="L59"></a><tt class="py-lineno"> 59</tt>  <tt class="py-line">        <tt class="py-keyword">print</tt> <tt class="py-name">data</tt><tt class="py-op">.</tt><tt class="py-name">p_bo3</tt> </tt>
+<a name="L60"></a><tt class="py-lineno"> 60</tt>  <tt class="py-line">         </tt>
+<a name="L61"></a><tt class="py-lineno"> 61</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L62"></a><tt class="py-lineno"> 62</tt>  <tt class="py-line"><tt class="py-string">def test():</tt> </tt>
+<a name="L63"></a><tt class="py-lineno"> 63</tt>  <tt class="py-line"><tt class="py-string">        #----    cut     ----</tt> </tt>
+<a name="L64"></a><tt class="py-lineno"> 64</tt>  <tt class="py-line"><tt class="py-string">        # Get Bond oder list</tt> </tt>
+<a name="L65"></a><tt class="py-lineno"> 65</tt>  <tt class="py-line"><tt class="py-string">        this_r = [float(i)*0.01 for i in range(50, 400)]</tt> </tt>
+<a name="L66"></a><tt class="py-lineno"> 66</tt>  <tt class="py-line"><tt class="py-string">        def bo_sigma(r):</tt> </tt>
+<a name="L67"></a><tt class="py-lineno"> 67</tt>  <tt class="py-line"><tt class="py-string">                return exp(p_bo1 * pow(r/r_sigma, p_bo2))</tt> </tt>
+<a name="L68"></a><tt class="py-lineno"> 68</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L69"></a><tt class="py-lineno"> 69</tt>  <tt class="py-line"><tt class="py-string">        def bo_pi(r):</tt> </tt>
+<a name="L70"></a><tt class="py-lineno"> 70</tt>  <tt class="py-line"><tt class="py-string">                return exp(p_bo3 * pow(r/r_pi, p_bo4))</tt> </tt>
+<a name="L71"></a><tt class="py-lineno"> 71</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L72"></a><tt class="py-lineno"> 72</tt>  <tt class="py-line"><tt class="py-string">        def bo_pipi(r):</tt> </tt>
+<a name="L73"></a><tt class="py-lineno"> 73</tt>  <tt class="py-line"><tt class="py-string">                return exp(p_bo5 * pow(r/r_pipi, p_bo6))</tt> </tt>
+<a name="L74"></a><tt class="py-lineno"> 74</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L75"></a><tt class="py-lineno"> 75</tt>  <tt class="py-line"><tt class="py-string">        bo1, bo2, bo3 = [], [], []</tt> </tt>
+<a name="L76"></a><tt class="py-lineno"> 76</tt>  <tt class="py-line"><tt class="py-string">        allbo = []</tt> </tt>
+<a name="L77"></a><tt class="py-lineno"> 77</tt>  <tt class="py-line"><tt class="py-string">        for i in this_r:</tt> </tt>
+<a name="L78"></a><tt class="py-lineno"> 78</tt>  <tt class="py-line"><tt class="py-string">                bo1.append(bo_sigma(i))</tt> </tt>
+<a name="L79"></a><tt class="py-lineno"> 79</tt>  <tt class="py-line"><tt class="py-string">                temp_bo1 = bo_sigma(i)</tt> </tt>
+<a name="L80"></a><tt class="py-lineno"> 80</tt>  <tt class="py-line"><tt class="py-string">                if r_pi &gt; 0:</tt> </tt>
+<a name="L81"></a><tt class="py-lineno"> 81</tt>  <tt class="py-line"><tt class="py-string">                        bo2.append(bo_pi(i))</tt> </tt>
+<a name="L82"></a><tt class="py-lineno"> 82</tt>  <tt class="py-line"><tt class="py-string">                        temp_bo2 = bo_pi(i)</tt> </tt>
+<a name="L83"></a><tt class="py-lineno"> 83</tt>  <tt class="py-line"><tt class="py-string">                else:</tt> </tt>
+<a name="L84"></a><tt class="py-lineno"> 84</tt>  <tt class="py-line"><tt class="py-string">                        bo2.append(0)</tt> </tt>
+<a name="L85"></a><tt class="py-lineno"> 85</tt>  <tt class="py-line"><tt class="py-string">                        temp_bo2 = 0</tt> </tt>
+<a name="L86"></a><tt class="py-lineno"> 86</tt>  <tt class="py-line"><tt class="py-string">                if r_pipi &gt; 0:</tt> </tt>
+<a name="L87"></a><tt class="py-lineno"> 87</tt>  <tt class="py-line"><tt class="py-string">                        bo3.append(bo_pipi(i))</tt> </tt>
+<a name="L88"></a><tt class="py-lineno"> 88</tt>  <tt class="py-line"><tt class="py-string">                        temp_bo3 = bo_pipi(i)</tt> </tt>
+<a name="L89"></a><tt class="py-lineno"> 89</tt>  <tt class="py-line"><tt class="py-string">                else:</tt> </tt>
+<a name="L90"></a><tt class="py-lineno"> 90</tt>  <tt class="py-line"><tt class="py-string">                        bo3.append(0)</tt> </tt>
+<a name="L91"></a><tt class="py-lineno"> 91</tt>  <tt class="py-line"><tt class="py-string">                        temp_bo3 = 0</tt> </tt>
+<a name="L92"></a><tt class="py-lineno"> 92</tt>  <tt class="py-line"><tt class="py-string">                allbo.append(temp_bo1 + temp_bo2 + temp_bo3)</tt> </tt>
+<a name="L93"></a><tt class="py-lineno"> 93</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L94"></a><tt class="py-lineno"> 94</tt>  <tt class="py-line"><tt class="py-string">        #----    cut    ----</tt> </tt>
+<a name="L95"></a><tt class="py-lineno"> 95</tt>  <tt class="py-line"><tt class="py-string">        # Get Bond Energy</tt> </tt>
+<a name="L96"></a><tt class="py-lineno"> 96</tt>  <tt class="py-line"><tt class="py-string">        def get_ebond(bo, de=0.0):</tt> </tt>
+<a name="L97"></a><tt class="py-lineno"> 97</tt>  <tt class="py-line"><tt class="py-string">                return -de*bo*exp(p_be1*(1-pow(bo, p_be2)))</tt> </tt>
+<a name="L98"></a><tt class="py-lineno"> 98</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L99"></a><tt class="py-lineno"> 99</tt>  <tt class="py-line"><tt class="py-string">        ebond_sigma, ebond_pi, ebond_pipi = [], [], []</tt> </tt>
+<a name="L100"></a><tt class="py-lineno">100</tt>  <tt class="py-line"><tt class="py-string">        ebond_total = []</tt> </tt>
+<a name="L101"></a><tt class="py-lineno">101</tt>  <tt class="py-line"><tt class="py-string">        for i in bo1:</tt> </tt>
+<a name="L102"></a><tt class="py-lineno">102</tt>  <tt class="py-line"><tt class="py-string">                ebond_sigma.append(get_ebond(i, p_De_sigma))</tt> </tt>
+<a name="L103"></a><tt class="py-lineno">103</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L104"></a><tt class="py-lineno">104</tt>  <tt class="py-line"><tt class="py-string">        for i in bo2:</tt> </tt>
+<a name="L105"></a><tt class="py-lineno">105</tt>  <tt class="py-line"><tt class="py-string">                ebond_pi.append(get_ebond(i, p_De_pi))</tt> </tt>
+<a name="L106"></a><tt class="py-lineno">106</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L107"></a><tt class="py-lineno">107</tt>  <tt class="py-line"><tt class="py-string">        for i in bo3:</tt> </tt>
+<a name="L108"></a><tt class="py-lineno">108</tt>  <tt class="py-line"><tt class="py-string">                ebond_pipi.append(get_ebond(i, p_De_pipi))</tt> </tt>
+<a name="L109"></a><tt class="py-lineno">109</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L110"></a><tt class="py-lineno">110</tt>  <tt class="py-line"><tt class="py-string">        for i in range(len(ebond_sigma)):</tt> </tt>
+<a name="L111"></a><tt class="py-lineno">111</tt>  <tt class="py-line"><tt class="py-string">                ebond_total.append(ebond_sigma[i] + ebond_pi[i] + ebond_pipi[i])</tt> </tt>
+<a name="L112"></a><tt class="py-lineno">112</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L113"></a><tt class="py-lineno">113</tt>  <tt class="py-line"><tt class="py-string">        #----    cut    ----</tt> </tt>
+<a name="L114"></a><tt class="py-lineno">114</tt>  <tt class="py-line"><tt class="py-string">        # Get VdW Energy</tt> </tt>
+<a name="L115"></a><tt class="py-lineno">115</tt>  <tt class="py-line"><tt class="py-string">        evdw = []</tt> </tt>
+<a name="L116"></a><tt class="py-lineno">116</tt>  <tt class="py-line"><tt class="py-string">        def f13(r):</tt> </tt>
+<a name="L117"></a><tt class="py-lineno">117</tt>  <tt class="py-line"><tt class="py-string">                return pow(r+pow(1.0/10.78, 1.5591),1/1.5591)</tt> </tt>
+<a name="L118"></a><tt class="py-lineno">118</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L119"></a><tt class="py-lineno">119</tt>  <tt class="py-line"><tt class="py-string">        def get_evdw(r):</tt> </tt>
+<a name="L120"></a><tt class="py-lineno">120</tt>  <tt class="py-line"><tt class="py-string">                return p_De_vdw*(exp(p_alpha_vdw*(1-f13(r)/r_vdw))-2.0*exp(0.5*p_alpha_vdw*(1-f13(r)/r_vdw)))</tt> </tt>
+<a name="L121"></a><tt class="py-lineno">121</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L122"></a><tt class="py-lineno">122</tt>  <tt class="py-line"><tt class="py-string">        for i in this_r:</tt> </tt>
+<a name="L123"></a><tt class="py-lineno">123</tt>  <tt class="py-line"><tt class="py-string">                evdw.append(get_evdw(i))</tt> </tt>
+<a name="L124"></a><tt class="py-lineno">124</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L125"></a><tt class="py-lineno">125</tt>  <tt class="py-line"><tt class="py-string">        #----    cut    ----</tt> </tt>
+<a name="L126"></a><tt class="py-lineno">126</tt>  <tt class="py-line"><tt class="py-string">        # Get Total Energy </tt> </tt>
+<a name="L127"></a><tt class="py-lineno">127</tt>  <tt class="py-line"><tt class="py-string">        etotal = []</tt> </tt>
+<a name="L128"></a><tt class="py-lineno">128</tt>  <tt class="py-line"><tt class="py-string">        for i in range(len(ebond_sigma)):</tt> </tt>
+<a name="L129"></a><tt class="py-lineno">129</tt>  <tt class="py-line"><tt class="py-string">                etotal.append(evdw[i] + ebond_total[i])</tt> </tt>
+<a name="L130"></a><tt class="py-lineno">130</tt>  <tt class="py-line"><tt class="py-string"></tt> </tt>
+<a name="L131"></a><tt class="py-lineno">131</tt>  <tt class="py-line"><tt class="py-string">        #----    cut    ----</tt> </tt>
+<a name="L132"></a><tt class="py-lineno">132</tt>  <tt class="py-line"><tt class="py-string">        # Plot figures</tt> </tt>
+<a name="L133"></a><tt class="py-lineno">133</tt>  <tt class="py-line"><tt class="py-string">        plt.figure(1)</tt> </tt>
+<a name="L134"></a><tt class="py-lineno">134</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, bo1, lw = 2, label="bo_sigma")</tt> </tt>
+<a name="L135"></a><tt class="py-lineno">135</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, bo2, lw = 2, label="bo_pi")</tt> </tt>
+<a name="L136"></a><tt class="py-lineno">136</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, bo3, lw = 2, label="bo_pipi")</tt> </tt>
+<a name="L137"></a><tt class="py-lineno">137</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, allbo, lw = 2, label="Total bo")</tt> </tt>
+<a name="L138"></a><tt class="py-lineno">138</tt>  <tt class="py-line"><tt class="py-string">        plt.grid()</tt> </tt>
+<a name="L139"></a><tt class="py-lineno">139</tt>  <tt class="py-line"><tt class="py-string">        plt.legend()</tt> </tt>
+<a name="L140"></a><tt class="py-lineno">140</tt>  <tt class="py-line"><tt class="py-string">        plt.figure(2)</tt> </tt>
+<a name="L141"></a><tt class="py-lineno">141</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, ebond_sigma, lw=2, label="be_sigma")</tt> </tt>
+<a name="L142"></a><tt class="py-lineno">142</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, ebond_pi, lw=2, label="be_pi")</tt> </tt>
+<a name="L143"></a><tt class="py-lineno">143</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, ebond_pipi, lw=2, label="be_pipi")</tt> </tt>
+<a name="L144"></a><tt class="py-lineno">144</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, ebond_total, lw=2, label="be_total")</tt> </tt>
+<a name="L145"></a><tt class="py-lineno">145</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, evdw, lw=2, label="e_vdw")</tt> </tt>
+<a name="L146"></a><tt class="py-lineno">146</tt>  <tt class="py-line"><tt class="py-string">        plt.plot(this_r, etotal, lw=2, label="e_total")</tt> </tt>
+<a name="L147"></a><tt class="py-lineno">147</tt>  <tt class="py-line"><tt class="py-string">        plt.ylim([-300, 300])</tt> </tt>
+<a name="L148"></a><tt class="py-lineno">148</tt>  <tt class="py-line"><tt class="py-string">        plt.grid()</tt> </tt>
+<a name="L149"></a><tt class="py-lineno">149</tt>  <tt class="py-line"><tt class="py-string">        plt.legend()</tt> </tt>
+<a name="L150"></a><tt class="py-lineno">150</tt>  <tt class="py-line"><tt class="py-string">        plt.show()</tt> </tt>
+<a name="L151"></a><tt class="py-lineno">151</tt>  <tt class="py-line"><tt class="py-string">"""</tt> </tt>
+<a name="L152"></a><tt class="py-lineno">152</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed May 29 00:18:34 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

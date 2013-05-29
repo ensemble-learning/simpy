@@ -5,7 +5,7 @@
 from cons import ELEMENT2MASS
 from utilities import lattice2v
 
-def toReaxLammps(system, outfile="test.data"):
+def toReaxLammps(system, outfile="lammps.data"):
     """ output to lammps data file
     """
 
@@ -32,7 +32,6 @@ def toReaxLammps(system, outfile="test.data"):
         o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
         o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
     o.write("Masses\n\n")
-    print system.map
     for i in system.map:
         # atom name 
         atn = ''

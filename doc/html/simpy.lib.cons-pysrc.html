@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="ascii"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+          "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <title>simpy.lib.cons</title>
+  <link rel="stylesheet" href="epydoc.css" type="text/css" />
+  <script type="text/javascript" src="epydoc.js"></script>
+</head>
+
+<body bgcolor="white" text="black" link="blue" vlink="#204080"
+      alink="#204080">
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table width="100%" cellpadding="0" cellspacing="0">
+  <tr valign="top">
+    <td width="100%">
+      <span class="breadcrumbs">
+        Package&nbsp;simpy ::
+        Package&nbsp;lib ::
+        Module&nbsp;cons
+      </span>
+    </td>
+    <td>
+      <table cellpadding="0" cellspacing="0">
+        <!-- hide/show private -->
+        <tr><td align="right"><span class="options">[<a href="javascript:void(0);" class="privatelink"
+    onclick="toggle_private();">hide&nbsp;private</a>]</span></td></tr>
+        <tr><td align="right"><span class="options"
+            >[<a href="frames.html" target="_top">frames</a
+            >]&nbsp;|&nbsp;<a href="simpy.lib.cons-pysrc.html"
+            target="_top">no&nbsp;frames</a>]</span></td></tr>
+      </table>
+    </td>
+  </tr>
+</table>
+<h1 class="epydoc">Source Code for <a href="simpy.lib.cons-module.html">Module simpy.lib.cons</a></h1>
+<pre class="py-src">
+<a name="L1"></a><tt class="py-lineno"> 1</tt>  <tt class="py-line"><tt class="py-docstring">"""constants</tt> </tt>
+<a name="L2"></a><tt class="py-lineno"> 2</tt>  <tt class="py-line"><tt class="py-docstring">"""</tt> </tt>
+<a name="L3"></a><tt class="py-lineno"> 3</tt>  <tt class="py-line"> </tt>
+<a name="L4"></a><tt class="py-lineno"> 4</tt>  <tt class="py-line"><tt class="py-comment"># Atom number - Atom name map</tt> </tt>
+<a name="L5"></a><tt class="py-lineno"> 5</tt>  <tt class="py-line"><tt id="link-0" class="py-name" targets="Variable simpy.lib.cons.ELEMENT=simpy.lib.cons-module.html#ELEMENT"><a title="simpy.lib.cons.ELEMENT" class="py-name" href="#" onclick="return doclink('link-0', 'ELEMENT', 'link-0');">ELEMENT</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-number">1</tt><tt class="py-op">:</tt><tt class="py-string">"H"</tt><tt class="py-op">,</tt> <tt class="py-number">6</tt><tt class="py-op">:</tt><tt class="py-string">"C"</tt><tt class="py-op">,</tt> <tt class="py-number">7</tt><tt class="py-op">:</tt><tt class="py-string">"N"</tt><tt class="py-op">,</tt>  <tt class="py-number">8</tt><tt class="py-op">:</tt><tt class="py-string">"O"</tt><tt class="py-op">,</tt> <tt class="py-number">12</tt><tt class="py-op">:</tt> <tt class="py-string">"Mg"</tt><tt class="py-op">,</tt> <tt class="py-number">13</tt><tt class="py-op">:</tt> <tt class="py-string">"Al"</tt><tt class="py-op">,</tt> <tt class="py-number">14</tt><tt class="py-op">:</tt><tt class="py-string">"Si"</tt><tt class="py-op">,</tt> <tt class="py-number">20</tt><tt class="py-op">:</tt><tt class="py-string">"Ca"</tt><tt class="py-op">}</tt> </tt>
+<a name="L6"></a><tt class="py-lineno"> 6</tt>  <tt class="py-line"><tt class="py-comment"># Atom name - Atom mass map</tt> </tt>
+<a name="L7"></a><tt class="py-lineno"> 7</tt>  <tt class="py-line"><tt id="link-1" class="py-name" targets="Variable simpy.lib.cons.ELEMENT2MASS=simpy.lib.cons-module.html#ELEMENT2MASS"><a title="simpy.lib.cons.ELEMENT2MASS" class="py-name" href="#" onclick="return doclink('link-1', 'ELEMENT2MASS', 'link-1');">ELEMENT2MASS</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-string">"H"</tt><tt class="py-op">:</tt> <tt class="py-number">1.0079</tt><tt class="py-op">,</tt> <tt class="py-string">"O"</tt><tt class="py-op">:</tt> <tt class="py-number">15.994</tt><tt class="py-op">,</tt> <tt class="py-string">"N"</tt><tt class="py-op">:</tt> <tt class="py-number">14.007</tt><tt class="py-op">,</tt> <tt class="py-string">"Al"</tt><tt class="py-op">:</tt> <tt class="py-number">26.982</tt><tt class="py-op">,</tt> <tt class="py-string">"AL"</tt><tt class="py-op">:</tt> <tt class="py-number">26.982</tt><tt class="py-op">,</tt> <tt class="py-string">"Ca"</tt><tt class="py-op">:</tt> <tt class="py-number">40.078</tt><tt class="py-op">,</tt> <tt class="py-string">"CA"</tt><tt class="py-op">:</tt> <tt class="py-number">40.078</tt><tt class="py-op">,</tt>  </tt>
+<a name="L8"></a><tt class="py-lineno"> 8</tt>  <tt class="py-line">                <tt class="py-string">"Si"</tt><tt class="py-op">:</tt> <tt class="py-number">28.086</tt><tt class="py-op">,</tt> <tt class="py-string">"SI"</tt><tt class="py-op">:</tt> <tt class="py-number">28.086</tt><tt class="py-op">,</tt> <tt class="py-string">"Mg"</tt><tt class="py-op">:</tt> <tt class="py-number">24.305</tt><tt class="py-op">,</tt> <tt class="py-string">"Mg"</tt><tt class="py-op">:</tt> <tt class="py-number">24.305</tt><tt class="py-op">,</tt> <tt class="py-string">"C"</tt><tt class="py-op">:</tt><tt class="py-number">12.011</tt><tt class="py-op">}</tt> </tt>
+<a name="L9"></a><tt class="py-lineno"> 9</tt>  <tt class="py-line"><tt class="py-comment"># Atom name - Atom mass map</tt> </tt>
+<a name="L10"></a><tt class="py-lineno">10</tt>  <tt class="py-line"><tt id="link-2" class="py-name" targets="Variable simpy.lib.cons.MASS2ELMENT=simpy.lib.cons-module.html#MASS2ELMENT"><a title="simpy.lib.cons.MASS2ELMENT" class="py-name" href="#" onclick="return doclink('link-2', 'MASS2ELMENT', 'link-2');">MASS2ELMENT</a></tt> <tt class="py-op">=</tt> <tt class="py-op">{</tt><tt class="py-number">1</tt><tt class="py-op">:</tt> <tt class="py-string">"H"</tt><tt class="py-op">,</tt><tt class="py-number">12</tt><tt class="py-op">:</tt> <tt class="py-string">"C"</tt><tt class="py-op">,</tt> <tt class="py-number">14</tt><tt class="py-op">:</tt><tt class="py-string">"N"</tt><tt class="py-op">,</tt> <tt class="py-number">16</tt><tt class="py-op">:</tt> <tt class="py-string">"O"</tt><tt class="py-op">,</tt> <tt class="py-number">24</tt><tt class="py-op">:</tt> <tt class="py-string">"Mg"</tt><tt class="py-op">,</tt>  <tt class="py-number">27</tt><tt class="py-op">:</tt> <tt class="py-string">"Al"</tt><tt class="py-op">,</tt> <tt class="py-number">28</tt><tt class="py-op">:</tt><tt class="py-string">"Si"</tt><tt class="py-op">,</tt> <tt class="py-number">40</tt><tt class="py-op">:</tt><tt class="py-string">"Ca"</tt><tt class="py-op">,</tt> <tt class="py-number">32</tt><tt class="py-op">:</tt> <tt class="py-string">"S"</tt><tt class="py-op">}</tt> </tt>
+<a name="L11"></a><tt class="py-lineno">11</tt>  <tt class="py-line"> </tt>
+<a name="L12"></a><tt class="py-lineno">12</tt>  <tt class="py-line"><tt id="link-3" class="py-name" targets="Variable simpy.lib.cons.ATOMIC_MASS_CONSTANT=simpy.lib.cons-module.html#ATOMIC_MASS_CONSTANT"><a title="simpy.lib.cons.ATOMIC_MASS_CONSTANT" class="py-name" href="#" onclick="return doclink('link-3', 'ATOMIC_MASS_CONSTANT', 'link-3');">ATOMIC_MASS_CONSTANT</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1.6605389e-27</tt> <tt class="py-comment">#kg</tt> </tt>
+<a name="L13"></a><tt class="py-lineno">13</tt>  <tt class="py-line"><tt id="link-4" class="py-name" targets="Variable simpy.lib.cons.KG2G=simpy.lib.cons-module.html#KG2G"><a title="simpy.lib.cons.KG2G" class="py-name" href="#" onclick="return doclink('link-4', 'KG2G', 'link-4');">KG2G</a></tt> <tt class="py-op">=</tt> <tt class="py-number">1000</tt> </tt>
+<a name="L14"></a><tt class="py-lineno">14</tt>  <tt class="py-line"> </tt><script type="text/javascript">
+<!--
+expandto(location.href);
+// -->
+</script>
+</pre>
+<br />
+<!-- ==================== NAVIGATION BAR ==================== -->
+<table class="navbar" border="0" width="100%" cellpadding="0"
+       bgcolor="#a0c0ff" cellspacing="0">
+  <tr valign="middle">
+
+  <!-- Tree link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="module-tree.html">Trees</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Index link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="identifier-index.html">Indices</a>&nbsp;&nbsp;&nbsp;</th>
+
+  <!-- Help link -->
+      <th>&nbsp;&nbsp;&nbsp;<a
+        href="help.html">Help</a>&nbsp;&nbsp;&nbsp;</th>
+
+      <th class="navbar" width="100%"></th>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" width="100%%">
+  <tr>
+    <td align="left" class="footer">
+    Generated by Epydoc 3.0.1 on Wed May 29 00:04:24 2013
+    </td>
+    <td align="right" class="footer">
+      <a target="mainFrame" href="http://epydoc.sourceforge.net"
+        >http://epydoc.sourceforge.net</a>
+    </td>
+  </tr>
+</table>
+
+<script type="text/javascript">
+  <!--
+  // Private objects are initially displayed (because if
+  // javascript is turned off then we want them to be
+  // visible); but by default, we want to hide them.  So hide
+  // them unless we have a cookie that says to show them.
+  checkCookie();
+  // -->
+</script>
+</body>
+</html>

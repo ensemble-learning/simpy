@@ -288,5 +288,5 @@ class Ffield():
             o.write("\n")
         o.close()
 if __name__ == "__main__":
-    ff = Ffield("ffield")
+    ff = Ffield("/home/tao/Nutstore/code/simpy/test/ffield")
     ff.toEquation()

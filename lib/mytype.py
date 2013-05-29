@@ -4,6 +4,8 @@
 @contact: chengtao@sjtu.edu.cn
 """
 import math
+import re
+from cons import ELEMENT2MASS 
 
 class Atom():
     """Basic class for atom 
@@ -88,6 +90,10 @@ class System():
         """@ivar: molecules in system
         @type: list
         @note: parseToMol()"""
+        self.mass = 0.0
+        """@ivar: total atomic mass of system
+        @type: float
+        """
         self.mlist = {}
         """@ivar: molecule list (format {resname: [ 1, 2, ....]})
         @type: dict 
@@ -160,6 +166,18 @@ class System():
             for j in self.bonds:
                 if j.b1 in self.mlist[i.name] and j.b2 in self.mlist[i.name]:
                     i.bonds.append(j)
+
+    def assignEleTypes(self,):
+        """ assign element types 
+        """
+        pattern = re.compile(r'(\D+)(\d*)')
+        counter = 0
+        for i in self.atoms:
+            b = i.name.strip()
+            match = pattern.match(b)
+            if match:
+                i.element= match.group(1)
+
     def assignAtomTypes(self,):
         """ assign atomtypes according to the element types
         specially designed for lammps data file
@@ -174,9 +192,9 @@ class System():
                 a.append(b)
                 c[b] = counter
                 self.map.append([counter, b])
-                
         for i in self.atoms:
             i.type1 = c[i.name.strip()]
+
     def getVol(self):
         """ return the volume of the system
         @see: http://en.wikipedia.org/wiki/Parallelepiped
@@ -197,6 +215,13 @@ class System():
         else:
             print "Warning: no box defined"
         return vol
+
+    def getMass(self):
+        self.assignEleTypes()
+        mass = 0.0
+        for i in self.atoms:
+            mass += ELEMENT2MASS[i.element] 
+        self.mass = mass
 
 class Molecule():
     """Basic class for molecular includes (name, atoms(list of atoms), 
@@ -258,4 +283,11 @@ class Molecule():
                 min = i.x[n]
         print min
 
+def test():
+    """test some functions
+    """
+    pass
+
+if __name__ == "__main__":
+    test()
 
