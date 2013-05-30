@@ -1,4 +1,8 @@
 """ reaxFF ffield file format parser
+@status: Read the reactive force field (field) 
+@todo:
+To output the ffield
+@see: 
 """
 import math
 DEBUG = 0
@@ -6,7 +10,9 @@ DEBUG = 0
 class Ffield():
     """ reaxFF force field (ffield) file
     """
-    def __init__(self, filename="ffield"):
+    def __init__(self, filename="ffield", lg=0):
+        self.lg = lg
+        """@ivar: lg type ffield or not"""
         self.gl = []
         """@ivar: global parameters"""
         self.atom = []
@@ -51,8 +57,12 @@ class Ffield():
         f.readline()
         self.atom = []
         for i in range(n):
-            param = self.readParams(4, f)
-            self.atom.append(param)
+            if self.lg == 0:
+                param = self.readParams(4, f)
+                self.atom.append(param)
+            elif self.lg == 1:
+                param = self.readParams(5, f)
+                self.atom.append(param)
 
         # BOND parameters
         if DEBUG:
@@ -236,7 +246,7 @@ class Ffield():
                 n += 1
         # output
         o = open("output.ff", "w")
-        o.write("# equation 1\n")
+        o.write("# equation 2\n")
         o.write("%4s%4s%8s%8s%8s"%("a1", "a2", "ro_s", "pbo1", "pbo2"))
         o.write("%8s%8s%8s%8s%8s%8s\n"%("ro_pi", "pbo3", "pbo4", "ro_pipi", "pbo5", "pbo6"))
         for i in range(len(eq2)):
@@ -274,7 +284,7 @@ class Ffield():
                 counter += 1
             o.write("\n")
 
-        o.write("# equation 23\n")
+        o.write("# equation 23: van der Waals interaction\n")
         o.write("%4s%4s%10s%10s"%("a1", "a2", "epsil", "alpha"))
         o.write("%10s%10s\n"%("r_vdw", "gamma_w"))
         for i in range(len(eq23)):
@@ -286,7 +296,16 @@ class Ffield():
                     o.write("%10.4f"%eq23[i][j])
                 counter += 1
             o.write("\n")
+
+        """
+        @todo: 
+        o.write("# equation 24: coulomb interaction\n")
+        o.write("%4s%4s%10s%10s"%("a1", "a2", "chiEEM", "etaEEM"))
+        o.write("%10s\n"%("gamma_w"))
+        """
+
         o.close()
+
 if __name__ == "__main__":
-    ff = Ffield("/home/tao/Nutstore/code/simpy/test/ffield")
+    ff = Ffield("/home/tao/Nutstore/code/simpy/test/ffield_lg", 1)
     ff.toEquation()
