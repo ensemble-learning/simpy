@@ -1,8 +1,11 @@
 """ reaxFF ffield file format parser
-@status: Read the reactive force field (field) 
+@status: Read the reactive force field (field) and catalog the parameters 
+         into functions as JPCB 2008.
+         05-30: support Inner-wall and lg
 @todo:
 To output the ffield
-@see: 
+@see: output_ff.py
+@note: for ATOM n index is exactly n in table
 """
 import math
 DEBUG = 0
@@ -244,9 +247,19 @@ class Ffield():
                         eq23[n][4] = float(k[3])
                         n1 += 1
                 n += 1
+
+        # equation 26
+        eq26 = []
+        for i in range(len(self.atom)):
+            for j in range(i, len(self.atom) - 1):
+                d = math.sqrt(float(self.atom[i][31])*float(self.atom[j][31]))
+                alpha = math.sqrt(float(self.atom[i][32])*float(self.atom[j][32]))
+                r_inner = math.sqrt(float(self.atom[i][30])*float(self.atom[j][30]))
+                eq26.append([i, j, d, alpha, r_inner])
+
         # output
         o = open("output.ff", "w")
-        o.write("# equation 2\n")
+        o.write("# equation 2: bond order\n")
         o.write("%4s%4s%8s%8s%8s"%("a1", "a2", "ro_s", "pbo1", "pbo2"))
         o.write("%8s%8s%8s%8s%8s%8s\n"%("ro_pi", "pbo3", "pbo4", "ro_pipi", "pbo5", "pbo6"))
         for i in range(len(eq2)):
@@ -259,7 +272,7 @@ class Ffield():
                 counter += 1
             o.write("\n")
         
-        o.write("# equation 4\n")
+        o.write("# equation 4: bond order corrections\n")
         o.write("%4s%4s%8s%8s%8s\n"%("a1", "a2", "pboc3", "pboc4", "pboc5"))
         for i in range(len(eq4)):
             counter = 0 
@@ -271,7 +284,7 @@ class Ffield():
                 counter += 1
             o.write("\n")
 
-        o.write("# equation 6\n")
+        o.write("# equation 6: bond energy\n")
         o.write("%4s%4s%10s%10s"%("a1", "a2", "de_s", "p_be1"))
         o.write("%10s%10s%10s\n"%("p_be2", "de_p", "de_pp"))
         for i in range(len(eq6)):
@@ -298,11 +311,23 @@ class Ffield():
             o.write("\n")
 
         """
-        @todo: 
         o.write("# equation 24: coulomb interaction\n")
         o.write("%4s%4s%10s%10s"%("a1", "a2", "chiEEM", "etaEEM"))
         o.write("%10s\n"%("gamma_w"))
         """
+
+        o.write("# equation 26: inner wall\n")
+        o.write("%4s%4s%10s%10s"%("a1", "a2", "d", "alpha"))
+        o.write("%10s\n"%("r_inner"))
+        for i in range(len(eq26)):
+            counter = 0 
+            for j in range(len(eq26[i])):
+                if counter < 2:
+                    o.write("%4s"%self.elements[eq26[i][j]])
+                else:
+                    o.write("%10.4f"%eq23[i][j])
+                counter += 1
+            o.write("\n")
 
         o.close()
 

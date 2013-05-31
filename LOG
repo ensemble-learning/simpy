@@ -1,0 +1,5 @@
+2013-05-30
+output.ff should be the new file format for reactive force field (reaxFF), because it is more readable and easy use.
+plot the bond order, bond energy, vdW energy and inner energy (in fun2008.py tools/reax/reax2)
+fort73.py: read the energy terms in fort.73 (resuts file of reaxFF Fortran version)
+

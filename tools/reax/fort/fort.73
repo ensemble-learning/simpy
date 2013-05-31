@@ -1,0 +1,48 @@
+ scan_01                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      73    -169.60      -0.04       0.00       0.00       0.00       0.00       0.00       0.00       0.00     283.84      -0.00       0.00       0.00
+ scan_02                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      71    -169.51      -0.06       0.00       0.00       0.00       0.00       0.00       0.00       0.00     252.65       0.00       0.00       0.00
+ scan_03                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+     114    -169.38      -0.08       0.00       0.00       0.00       0.00       0.00       0.00       0.00     223.49       0.00      -0.00       0.00
+ scan_04                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      60    -169.20      -0.11       0.00       0.00       0.00       0.00       0.00       0.00       0.00     196.86      -0.00       0.00       0.00
+ scan_05                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      68    -168.23      -0.28       0.00       0.00       0.00       0.00       0.00       0.00       0.00     136.07      -0.00       0.00       0.00
+ scan_06                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      56    -165.87      -0.68       0.00       0.00       0.00       0.00       0.00       0.00       0.00      93.27      -0.00       0.00       0.00
+ scan_07                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      51    -160.89      -1.48       0.00       0.00       0.00       0.00       0.00       0.00       0.00      64.41      -0.00       0.00       0.00
+ scan_08                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      32    -151.95      -2.78       0.00       0.00       0.00       0.00       0.00       0.00       0.00      44.98      -0.00       0.00       0.00
+ scan_09                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+       9    -138.50      -4.15       0.00       0.00       0.00       0.00       0.00       0.00       0.00      31.63      -0.00       0.00       0.00
+ scan_10                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      36    -121.66      -4.34       0.00       0.00       0.00       0.00       0.00       0.00       0.00      22.26      -0.00       0.00       0.00
+ scan_11                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      40    -103.73      -2.64       0.00       0.00       0.00       0.00       0.00       0.00       0.00      15.55      -0.00       0.00       0.00
+ scan_12                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      40     -86.08      -0.80       0.00       0.00       0.00       0.00       0.00       0.00       0.00      10.77      -0.00       0.00       0.00
+ scan_13                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+      17      -0.18      -0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.55       0.00       0.00       0.00
+ scan_14                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+       2       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00      -0.05      -0.00       0.00       0.00
+ scan_15                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+       0       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00      -0.03      -0.00       0.00       0.00
+ scan_16                                                     
+  Iter.      Ebond       Eatom       Elp        Emol       Eval       Ecoa       Ehbo       Etors      Econj      Evdw      Ecoul    Echarge  Efield
+       0       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00       0.00      -0.01      -0.00       0.00       0.00
