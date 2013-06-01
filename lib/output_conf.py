@@ -74,6 +74,14 @@ def toGeo(system, outfile="test.geo"):
                 bond = float(i[3])
                 line = "BOND RESTRAINT    %d   %d  %.4f 7500.00  1.0000  0.0000000       0       0\n"%(a1, a2, bond)
                 o.write(line)
+            elif i[0] == "D":
+                a1 = int(i[1])
+                a2 = int(i[2])
+                a3 = int(i[3])
+                a4 = int(i[4])
+                angle = float(i[5])
+                line = "TORSION RESTRAINT    %d   %d   %d   %d  %.4f  500.00  5.0000  0.0000000\n"%(a1, a2, a3, a4, angle)
+                o.write(line)
     #o.write("FORMAT ATOM   (a6,1x,i5,1x,a5,1x,a3,1x,a1,1x,a5,3f10.5,1x,a5,i3,i2,1x,f8.5)\n")
     if system.pbc:
         o.write("CRYSTX %s\n"%(''.join(["%11.5f"%i for i in system.pbc])))

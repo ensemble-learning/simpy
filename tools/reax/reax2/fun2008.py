@@ -1,6 +1,4 @@
 """
-@author: Tao Cheng
-@email: chengtaoliterature@gmail.com
 @ref: J. Phys. Chem. A 2001, 105, 9396-9409
 """
 import os
@@ -94,6 +92,9 @@ class Bond():
         self.bo_p = 0.0
         self.bo_pp = 0.0
         self.be = 0.0
+        self.be_s = 0.0
+        self.be_p = 0.0
+        self.be_pp = 0.0
 
     def bond_order(self, r):
         """
@@ -121,9 +122,8 @@ class Bond():
             bpow3 = math.pow((r/self.r_pipi), self.p_bo6)
             bexp3 = math.exp(self.p_bo5*bpow3)
             bo += bexp3
-            self.bo_p = bexp3
+            self.bo_pp = bexp3
         self.bo = bo
-        return bo
 
     def bo_corr(self, bop, deltai, deltaj):
         sum = -self.lamda_3*(self.lamda_4*bop*bop - deltai)
@@ -158,12 +158,14 @@ class Bond():
         bpow = 1 - math.pow(bo_s, self.p_be2)
         bexp = math.exp(self.p_be1*bpow)
         ebond = -self.D_e * bo_s * bexp
+        self.be_s = ebond
         if self.D_ep > 0:
             ebond += -self.D_ep*bo_p
+            self.be_p = ebond
         if self.D_epp > 0:
             ebond += -self.D_epp*bo_pp
+            self.be_pp = ebond
         self.be = ebond
-        return ebond 
 
     def tap(self, r):
         t = 0
@@ -262,33 +264,54 @@ def plot_bond_order(bonds, r):
     counter = 0
     for i in range(len(bonds)):
         fig = plt.figure()
-        ax1 = fig.add_subplot(121)
-        ax2 = fig.add_subplot(122)
-        bo = []
-        be = []
+        ax1 = fig.add_subplot(211)
+        ax2 = fig.add_subplot(212)
+        bo = []; bo_s = []; bo_p = []; bo_pp = []
+        be = []; be_s = []; be_p = []; be_pp = []
         vdw = []
         inner = []
-        if counter > -1:
+        if counter == 0:
             for j in r:
-                bo.append(bonds[i].bond_order(j))
-                be.append(bonds[i].bond_energy())
+                bonds[i].bond_order(j)
+                bo.append(bonds[i].bo)
+                bo_s.append(bonds[i].bo_s)
+                bo_p.append(bonds[i].bo_p)
+                bo_pp.append(bonds[i].bo_pp)
+                bonds[i].bond_energy()
+                be.append(bonds[i].be)
+                be_s.append(bonds[i].be_s)
+                be_p.append(bonds[i].be_p)
+                be_pp.append(bonds[i].be_pp)
                 vdw.append(bonds[i].vdw(j))
                 inner.append(bonds[i].innerwall(j))
             bo = np.array(bo)
+            bo_s = np.array(bo_s)
+            bo_p = np.array(bo_p)
+            bo_pp = np.array(bo_pp)
             be = np.array(be)
+            be_s = np.array(be_s)
+            be_p = np.array(be_p)
+            be_pp = np.array(be_pp)
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            ax1.plot(r, bo, '-o')
+            ax1.plot(r, bo, '-o', label="BO")
+            ax1.plot(r, bo_s, '-o', label="BO_sigma")
+            if np.sum(bo_p) > 0:
+                ax1.plot(r, bo_p, '-o', label="BO_pi")
+            if np.sum(bo_pp) > 0:
+                ax1.plot(r, bo_pp, '-o', label="BO_pipi")
             ax1.set_xlabel("Bond length ($\AA$)", size="x-large")
             ax1.set_ylabel("Bond order", size="x-large")
             ax1.set_title(name, size="x-large")
+            ax1.legend()
             ax2.plot(r, be, '-o')
             #ax2.plot(r, vdw, '-o')
             ax2.plot(r, inner, '-o')
             #ax2.plot(r, be + vdw + inner, color="black", lw=3)
             ax2.plot(r, be + inner, color="black", lw=3)
             plt.savefig("%s.eps"%name)
+            plt.savefig("%s.png"%name)
             plt.show()
         counter += 1
 
