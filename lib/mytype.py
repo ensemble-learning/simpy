@@ -6,6 +6,7 @@
 import math
 import re
 from cons import ELEMENT2MASS 
+from utilities import get_dist
 
 class Atom():
     """Basic class for atom 
@@ -222,7 +223,12 @@ class System():
         for i in self.atoms:
             mass += ELEMENT2MASS[i.element] 
         self.mass = mass
-
+    def getBondDist(self, a1, a2):
+        x1 = self.atoms[a1-1].x
+        x2 = self.atoms[a2-1].x
+        dist = get_dist(x1, x2)
+        return dist
+        
 class Molecule():
     """Basic class for molecular includes (name, atoms(list of atoms), 
     conn (connectivity))

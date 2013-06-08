@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """build seperated simulation
 """
 import os

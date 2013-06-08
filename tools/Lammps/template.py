@@ -154,7 +154,7 @@ dump                    1 all custom 400 dump.lmp id type x y z vx vy vz
 dump_modify             1 sort id
 
 #--------Simulation--------
-fix            101 all npt temp 300 300 100 iso 1.0 1.0 2000       
+fix            101 all npt temp 300 300 100 iso 1.0 1.0 25       
 fix            909 all reax/c/bonds 1 1 400 bonds.reax
 timestep       0.25
 run            80000

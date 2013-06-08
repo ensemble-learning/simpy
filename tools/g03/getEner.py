@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Get following info: 
    energy, charge, configuration
    from g03 log file. And generate freq calculation input

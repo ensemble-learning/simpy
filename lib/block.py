@@ -59,5 +59,48 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
+def g03Block(g03file, ext="log"):
+    """parse the g03 log file into blocks
+    """
+    head = []
+    block_prev = []
+    block_now = []
+    f = open(g03file, 'r')
+
+    for i in f:
+        if i.strip().startswith("Berny optimization"):
+            break
+        head.append(i)
+
+    block_now.append(i)
+
+    counter = 0
+    flag = 1
+    while flag:
+        flag = 0
+        for i in f:
+            flag = 1
+            if i.strip().startswith("Berny optimization"):
+                block_prev = block_now
+                block_now = []
+                break
+            if i.strip().startswith("Step number   1"):
+                ofile = "%s_%02d.%s"%(g03file.split(".")[0], counter, ext)
+                o = open(ofile, "w")
+                for j in block_prev:
+                    o.write(j)
+                o.close()
+                counter += 1
+            block_now.append(i)
+
+    ofile = "%s_%02d.%s"%(g03file.split(".")[0], counter, ext)
+    o = open(ofile, "w")
+    for j in block_prev:
+        o.write(j)
+    o.close()
+
+    print counter
+
+
 if __name__ == "__main__":
-    geoBlock("geo")
+    g03Block("/home/tao/h3_scan_4.log")

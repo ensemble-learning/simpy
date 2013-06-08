@@ -114,7 +114,7 @@ class G03LogConf():
                     break
             for i in f:
                 if counter >= 4:
-                    if "-------------" in i:
+                    if "----" in i:
                         break
                     self.atoms.append(i.strip().split())
                 counter += 1

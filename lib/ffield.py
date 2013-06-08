@@ -253,6 +253,7 @@ class Ffield():
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
                 d = math.sqrt(float(self.atom[i][31])*float(self.atom[j][31]))
+                #print self.atom[i][0], self.atom[j][0], self.atom[i][31], self.atom[j][31], d
                 alpha = math.sqrt(float(self.atom[i][32])*float(self.atom[j][32]))
                 r_inner = math.sqrt(float(self.atom[i][30])*float(self.atom[j][30]))
                 eq26.append([i, j, d, alpha, r_inner])
@@ -325,12 +326,12 @@ class Ffield():
                 if counter < 2:
                     o.write("%4s"%self.elements[eq26[i][j]])
                 else:
-                    o.write("%10.4f"%eq23[i][j])
+                    o.write("%10.4f"%eq26[i][j])
                 counter += 1
             o.write("\n")
 
         o.close()
 
 if __name__ == "__main__":
-    ff = Ffield("/home/tao/Nutstore/code/simpy/test/ffield_lg", 1)
+    ff = Ffield("./ffield", 1)
     ff.toEquation()

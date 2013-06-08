@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Generate trainset file
 """
 
@@ -72,6 +73,8 @@ else:
     if len(conf) == len(ener):
         for i in range(len(conf)):
             de = (ener[i] - rener) * unit 
+            if de < 0.01:
+                de = 0.01
             o.write(" 0.1 + %s/1 - %s/1  %9.2f\n"%(conf[i], rname, de))
     else:
         print len(conf), len(ener)

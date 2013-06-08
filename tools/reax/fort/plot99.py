@@ -1,8 +1,10 @@
-#!/home/tao/Packages/epd-7.1-2-rh5-x86/bin/python
+#!/usr/bin/env python
+import os
 import numpy as np
 import matplotlib.pyplot as plt
 
 def parse_fort99():
+    assert os.path.exists("fort.99")
     f = open("fort.99", 'r')
     reax = []
     qm = []
@@ -21,14 +23,31 @@ def parse_fort99():
     f.close()
     return reax, qm
 
-
 def plot_all():
+    xlabel = ''
+    x = []
+    if os.path.exists("bonds"):
+        x = np.loadtxt("bonds")
+        xlabel = r"bond length $\AA$"
+    if os.path.exists("angles"):
+        x = np.loadtxt("angles")
+        xlabel = r"degree $^{\circ}$"
     reax, qm = parse_fort99()
-    plt.plot(reax, 'ro', ls='-', label="Reax")
-    plt.plot(qm, 'bo', ls='-', label="QM")
-    plt.xlabel(r"Unit-cell volume ($\AA ^3$)", size="x-large")
-    plt.ylabel(r"$\Delta E$ (kcal)", size="x-large")
+
+    if len(x) == 0:
+        x = np.linspace(0, 1, len(reax))
+
+    assert len(x) == len(reax)
+
+    plt.plot(x, reax, 'ro', ls='-', label="Reax")
+    plt.plot(x, qm, 'bo', ls='-', label="QM")
+    if xlabel == '':
+        plt.xlabel(r"Unit-cell volume ($\AA ^3$)", size="x-large")
+    else:
+        plt.xlabel(xlabel, size="x-large")
+    plt.ylabel(r"Potential energy (kcal)", size="x-large")
     plt.legend()
+    plt.savefig("fort99.eps")
     plt.show()
 
 def parse_trainset():
@@ -89,4 +108,5 @@ def plot_in_block():
 
 
 
-plot_all()
+if __name__ == "__main__":
+    plot_all()

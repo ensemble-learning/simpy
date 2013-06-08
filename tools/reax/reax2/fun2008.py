@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """
 @ref: J. Phys. Chem. A 2001, 105, 9396-9409
 """
@@ -77,7 +79,7 @@ class Bond():
         self.p_vdw1 = 1.0
         self.gamma_w = 1.0
         # charge parameters
-        self.rcut = 1
+        self.rcut = 4.5
         self.q1 = 1
         self.q2 = -1
         self.gamma_rij = 1.0
@@ -195,7 +197,8 @@ class Bond():
         sum1 = 1 - f13/self.r_vdw
         exp1 = math.exp(self.alpha_ij * sum1)
         exp2 = math.exp(0.5 * self.alpha_ij * sum1)
-        e_vdw = self.tap(r) * self.D_ij*(exp1 + 2*exp2)
+        e_vdw = self.tap(r) * self.D_ij*(exp1 - 2*exp2)
+        print f13, r, e_vdw, sum1, exp1, exp2
         return e_vdw
 
     def coulomb(self, r):
@@ -243,7 +246,7 @@ def bond_energy(bonds, ff):
         b.D_epp = float(p[6])
         # assign vdw parameters
         p = ff.eq23[i+1]
-        b.rcut = 4.0
+        b.rcut = 8.0
         b.D_ij = float(p[2])
         b.alpha_ij = float(p[3])
         b.r_vdw = float(p[4])
@@ -257,20 +260,68 @@ def bond_energy(bonds, ff):
         b.alpha_inner = float(p[3])
         b.r_inner = float(p[4])
 
+def plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name):
+    fig = plt.figure()
+    ax1 = fig.add_subplot(121)
+    ax2 = fig.add_subplot(122)
+    ax1.plot(r, bo, '-o', label="BO")
+    ax1.plot(r, bo_s, '-o', label="BO_sigma")
+    if np.sum(bo_p) > 0:
+        ax1.plot(r, bo_p, '-o', label="BO_pi")
+    if np.sum(bo_pp) > 0:
+        ax1.plot(r, bo_pp, '-o', label="BO_pipi")
+    ax1.set_xlabel("Bond length ($\AA$)", size="x-large")
+    ax1.set_ylabel("Bond order", size="x-large")
+    ax1.set_title(name, size="x-large")
+    ax1.legend()
+    # plot bond order
+    ax2.plot(r, be, '-o', label="be")
+    #ax2.plot(r, vdw, '-o')
+    ax2.plot(r, inner + vdw , '-o', label="inner")
+    ax2.plot(r, vdw , '-o', label="vdw")
+    #ax2.plot(r, be + vdw + inner, color="black", lw=3)
+    ax2.plot(r, be + inner + vdw, color="black", lw=3)
+    ax2.legend()
+    # print min point
+    tmp = be + inner + vdw
+    print "re = %.3f"%r[tmp.argmin()],
+    print "E = %.3f"%np.min(tmp)
+    # save files
+    for ii in range(100):
+        fname = "bo.dat.%03d"%ii
+        if not os.path.exists(fname):
+            np.savetxt(fname, bo)
+            break
+    # plot bond order
+    #plt.savefig("%s.eps"%name)
+    #plt.savefig("%s.png"%name)
+    plt.show()
+
+def plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name):
+    fig = plt.figure()
+    ax1 = fig.add_subplot(111)
+    ax2 = ax1.twinx()
+    ax1.plot(r, bo, '-o', label="BO")
+    ax1.set_xlabel("Bond length ($\AA$)", size="x-large")
+    ax1.set_ylabel("Bond order", size="x-large")
+    ax1.set_title(name, size="x-large")
+    ax1.legend()
+    # plot bond order
+    ax2.plot(r, -be, '-o', label="be", color='red')
+    ax2.set_ylim([min(-be), max(-be)])
+    plt.show()
+
 def plot_bond_order(bonds, r):
     """plot the bond order curve
     """
 
     counter = 0
     for i in range(len(bonds)):
-        fig = plt.figure()
-        ax1 = fig.add_subplot(211)
-        ax2 = fig.add_subplot(212)
         bo = []; bo_s = []; bo_p = []; bo_pp = []
         be = []; be_s = []; be_p = []; be_pp = []
         vdw = []
         inner = []
-        if counter == 0:
+        if counter == 6:
             for j in r:
                 bonds[i].bond_order(j)
                 bo.append(bonds[i].bo)
@@ -295,24 +346,8 @@ def plot_bond_order(bonds, r):
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            ax1.plot(r, bo, '-o', label="BO")
-            ax1.plot(r, bo_s, '-o', label="BO_sigma")
-            if np.sum(bo_p) > 0:
-                ax1.plot(r, bo_p, '-o', label="BO_pi")
-            if np.sum(bo_pp) > 0:
-                ax1.plot(r, bo_pp, '-o', label="BO_pipi")
-            ax1.set_xlabel("Bond length ($\AA$)", size="x-large")
-            ax1.set_ylabel("Bond order", size="x-large")
-            ax1.set_title(name, size="x-large")
-            ax1.legend()
-            ax2.plot(r, be, '-o')
-            #ax2.plot(r, vdw, '-o')
-            ax2.plot(r, inner, '-o')
-            #ax2.plot(r, be + vdw + inner, color="black", lw=3)
-            ax2.plot(r, be + inner, color="black", lw=3)
-            plt.savefig("%s.eps"%name)
-            plt.savefig("%s.png"%name)
-            plt.show()
+            plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
+            #plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
         counter += 1
 
 def test():
@@ -323,7 +358,7 @@ def test():
         bond = Bond()
         bonds.append(bond)
     #assign bond order
-    r = np.linspace(0.5, 5, 100)
+    r = np.linspace(0.5, 2.5, 100)
     bond_energy(bonds, ff)
     plot_bond_order(bonds, r)
 
