@@ -223,6 +223,7 @@ class System():
         for i in self.atoms:
             mass += ELEMENT2MASS[i.element] 
         self.mass = mass
+
     def getBondDist(self, a1, a2):
         x1 = self.atoms[a1-1].x
         x2 = self.atoms[a2-1].x

@@ -1,7 +1,10 @@
+
 """ read the pdb file and output to data (LAMMPS).
 """
 
 import sys
+sys.path.append("/home/tao/Nutstore/code/simupy/lib")
+
 from mytype import System, Molecule, Atom
 from pdb import Pdb
 from output_conf import toReaxLammps, toGeo
@@ -22,7 +25,8 @@ def test():
     b.pbc = [20.80, 20.80, 20.80, 90.0, 90.0, 90.0]
     toReaxLammps(b)
 
-def fortranOut(testfile = "output.pdb"):
+def fortranOut():
+    testfile = "output.pdb"
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
@@ -31,7 +35,8 @@ def fortranOut(testfile = "output.pdb"):
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")
 
-def withPbc(testfile="supper.pdb"):
+def withPbc():
+    testfile = "supper.pdb"
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
@@ -41,19 +46,14 @@ def withPbc(testfile="supper.pdb"):
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
-        usage()
-        print """Waring: using default pdb file (output.pdb) and no pdb!!
-        """
+        print "using default nopbc"
         fortranOut()
     else:
-        pdbfile = sys.argv[1]
-        opt = "nopbc"
-        if len(sys.argv) > 2:
-            opt = sys.argv[2]
+        opt = sys.argv[1]
         if opt == "pbc":
-            withPbc(pdbfile)
+            withPbc()
         elif opt == "nopbc":
-            fortranOut(pdbfile)
+            fortranOut()
         else:
             usage()
 
