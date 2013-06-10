@@ -1,5 +1,0 @@
-1) Fix the control file
-2) Create a "data" directory
-3) molfrag.sh [control.file]
-4) product_trace.sh [control.file] H2O
-5) Copy the *.net into window system and visualize it with Pajek.

@@ -6,7 +6,7 @@
 import math
 import re
 from cons import ELEMENT2MASS 
-from utilities import get_dist
+from utilities import get_dist, get_angle
 
 class Atom():
     """Basic class for atom 
@@ -218,6 +218,8 @@ class System():
         return vol
 
     def getMass(self):
+        """Get the mass
+        """
         self.assignEleTypes()
         mass = 0.0
         for i in self.atoms:
@@ -225,10 +227,21 @@ class System():
         self.mass = mass
 
     def getBondDist(self, a1, a2):
+        """Get the distance
+        """
         x1 = self.atoms[a1-1].x
         x2 = self.atoms[a2-1].x
         dist = get_dist(x1, x2)
         return dist
+
+    def getAngle(self, a1, a2, a3):
+        """Get the angle
+        """
+        x1 = self.atoms[a1-1].x
+        x2 = self.atoms[a2-1].x
+        x3 = self.atoms[a3-1].x
+        ang = get_angle(x1, x2, x3)
+        return ang
         
 class Molecule():
     """Basic class for molecular includes (name, atoms(list of atoms), 
