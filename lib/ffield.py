@@ -333,5 +333,5 @@ class Ffield():
         o.close()
 
 if __name__ == "__main__":
-    ff = Ffield("./ffield", 1)
+    ff = Ffield("./ffield", 0)
     ff.toEquation()

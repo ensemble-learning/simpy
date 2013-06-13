@@ -198,7 +198,6 @@ class Bond():
         exp1 = math.exp(self.alpha_ij * sum1)
         exp2 = math.exp(0.5 * self.alpha_ij * sum1)
         e_vdw = self.tap(r) * self.D_ij*(exp1 - 2*exp2)
-        print f13, r, e_vdw, sum1, exp1, exp2
         return e_vdw
 
     def coulomb(self, r):
@@ -215,8 +214,9 @@ class Bond():
         alpha = self.alpha_inner
         rin = self.r_inner
         D = self.D_inner
-        p1 = alpha * ( 1 - r/rin)
-        e_inner = D * math.exp(p1)
+        if abs(rin) > 0.01:
+            p1 = alpha * ( 1 - r/rin)
+            e_inner = D * math.exp(p1)
         return e_inner
 
 def bond_energy(bonds, ff):
@@ -315,13 +315,13 @@ def plot_bond_order(bonds, r):
     """plot the bond order curve
     """
 
-    counter = 0
+    counter = 1
     for i in range(len(bonds)):
         bo = []; bo_s = []; bo_p = []; bo_pp = []
         be = []; be_s = []; be_p = []; be_pp = []
         vdw = []
         inner = []
-        if counter == 6:
+        if counter:
             for j in r:
                 bonds[i].bond_order(j)
                 bo.append(bonds[i].bo)
