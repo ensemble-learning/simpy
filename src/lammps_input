@@ -42,9 +42,10 @@ thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v
 thermo_modify   line multi
 dump                    1 all custom 1 dump.lmp id type x y z vx vy vz
 dump_modify             1 sort id
-fix            9 all reax/c/bonds 1 bonds.reax
 
 min_style       cg
-minimize        0 1.0e-8 1 2
-dump           201 all xyz 1 out.xyz 
+minimize        0 1.0e-8 1 4
+
+fix            9 all reax/c/bonds 1 bonds.reax
+run             0
 write_data     out.data

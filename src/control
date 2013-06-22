@@ -1,8 +1,8 @@
 [MC]
 
 swap = 1
-swap group 1 = CA 
-swap group 2 = AL
-mc steps = 100
+swap group 1 = Ca1 Ca2 Ca3 
+swap group 2 = Al1 Al2 Al3
+mc steps = 1
 
 

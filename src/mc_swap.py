@@ -1,4 +1,14 @@
-"""
+""" A python shell of MC simulation calling LAMMPS as energy engine to get ReaxFF 
+energies.
+
+LOG:
+Fri Jun 21 23:21:37 PDT 2013
+1. Swap move: exchange the atom type of two atoms
+
+@todo: Restraint to avoid Al-O-AL
+@todo: Update the coordinations from out.pdb
+@todo: deposit water molecules 
+@todo: find water molecules from reaxFF simulation
 """
 import sys, os
 import random
@@ -30,6 +40,8 @@ def welcome():
     print "-"*20 + "--------------------" + "-"*20
 
 class MC():
+    """MC simulation parameters
+    """
     def __init__(self,):
         self.pdbfile = ''
         self.indexfile = ''
@@ -69,7 +81,7 @@ def read_control(mc):
                     exit()
                 assert len(mc.swap_grp1) == len(mc.swap_grp2)
         if "mc steps" in o:
-            mc.steps = cf.getint("MC", "mc steps")
+            mc.nsteps = cf.getint("MC", "mc steps")
         else:
             sys.stderr.write("Error: No simulation steps assigned")
             exit()
@@ -77,6 +89,8 @@ def res_aloal(mc, sim, grp, a1, a2):
     return 0
 
 def get_energy(mc, sim, grp):
+    """get reaxFF energy by calling LAMMPS externally
+    """
     ener = 0.0
     toReaxLammps(sim)
     f1, f2, f3 = popen2.popen3("lmp_serial -in lammps_input")
@@ -112,28 +126,36 @@ def assign_swap_grps(mc, sim, grp):
             exit()
 
 def mc_swap(mc, sim, grp):
-    print "    swap move:",
+    """MC swap move
+    """
     e_old = get_energy(mc, sim, grp)
-    print "E_old = %.3f, "%e_old,
     nres = 1
     while(nres):
         nres = 0
         i = random.randint(0, len(mc.swap_grp1) - 1)
-        n = random.randint(0, len(mc.swap_grp1_atms[i]) - 1)
-        a1 = mc.swap_grp1_atms[i][n]
-        n = random.randint(0, len(mc.swap_grp2_atms[i]) - 1)
-        a2 = mc.swap_grp2_atms[i][n]
+        n1 = random.randint(0, len(mc.swap_grp1_atms[i]) - 1)
+        a1 = mc.swap_grp1_atms[i][n1]
+        n2 = random.randint(0, len(mc.swap_grp2_atms[i]) - 1)
+        a2 = mc.swap_grp2_atms[i][n2]
         nres = res_aloal(mc, sim, grp, a1, a2)
 
+    print mc.swap_grp2_atms[i]
     #switch ID
     tmp = sim.atoms[a1].type1
     sim.atoms[a1].type1 = sim.atoms[a2].type1
     sim.atoms[a2].type1 = tmp
 
+    print "    swap move:",
+    print "atom 1: %5d atom 2: %5d "%(a1+1, a2+1),
+
     e_new = get_energy(mc, sim, grp)
+
+    print "E_old = %.3f, "%e_old,
     print "E_new= %.3f"%e_new,
 
     if e_old >= e_new:
+        mc.swap_grp1_atms[i][n1] = a2
+        mc.swap_grp1_atms[i][n2] = a1
         print "accept"
     else:
         print "regject"
@@ -142,6 +164,8 @@ def mc_swap(mc, sim, grp):
         sim.atoms[a2].type1 = tmp
 
 def mc_moves(mc, sim, grp):
+    """ mc moves
+    """
     if mc.swap_flag == 1:
         mc_swap(mc, sim, grp)
 
@@ -168,7 +192,7 @@ def monte_carlo():
         assign_swap_grps(mc, sim, grp)
     
     print "Starting simulation:"
-    for i in range(100):
+    for i in range(mc.nsteps):
         mc_moves(mc, sim, grp)
 
     toReaxLammps(sim, "lammps.data.final")
