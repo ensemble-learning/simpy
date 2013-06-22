@@ -3,6 +3,10 @@
 swap = 1
 swap group 1 = Ca1 Ca2 Ca3 
 swap group 2 = Al1 Al2 Al3
-mc steps = 1
+mc steps = 9999
+
+[RUN]
+code = /net/hulk/home6/chengtao/soft/lammps-12Apr13/src/lmp_openmpi 
+mpi = 60
 
 

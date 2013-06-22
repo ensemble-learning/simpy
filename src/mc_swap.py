@@ -24,6 +24,7 @@ elif socket.gethostname() == "tao-laptop":
 elif socket.gethostname() == "atom.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
+LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 sys.path.insert(0 , LIB)
 
 from mytype import System, Molecule, Atom
@@ -32,6 +33,7 @@ from index import Group
 from output_conf import toReaxLammps, toGeo, toPdb
 from utilities import get_dist
 import popen2
+import shutil
 
 # PBC specified to model.pdb
 # @improve: a variable read from pdb input
@@ -56,6 +58,10 @@ class MC():
         self.swap_grp2_atms = []
         self.nsteps = 0
         self.step = 0
+	self.log = 'log.mc'
+	self.code = 'lammps'
+        self.mpi = 1
+        self.mpicode = ''
 
 def read_control(mc):
     """Read the control file
@@ -88,6 +94,17 @@ def read_control(mc):
         else:
             sys.stderr.write("Error: No simulation steps assigned")
             exit()
+    if "RUN" in s:
+        print "    Detail simulation settings"
+        o = cf.options("RUN")  
+        if "code" in o:
+            mc.code = cf.get("RUN", "code").strip() 
+            print "        using %s"%mc.code
+        if "mpi" in o:
+            mc.mpi = int(cf.get("RUN", "mpi").strip())
+            print "        using %d cpu(s)"%mc.mpi
+            if mc.mpi > 1:
+                mc.mpicode = "mpirun -np %d"%mc.mpi
 
 def res_aloal(mc, sim, n, a1, a2):
     # @note: this is hard coded.
@@ -120,7 +137,7 @@ def get_energy(mc, sim, grp):
     """
     ener = 0.0
     toReaxLammps(sim)
-    f1, f2, f3 = popen2.popen3("lmp_serial -in lammps_input")
+    f1, f2, f3 = popen2.popen3("%s %s -in lammps_input"%(mc.mpicode, mc.code))
     for i in f1:
         if i.strip().startswith("PotEng"):
             tokens = i.strip().split()
@@ -152,7 +169,7 @@ def assign_swap_grps(mc, sim, grp):
             print "No group %s defined in the index file!"%name
             exit()
 
-def mc_swap(mc, sim, grp):
+def mc_swap(mc, sim, grp, log):
     """MC swap move
     """
     e_old = get_energy(mc, sim, grp)
@@ -171,29 +188,30 @@ def mc_swap(mc, sim, grp):
     sim.atoms[a1].type1 = sim.atoms[a2].type1
     sim.atoms[a2].type1 = tmp
 
-    print "    swap move:",
-    print "atom 1: %5d atom 2: %5d "%(a1+1, a2+1),
+    log.write("    swap move: ")
+    log.write("atom 1: %5d atom 2: %5d "%(a1+1, a2+1))
 
     e_new = get_energy(mc, sim, grp)
 
-    print "E_old = %.3f, "%e_old,
-    print "E_new= %.3f"%e_new,
+    log.write("E_old = %.3f, "%e_old)
+    log.write("E_new= %.3f "%e_new)
 
     if e_old >= e_new:
         mc.swap_grp1_atms[i][n1] = a2
         mc.swap_grp1_atms[i][n2] = a1
-        print "accept"
+        log.write("accept\n")
     else:
-        print "regject"
+        log.write("regject\n")
         tmp = sim.atoms[a1].type1
         sim.atoms[a1].type1 = sim.atoms[a2].type1
         sim.atoms[a2].type1 = tmp
+    log.flush()
 
-def mc_moves(mc, sim, grp):
+def mc_moves(mc, sim, grp, log):
     """ mc moves
     """
     if mc.swap_flag == 1:
-        mc_swap(mc, sim, grp)
+        mc_swap(mc, sim, grp, log)
 
 def monte_carlo():
     """ a python shell for Monte Carlo reaxFF simulation'
@@ -214,14 +232,21 @@ def monte_carlo():
     grp = Group(indexfile)
 
     # system init
+    log = open(mc.log, "w")
+
     if mc.swap_flag == 1:
         assign_swap_grps(mc, sim, grp)
     
     print "Starting simulation:"
     for i in range(mc.nsteps):
-        mc_moves(mc, sim, grp)
+        print("Running step %d"%i)
+        log.write("step %-6d"%i)
+        mc_moves(mc, sim, grp, log)
+        shutil.copy("out.data", "out.data.%06d"%i)
+        shutil.copy("dump.lmp", "dump.lmp.%06d"%i)
 
     toReaxLammps(sim, "lammps.data.final")
+    log.close()
 
 if __name__ == "__main__":
     monte_carlo()
