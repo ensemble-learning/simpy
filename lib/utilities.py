@@ -76,6 +76,7 @@ def lattice2v(pbc):
 
 def get_dist(x1, x2):
     """calculate the distance between two atoms
+    @note: should consider the pbc here
     """
     a = x1[0] - x2[0]
     b = x1[1] - x2[1]

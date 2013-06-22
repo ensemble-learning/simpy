@@ -76,11 +76,42 @@ def move(a1, sub, layer, all):
             return n_old
     else:
         return 0
-            
-def moves(sub, layer, all):
-    """make exchange moves
+
+def getEnergy():
+    return 1
+
+def mcmove(a1, sub, layer, all):
+    """ MC move
     """
-    max_iter = 1000
+    # first calculate current Al-O-Al number
+    nold = cal_connect(a1, sub, layer, all)
+    assert n = 0
+    x_old = sub[a1]
+    ener_old = getEnergy()
+
+    nnow = 1
+    # if no Al-O-Al, no necessary for any move
+    while(n):
+        flag = 1
+        while(flag):
+            flag = 0
+            x_new = random.sample(layer, 1)[0]
+            if x_new in sub:
+                flag = 1
+        sub[a1] = x_new
+        nnow = cal_connect(a1, sub, layer, all)
+    ener_new = getEnergy()
+    if ener_new > ener_old:
+        sub[a1] = x_old
+
+def moves(sub, layer, all, max_iter=1000):
+    """make exchange moves
+    @param sub: The substitued atoms (Al in this case).
+    @param layer: Atoms in selected layer. 
+    @param all: All of the Atoms. 
+    @param max_iter: maxium iterations.
+    """
+
     for n in range(max_iter):
         res = 0
         for i in range(len(sub)):
@@ -92,6 +123,7 @@ def moves(sub, layer, all):
         else:
             pass
             print "Step %d Res = %d"%(n, res)
+
 def sub(id):
     """substitude 1/8 Ca to Al and exchange Al with Ca
     to avoid any Al-O-Al bond

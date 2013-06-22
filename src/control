@@ -1,0 +1,8 @@
+[MC]
+
+swap = 1
+swap group 1 = CA 
+swap group 2 = AL
+mc steps = 100
+
+

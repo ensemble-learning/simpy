@@ -102,6 +102,7 @@ class Bond():
         """
         Calculate the uncorrected bond order.
         """
+        #print self.r_o, self.p_bo2, self.p_bo1
         self.r = r
 
         if self.r_o < 0.01:
@@ -153,6 +154,7 @@ class Bond():
         """
         Calculate Bond Order
         """
+        print self.D_e
         bo_s = self.bo_s
         bo_p = self.bo_p
         bo_pp = self.bo_pp
@@ -190,6 +192,7 @@ class Bond():
         return t
 
     def vdw(self, r):
+        #print self.r_vdw, self.gamma_w, self.alpha_ij, self.D_ij
         e_vdw = 0.0
         pow1 = math.pow((1/self.gamma_w), self.p_vdw1)
         pow2 = math.pow(r, self.p_vdw1)
