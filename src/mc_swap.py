@@ -21,6 +21,8 @@ if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
+elif socket.gethostname() == "atom.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
