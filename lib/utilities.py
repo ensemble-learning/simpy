@@ -74,13 +74,17 @@ def lattice2v(pbc):
     
     return xx, xy, xz, yy, yz, zz
 
-def get_dist(x1, x2):
+def get_dist(x1, x2, pbc=[]):
     """calculate the distance between two atoms
     @note: should consider the pbc here
     """
     a = x1[0] - x2[0]
     b = x1[1] - x2[1]
     c = x1[2] - x2[2]
+    if pbc:
+        a = a - pbc[0]*round(a/pbc[0]) 
+        b = b - pbc[1]*round(b/pbc[1]) 
+        c = c - pbc[2]*round(c/pbc[2]) 
     return math.sqrt(a*a + b*b + c*c)
 
 def get_angle(a1, a2, a3):

@@ -28,6 +28,7 @@ from mytype import System, Molecule, Atom
 from pdb import Pdb
 from index import Group
 from output_conf import toReaxLammps, toGeo, toPdb
+from utilities import get_dist
 import popen2
 
 # PBC specified to model.pdb
@@ -85,8 +86,32 @@ def read_control(mc):
         else:
             sys.stderr.write("Error: No simulation steps assigned")
             exit()
-def res_aloal(mc, sim, grp, a1, a2):
-    return 0
+
+def res_aloal(mc, sim, n, a1, a2):
+    # @note: this is hard coded.
+    nres_prev = 0
+    nres_now = 0
+    cutoff = 3.6
+    grp = mc.swap_grp2_atms[n]
+
+    for i in range(len(grp)):
+        if grp[i] == a2:
+            pass
+        else:
+            r = get_dist(sim.atoms[a2].x, sim.atoms[grp[i]].x, sim.pbc)
+            #print r, a2, grp[i]
+            if r < cutoff:
+                nres_prev += 1
+
+    for i in range(len(grp)):
+        if grp[i] == a2:
+            pass
+        else:
+            r = get_dist(sim.atoms[a1].x, sim.atoms[grp[i]].x, sim.pbc)
+            #print r, a2, grp[i]
+            if r < cutoff:
+                nres_now += 1
+    return nres_now - nres_prev
 
 def get_energy(mc, sim, grp):
     """get reaxFF energy by calling LAMMPS externally
@@ -130,16 +155,15 @@ def mc_swap(mc, sim, grp):
     """
     e_old = get_energy(mc, sim, grp)
     nres = 1
-    while(nres):
+    while(nres > 0):
         nres = 0
         i = random.randint(0, len(mc.swap_grp1) - 1)
         n1 = random.randint(0, len(mc.swap_grp1_atms[i]) - 1)
         a1 = mc.swap_grp1_atms[i][n1]
         n2 = random.randint(0, len(mc.swap_grp2_atms[i]) - 1)
         a2 = mc.swap_grp2_atms[i][n2]
-        nres = res_aloal(mc, sim, grp, a1, a2)
+        nres = res_aloal(mc, sim, i, a1, a2)
 
-    print mc.swap_grp2_atms[i]
     #switch ID
     tmp = sim.atoms[a1].type1
     sim.atoms[a1].type1 = sim.atoms[a2].type1

@@ -52,37 +52,37 @@ minimize        0 1.0e-8 1 4
 WARNING: Resetting reneighboring criteria during minimization (../min.cpp:173)
 Memory usage per processor = 19.1539 Mbytes
 ---------------- Step        0 ----- CPU =      0.0000 (sec) ----------------
-Step     =              0 TotEng   =   -160894.9280 KinEng   =         0.0000 
-PotEng   =   -160894.9280 Temp     =         0.0000 Press    =    108802.7182 
-Volume   =     23352.1886 eb       =   -173319.8264 ea       =      5325.1431 
-elp      =        30.6251 emol     =         0.0000 ev       =     11236.7614 
-epen     =       -18.6511 ecoa     =        -0.0000 ehb      =     -1401.0721 
-et       =       291.8048 eco      =        -6.6927 ew       =     49273.6184 
-ep       =   -153072.5232 efi      =         0.0000 eqeq     =    100765.8845 
----------------- Step        1 ----- CPU =      1.2486 (sec) ----------------
-Step     =              1 TotEng   =   -162885.3733 KinEng   =         0.0000 
-PotEng   =   -162885.3733 Temp     =         0.0000 Press    =     38233.2489 
-Volume   =     23352.1886 eb       =   -172099.5129 ea       =      3139.1365 
-elp      =        30.8130 emol     =         0.0000 ev       =     11721.8174 
-epen     =        -0.1634 ecoa     =      -265.2885 ehb      =     -1382.3415 
-et       =       122.3203 eco      =        -4.4081 ew       =     48017.6037 
-ep       =   -151547.5581 efi      =         0.0000 eqeq     =     99382.2085 
-Loop time of 1.24871 on 1 procs for 1 steps with 1737 atoms
+Step     =              0 TotEng   =   -160651.2033 KinEng   =         0.0000 
+PotEng   =   -160651.2033 Temp     =         0.0000 Press    =    108071.7689 
+Volume   =     23352.1886 eb       =   -172847.4253 ea       =      5289.1831 
+elp      =        30.5082 emol     =         0.0000 ev       =     11208.7335 
+epen     =       -18.6511 ecoa     =        -0.0000 ehb      =     -1401.0703 
+et       =       292.0212 eco      =        -6.6959 ew       =     49205.1408 
+ep       =   -153628.2329 efi      =         0.0000 eqeq     =    101225.2852 
+---------------- Step        1 ----- CPU =      1.2331 (sec) ----------------
+Step     =              1 TotEng   =   -162648.8942 KinEng   =         0.0000 
+PotEng   =   -162648.8942 Temp     =         0.0000 Press    =     37669.7079 
+Volume   =     23352.1886 eb       =   -171633.0745 ea       =      3109.7916 
+elp      =        30.7063 emol     =         0.0000 ev       =     11688.7081 
+epen     =        -0.1612 ecoa     =      -274.8590 ehb      =     -1382.4211 
+et       =       122.6855 eco      =        -4.4217 ew       =     47952.8968 
+ep       =   -152087.5390 efi      =         0.0000 eqeq     =     99828.7938 
+Loop time of 1.23319 on 1 procs for 1 steps with 1737 atoms
 
 Minimization stats:
   Stopping criterion = max iterations
   Energy initial, next-to-last, final = 
-        -160894.928024     -160894.928024     -162885.373318
-  Force two-norm initial, final = 6416.99 3393.86
-  Force max component initial, final = 1008.83 409.392
-  Final line search alpha, max atom move = 9.91243e-05 0.0405807
+        -160651.203333     -160651.203333     -162648.894189
+  Force two-norm initial, final = 6398.92 3397.57
+  Force max component initial, final = 1008.86 409.337
+  Final line search alpha, max atom move = 9.9122e-05 0.0405743
   Iterations, force evaluations = 1 1
 
-Pair  time (%) = 0.791306 (63.3699)
+Pair  time (%) = 0.785943 (63.7324)
 Neigh time (%) = 0 (0)
-Comm  time (%) = 0.000145918 (0.0116855)
-Outpt time (%) = 0.00806203 (0.645628)
-Other time (%) = 0.449196 (35.9728)
+Comm  time (%) = 0.000142964 (0.011593)
+Outpt time (%) = 0.00806599 (0.654074)
+Other time (%) = 0.43904 (35.6019)
 
 Nlocal:    1737 ave 1737 max 1737 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
@@ -98,32 +98,32 @@ Dangerous builds = 0
 
 fix            9 all reax/c/bonds 1 bonds.reax
 run             0
-Memory usage per processor = 21.8397 Mbytes
+Memory usage per processor = 21.8398 Mbytes
 ---------------- Step        1 ----- CPU =      0.0000 (sec) ----------------
-Step     =              1 TotEng   =   -162885.3732 KinEng   =         0.0000 
-PotEng   =   -162885.3732 Temp     =         0.0000 Press    =     38233.2307 
-Volume   =     23352.1886 eb       =   -172099.5129 ea       =      3139.1365 
-elp      =        30.8130 emol     =         0.0000 ev       =     11721.8174 
-epen     =        -0.1634 ecoa     =      -265.2885 ehb      =     -1382.3415 
-et       =       122.3203 eco      =        -4.4081 ew       =     48017.6037 
-ep       =   -151547.5189 efi      =         0.0000 eqeq     =     99382.1693 
-Loop time of 2.11387e-06 on 1 procs for 0 steps with 1737 atoms
+Step     =              1 TotEng   =   -162648.8941 KinEng   =         0.0000 
+PotEng   =   -162648.8941 Temp     =         0.0000 Press    =     37669.6732 
+Volume   =     23352.1886 eb       =   -171633.0745 ea       =      3109.7916 
+elp      =        30.7063 emol     =         0.0000 ev       =     11688.7081 
+epen     =        -0.1612 ecoa     =      -274.8590 ehb      =     -1382.4211 
+et       =       122.6855 eco      =        -4.4217 ew       =     47952.8968 
+ep       =   -152087.5040 efi      =         0.0000 eqeq     =     99828.7589 
+Loop time of 2.89117e-06 on 1 procs for 0 steps with 1737 atoms
 
 Pair  time (%) = 0 (0)
 Neigh time (%) = 0 (0)
 Comm  time (%) = 0 (0)
 Outpt time (%) = 0 (0)
-Other time (%) = 2.11387e-06 (100)
+Other time (%) = 2.89117e-06 (100)
 
 Nlocal:    1737 ave 1737 max 1737 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
 Nghost:    7194 ave 7194 max 7194 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
-Neighs:    586905 ave 586905 max 586905 min
+Neighs:    586916 ave 586916 max 586916 min
 Histogram: 1 0 0 0 0 0 0 0 0 0
 
-Total # of neighbors = 586905
-Ave neighs/atom = 337.884
+Total # of neighbors = 586916
+Ave neighs/atom = 337.891
 Neighbor list builds = 0
 Dangerous builds = 0
 write_data     out.data
