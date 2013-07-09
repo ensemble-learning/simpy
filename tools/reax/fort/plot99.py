@@ -29,9 +29,12 @@ def plot_all():
     if os.path.exists("bonds"):
         x = np.loadtxt("bonds")
         xlabel = r"bond length $\AA$"
-    if os.path.exists("angles"):
+    elif os.path.exists("angles"):
         x = np.loadtxt("angles")
         xlabel = r"degree $^{\circ}$"
+    elif os.path.exists("vols"):
+        x = np.loadtxt("vols")
+        xlabel = r"Volume $\AA ^3$"
     reax, qm = parse_fort99()
 
     if len(x) == 0:

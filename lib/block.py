@@ -103,4 +103,6 @@ def g03Block(g03file, ext="log"):
 
 
 if __name__ == "__main__":
-    g03Block("/home/tao/h3_scan_4.log")
+    #g03Block("/home/tao/h3_scan_4.log")
+    geoBlock("geo")
+

@@ -5,8 +5,11 @@
 """
 import os
 import math
-import numpy as np
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
+import numpy as np
+import argparse
 
 class FfieldEq():
     def __init__(self, ffield="output.ff"):
@@ -154,7 +157,6 @@ class Bond():
         """
         Calculate Bond Order
         """
-        print self.D_e
         bo_s = self.bo_s
         bo_p = self.bo_p
         bo_pp = self.bo_pp
@@ -310,8 +312,12 @@ def plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name):
     ax1.set_title(name, size="x-large")
     ax1.legend()
     # plot bond order
+    """
     ax2.plot(r, -be, '-o', label="be", color='red')
     ax2.set_ylim([min(-be), max(-be)])
+    """
+    plt.savefig("%s.png"%name)
+    plt.savefig("%s.eps"%name)
     plt.show()
 
 def plot_bond_order(bonds, r):
@@ -349,23 +355,41 @@ def plot_bond_order(bonds, r):
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
-            #plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
+            #plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
+            plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
         counter += 1
 
-def test():
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("ffield", default="ffield", nargs="?", help="force field file name")
+    parser.add_argument("-display", action="store_true", help="Display the figures")
+    parser.add_argument("-arange", nargs=2, type=float, help="Range to plot the figure")
+    parser.add_argument("-type", nargs=1, type=int, help="Type to save the figure 0: png, 1: eps")
+    args = parser.parse_args()
+    #print b.getBondDist(3,2)
+
+    ffname = args.ffield
+    assert os.path.exists(ffname)
     ff  = FfieldEq()
+
     bonds = []
     #init bond
     for i in range(len(ff.eq2) - 1):
         bond = Bond()
         bonds.append(bond)
     #assign bond order
-    r = np.linspace(0.5, 2.5, 100)
+    if args.arange:
+        assert args.arange[0] < args.arange[1]
+        start = args.arange[0]
+        end = args.arange[1]
+    else:
+        start = 0.5
+        end = 3.0
+    r = np.linspace(start, end, 100)
     bond_energy(bonds, ff)
     plot_bond_order(bonds, r)
 
 
 if __name__ == "__main__":
-    test()
+    main()
 
