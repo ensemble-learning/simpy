@@ -1,0 +1,6 @@
+Generate a sphere from the pdb file
+
+run:
+python /home/tao/Nutstore/code/simupy/tools/build/sphere.py
+
+The details can be set in "inp" file

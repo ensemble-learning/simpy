@@ -1,0 +1,7 @@
+[SPHERE]
+pdbfile = ca12.pdb                ; input pdb file
+center = 23.978 23.978 23.978     ; center of the sphere, usually we use the center of the box
+radius = 12.8                     ; radius of the sphere (in A)
+atoms = Ca Al O                   ; Atom names in the pdb file
+natoms = 12 14 33                 ; Desired ratio
+outfile = caalo_128.pdb           ; Output pdb file

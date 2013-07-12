@@ -103,8 +103,6 @@ def get_angle(a1, a2, a3):
     theta = np.arccos(cost)/np.pi * 180.0
     return theta
 
-def cut_circle():
-    pass
 
 if __name__ == "__main__":
     a =  [3.4199999522999995 ,  0.0000000000000000  , 0.0000000000000000]
