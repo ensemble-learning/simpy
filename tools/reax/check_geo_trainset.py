@@ -21,9 +21,6 @@ def check_geo():
             name = i[7:].strip()
             if name in mols:
                 print "line %8d %s has been included previously!"%(counter, name)
-                f.close()
-                mols = []
-                break
             else:
                 mols.append(name)
         counter += 1
@@ -90,5 +87,17 @@ def check_trainset():
             print mols[i]
     """
 
+def main():
+    import os
+    reacs = parse_trainset()
+    mols = []
+    for i in reacs:
+        for j in i.mols:
+            if j not in mols:
+                mols.append(j)
+    for i in mols:
+        folder = os.path.join("/home/tao/Documents/reax/trainning/reax2/chon/conf", i)
+        os.system("cp %s ./ -r"%folder)
+        
 if __name__ == "__main__":
-    check_trainset()
+    check_geo()

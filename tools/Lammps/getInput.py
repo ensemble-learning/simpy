@@ -30,7 +30,7 @@ def usage():
 
 def getElements():
     assert os.path.exists("ffield")
-    a = Ffield("ffield")
+    a = Ffield("ffield", 1 )
     counter = 1
     for i in a.elements:
         FF[i] = counter
