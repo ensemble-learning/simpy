@@ -1,0 +1,61 @@
+#!/usr/bin/env /exec/python/pythonEPD-6.3-2-rh3-x86/bin/python
+import os
+import os.path
+import sys
+import argparse
+
+def usage():
+    print """Operate all of the sub folders.
+"""
+
+def get_folders():
+    """ Return a list of sub-folders
+    @todo: os.walk
+    """
+    dlist = []
+    cmd = " ".join([i for i in sys.argv[1:]])
+    for i in os.listdir("./"):
+        if os.path.exists(i) and os.path.isdir(i):
+            dlist.append(i)
+
+    dlist.sort()
+    return dlist
+
+
+def exec_folders(dlist, cmd, args):
+    """ Excute the cmd under each sub-folder
+    """
+    for i in dlist:
+        os.chdir(i)
+        if args.v:
+            print "cmd processing in %s"%os.getcwd()
+        os.system(cmd)
+        os.chdir("..")
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("cmd", default="", nargs="*", help="command line to execute")
+    parser.add_argument("-R", action="store_true", help="reverse the folder sequence")
+    parser.add_argument("-v", action="store_true", help="verbose output")
+    #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
+    #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
+    args = parser.parse_args()
+
+    cmd = args.cmd
+    cmd = " ".join(cmd)
+
+    # verbose output
+    if args.v:
+        print "CMD: ", cmd
+
+    dlist = get_folders()
+    # Reverse the folders
+    if args.R:
+        dlist.sort(reverse=True)
+    
+    # Excute the CMD
+    if len(cmd.strip()) > 0:
+        exec_folders(dlist, cmd, args)
+
+if __name__ == "__main__":
+    main()

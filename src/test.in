@@ -1,0 +1,10 @@
+#PBS -S /bin/tcsh
+#PBS -l nodes=1:ppn=64,walltime=0020:00:00
+#PBS -q workq
+#PBS -N test
+#PBS -M chengtao@wag.caltech.edu
+#PBS -m e
+ 
+cd /net/hulk/home6/chengtao/soft/simpy/src
+
+epdpy mc_swap.py > log 

@@ -40,12 +40,15 @@ fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
 thermo         1
 thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq
 thermo_modify   line multi
-dump                    1 all custom 1 dump.lmp id type x y z vx vy vz
-dump_modify             1 sort id
+log            log.sim
 
 min_style       cg
-minimize        0 1.0e-8 1 4
+#minimize        1.0e-4 1.0e-6 1 1
+#minimize        1.0e-4 1.0e-6 100 1000
+minimize        0 1.0e-8 1000 1000
 
 fix            9 all reax/c/bonds 1 bonds.reax
+dump                    1 all custom 1 dump.lmp id type x y z vx vy vz
+dump_modify             1 sort id
 run             0
 write_data     out.data
