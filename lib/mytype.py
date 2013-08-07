@@ -178,6 +178,14 @@ class System():
             match = pattern.match(b)
             if match:
                 i.element= match.group(1)
+    
+    def assignAtomTypes2(self,):
+        """ assign atomtypes according to the element types
+        specially designed for lammps data file
+        """
+        self.assignEleTypes()
+        for i in self.atoms:
+            i.name = i.element
 
     def assignAtomTypes(self,):
         """ assign atomtypes according to the element types

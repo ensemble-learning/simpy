@@ -6,8 +6,16 @@
 To output the ffield
 @see: output_ff.py
 @note: for ATOM n index is exactly n in table
+
+1. Combination rules:
+    comb1: (a + b) / 2
+    comb2: math.sqrt(a*b)
+    comb3: 2*math.sqrt(a*b)
+    comb4: math.pow(a*b, 1.5)
 """
+import os
 import math
+import argparse
 DEBUG = 0
 
 class Ffield():
@@ -139,6 +147,10 @@ class Ffield():
         """output the force field parameter to more readable form.
         according to reaxFF 2008
         """
+
+        # Get the bond order related parameters
+        # get the r_sigma (r_s), r_pi and r_pipi using comb1
+        # @note: only work for both of the atomic r > 0
         eq2 = []
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
@@ -153,6 +165,8 @@ class Ffield():
                     r_pipi = -1.0
                 eq2.append([i, j, r_s, 0, 0, r_pi, 0, 0, r_pipi, 0, 0])
 
+        # get the p_bo(n) ( n = 1, 2, ..6) from the bond section
+        # @note: only work for both of the atomic r > 0
         n, n1 = 0, 0
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
@@ -174,6 +188,7 @@ class Ffield():
                 eq2[n][9], eq2[n][10] = p_bo5, p_bo6
                 n += 1
 
+        # update the r_sigma, r_pi and r_pipi according to the off-diagonal parameters
         n, n1 = 0, 0
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
@@ -332,6 +347,29 @@ class Ffield():
 
         o.close()
 
-if __name__ == "__main__":
-    ff = Ffield("./ffield", 0)
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fname", default="ffield", nargs="?", help="force field file name")
+    parser.add_argument("-D", action="store_true", help="Debug the code")
+    parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
+    args = parser.parse_args()
+    #print b.getBondDist(3,2)
+    
+    fname = args.fname
+
+    assert os.path.exists(fname)
+
+    if args.D:
+        DEBUG = 1
+
+    if args.type:
+        ntype = args.type[0]
+    else:
+        ntype = 0
+        print "Warning: Using default force field type"
+
+    ff = Ffield(fname, ntype)
     ff.toEquation()
+
+if __name__ == "__main__":
+    main()
