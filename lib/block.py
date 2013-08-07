@@ -1,4 +1,5 @@
 """parse the integrated file into seperated single files
+@bug : the first geo missing BIOGRF header
 """
 
 def dumpBlock(dumpfile, outfile="dump.sep", dt = 1):
@@ -125,4 +126,3 @@ def g03Block(g03file, ext="log"):
 if __name__ == "__main__":
     #g03Block("/home/tao/h3_scan_4.log")
     geoBlock("geo")
-d

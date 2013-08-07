@@ -5,8 +5,8 @@
 """
 import os
 import math
-import matplotlib as mpl
-mpl.use('Agg')
+#import matplotlib as mpl
+#mpl.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
 import argparse
@@ -355,8 +355,11 @@ def plot_bond_order(bonds, r):
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            #plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
-            plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
+            if name == "H_H":
+                plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
+                for ii in range(len(r)):
+                    print r[ii], vdw[ii], inner[ii], be_s[ii]
+            #plot_bo_be2(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
         counter += 1
 
 def main():
