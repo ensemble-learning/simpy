@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-"""build seperated simulation
+"""build seperated sub-folders for each simulation
 """
 import os
 import shutil
