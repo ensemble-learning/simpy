@@ -117,11 +117,12 @@ units          real
 atom_style     charge
 boundary       p p p
 
-read_data      lammps.data
-#read_restart       add.rst
+#read_data      lammps.data
+read_restart       min.rst
 
 #pair_style      reax/c control
-pair_style      reax/c NULL lgvdw yes
+#pair_style      reax/c NULL lgvdw yes
+pair_style      reax/c NULL
 
 #----Neighbor Section----#
 neighbor                1.0 bin
@@ -150,14 +151,16 @@ fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
 
 #--------Output info--------
 thermo         400
-thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq
+#thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq
+thermo_style    custom step etotal ke pe temp press 
 thermo_modify   line multi
+
 dump                    1 all custom 400 dump.lmp id type x y z vx vy vz
 dump_modify             1 sort id
 
 #--------Simulation--------
-fix            101 all nvt temp 300 300 200       
-fix            909 all reax/c/bonds 1 1 400 bonds.reax
+fix            101 all nvt temp 300 300 50       
+#fix            909 all reax/c/bonds 1 1 400 bonds.reax
 timestep       0.25
 run            80000
 write_restart  nvt.rst
