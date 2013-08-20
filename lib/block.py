@@ -1,4 +1,5 @@
 """parse the integrated file into seperated single files
+@bug : the first geo missing BIOGRF header
 """
 
 def dumpBlock(dumpfile, outfile="dump.sep", dt = 1):
@@ -59,6 +60,26 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
+def xyzBlock(xyzfile, n, dt=1):
+    f = open(xyzfile, "r")
+    o = open("out.xyz", "w")
+    n = n + 2
+    flag = 1
+    counter = 1
+    block = []
+    nframe = 0
+    for i in f:
+        block.append(i)
+        if counter % n == 0:
+            if nframe % dt == 0:              
+                for j in block:
+                    o.write(j)
+            block = []
+            nframe += 1
+        counter += 1
+    f.close()
+    o.close()
+
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks
     """
@@ -103,4 +124,5 @@ def g03Block(g03file, ext="log"):
 
 
 if __name__ == "__main__":
-    g03Block("/home/tao/h3_scan_4.log")
+    #g03Block("/home/tao/h3_scan_4.log")
+    geoBlock("geo")

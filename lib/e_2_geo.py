@@ -21,6 +21,7 @@ def main():
     parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
     parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
     parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
+    parser.add_argument("-vol", action="store_true", help="get the volume of the simulation box")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
     fname = args.fname
@@ -46,6 +47,10 @@ def main():
         a3 = args.a[2]
         val = b.getAngle(a1, a2, a3)
         print "Angle of %d-%d-%d is %.3f."%(a1, a2, a3, val)
+
+    if args.vol:
+        vol = b.getVol()
+        print "Volume is %.3f"%vol
 
 if __name__ == "__main__":
     main()

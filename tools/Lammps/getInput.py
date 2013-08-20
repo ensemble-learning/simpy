@@ -11,6 +11,8 @@ if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simupy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
+elif socket.gethostname() == "atom.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -30,7 +32,7 @@ def usage():
 
 def getElements():
     assert os.path.exists("ffield")
-    a = Ffield("ffield")
+    a = Ffield("ffield", 0 )
     counter = 1
     for i in a.elements:
         FF[i] = counter
