@@ -148,6 +148,7 @@ variable efi    equal c_reax[13]
 variable eqeq   equal c_reax[14]
 
 fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
+velocity        all create 300.0 4928459 rot yes dist gaussian
 
 #--------Output info--------
 thermo         400
