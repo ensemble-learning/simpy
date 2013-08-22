@@ -9,6 +9,7 @@ dt = 1
 
 # parse the dump file with multi configurations into seperated dump files
 nframe = dumpBlock(lmpfile, sepfile, dt)
+nframe += 1
 
 for i in range(0, nframe, dt):
 #for i in range(10):
