@@ -35,6 +35,7 @@ def withPbc(testfile="supper.pdb"):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
+    #b.translate(2.1, "x")
     b.geotag = "BIOGRF 200"
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")

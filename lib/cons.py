@@ -4,7 +4,7 @@
 # Atom number - Atom name map
 ELEMENT = {1:"H", 6:"C", 7:"N",  8:"O", 12: "Mg", 13: "Al", 14:"Si", 20:"Ca", 22:"Ti"}
 # Atom name - Atom mass map
-ELEMENT2MASS = {"H": 1.0079, "O": 15.994, "N": 14.007, "Al": 26.982, "AL": 26.982, "Ca": 40.078, "CA": 40.078, 
+ELEMENT2MASS = {"H": 1.0079, "O": 15.994, "N": 14.007, "Li":6.941, "Al": 26.982, "AL": 26.982, "Ca": 40.078, "CA": 40.078, 
                 "Ti":47.867, "TI":47.867, "Si": 28.086, "SI": 28.086, "Mg": 24.305, "Mg": 24.305, "C":12.011,
                 "Cl":35.453,}
 # Atom name - Atom mass map

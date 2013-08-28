@@ -204,6 +204,34 @@ class System():
         for i in self.atoms:
             i.type1 = c[i.name.strip()]
 
+    def translate(self, delta=0.0, axis="z"):
+        """ translate the coordination along x, y or z
+        """
+        if axis == "x":
+            n = 0
+        elif axis == "y":
+            n = 1
+        elif axis == "z":
+            n = 2
+        for i in self.atoms:
+            i.x[n] = i.x[n] + delta
+    
+    def getMin(self, axis="z"):
+        """ get the min value in x, y or z
+        """
+        min = 9999.0
+        if axis == "x":
+            n = 0
+        elif axis == "y":
+            n = 1
+        elif axis == "z":
+            n = 2
+        for i in self.atoms:
+            val = i.x[n]
+            if  min > i.x[n]:
+                min = i.x[n]
+        return min
+
     def getVol(self):
         """ return the volume of the system
         @see: http://en.wikipedia.org/wiki/Parallelepiped
