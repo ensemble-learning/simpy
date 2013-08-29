@@ -1,6 +1,7 @@
 """ Output configuration files, current support data, geo, xyz.
 11-10-2012: add head in geo output
 01-04-2013: debug toPdb
+@todo: finish to Top
 """
 from cons import ELEMENT2MASS
 from utilities import lattice2v
@@ -193,3 +194,24 @@ def toGjf(system, outfile="g03out.gjf"):
     o.write('\n')
     o.close()
 
+def toTop(system, outfile="topol.top"):
+    """output the top file
+    """
+    o = open(outfile, "w")
+    o.write('include "vdw.itp"\n')
+    o.write("[ moleculetype ]\n")
+    o.write("simpy     3\n")
+    o.write("\n")
+    o.write("[ atoms ]\n")
+    """
+         1        o_2w     1         WAT           O     1     -0.8476    15.99940
+    [ system ]
+    ; Name
+    HEP_2
+
+    [ molecules ]
+    ;      Compound     #mols
+    WAT_1  1024
+    HEP_2     1
+    """
+    
