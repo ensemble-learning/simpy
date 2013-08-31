@@ -23,7 +23,7 @@ from ffield import Ffield
 #FF = {"C": 1, "H": 2, "O": 3, "N": 4, "Ca":4, "Al":6}
 FF = {}
 MASS = {12.011:"C", 14.007: "N", 15.994:"O", 1.0079:"H", 40.078:"Ca",\
-        26.982:"Al", 47.867:"Ti"}
+        26.982:"Al", 28.086:"Si", 35.453:"Cl", 47.867:"Ti",  6.941:"Li"}
 
 def usage():
     print """python genInput.py type
