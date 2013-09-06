@@ -1,0 +1,6 @@
+#-------Bias ---------------
+fix      309 bottom setforce 0.0 0.0 0.0
+fix      310 electrode setforce 0.0 0.0 0.0
+fix      311 all wall/lj126 zhi EDGE 1.0 1.0 2.5 units box
+fix      312 all wall/lj126 zlo EDGE 1.0 1.0 2.5 units box
+#fix      312 solvent efield 0.0 0.0 1.0
