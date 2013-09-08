@@ -68,8 +68,9 @@ class Xvg():
         print aver*2, std*2
         return aver, std
         
-xvg = Xvg("area.xvg")
-xvg.parser()
-xvg.statistic(1)
-xvg.plot()
+if __name__ == "__main__":
+    xvg = Xvg("area.xvg")
+    xvg.parser()
+    xvg.statistic(1)
+    xvg.plot()
         
