@@ -51,12 +51,12 @@ class Xvg():
                 self.ny += 1
                     
     def plot(self, ):
-        plt.plot(self.data[0], self.data[1])
+        plt.plot(self.data[0], self.data[2])
         plt.title(self.title, size="x-large")
         plt.xlabel(self.xlabel, size="x-large")
         plt.ylabel(self.ylabel, size="x-large")
         if 1:
-            aver, std = self.statistic(1)
+            aver, std = self.statistic(2)
             plt.plot(self.data[0], [aver]*len(self.data[0]), 
             ls="--", lw=4, color="black")
         plt.show()
