@@ -125,7 +125,13 @@ class G03LogConf():
         for i in f:
             if i.strip().startswith("#"):
                 self.methods.append(i)
-            elif "Charge" in i and "Multiplicity" in i: 
+                break
+        for i in f:
+            if i.strip().startswith("-----"):
+                break
+            self.methods.append(i)
+        for i in f:
+            if "Charge" in i and "Multiplicity" in i: 
                 tokens = i.strip().split()
                 self.charge = int(tokens[2])
                 self.spin = int(tokens[5])

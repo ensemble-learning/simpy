@@ -1,0 +1,57 @@
+
+units          real
+atom_style     charge
+boundary       p p f
+
+read_data      lammps.data
+#read_restart       min.rst
+#reset_timestep   0
+
+#----Neighbor Section----#
+neighbor                1.0 bin
+neigh_modify    delay 0 every 10 check no
+
+
+#----ReaxFF simulation----#
+pair_style      reax/c NULL
+#pair_style      reax/c control
+#pair_style      reax/c NULL lgvdw yes
+pair_coeff      * * ffield 9 10 1 3 2
+
+compute         reax all pair reax/c
+variable eb     equal c_reax[1]
+variable ea     equal c_reax[2]
+variable elp    equal c_reax[3]
+variable emol   equal c_reax[4]
+variable ev     equal c_reax[5]
+variable epen   equal c_reax[6]
+variable ecoa   equal c_reax[7]
+variable ehb    equal c_reax[8]
+variable et     equal c_reax[9]
+variable eco    equal c_reax[10]
+variable ew     equal c_reax[11]
+variable ep     equal c_reax[12]
+variable efi    equal c_reax[13]
+variable eqeq   equal c_reax[14]
+
+fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
+
+#----------Include-----------------------
+include         group.lammps
+include         bias.lammps
+include         ana.lammps
+
+#----------Output------------------------
+thermo          1
+#thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma
+thermo_style    custom step c_cLip c_cCl c_cL1 c_cL2 c_cL3 c_cL4 c_cL5 c_cL6 c_cL7 c_cL8 temp
+thermo_modify   line multi
+dump            1 all custom 400 dump.lmp id type x y z vx vy vz
+dump_modify     1 sort id
+
+#----------Simulation--------------------
+fix             901 electrode nvt temp 300.0 300.0 20.0
+fix             902 electrolyte nvt temp 300.0 300.0 20.0
+
+timestep        0.1
+run             0

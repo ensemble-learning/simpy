@@ -1,4 +1,6 @@
 """Lammps data file
+@doing: implement a general Data class
+@note: remove the ReaxData after finishing Data Class
 """
 import os
 from mytype import System, Atom

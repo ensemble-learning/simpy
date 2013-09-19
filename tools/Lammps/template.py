@@ -12,7 +12,8 @@ boundary       p p p
 read_data      lammps.data
 #read_restart       add.rst
 
-pair_style      reax/c control
+pair_style      reax/c NULL
+#pair_style      reax/c control
 #pair_style      reax/c NULL lgvdw yes
 
 #----Neighbor Section----#
@@ -43,10 +44,12 @@ fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
 
 
 thermo         1
-thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq
+thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma
 thermo_modify   line multi
 dump                    1 all custom 1 dump.lmp id type x y z vx vy vz
 dump_modify             1 sort id
+
+#fix             201 all box/relax aniso 0.0 vmax 0.001
 
 min_style       cg
 minimize        0 1.0e-8 1000 1000

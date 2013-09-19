@@ -241,7 +241,8 @@ class Ffield():
             for j in range(i, len(self.atom) - 1):
                 epsilon = math.sqrt(float(self.atom[i][5])*float(self.atom[j][5]))
                 alpha = math.sqrt(float(self.atom[i][9])*float(self.atom[j][9]))
-                r_vdw = 2 * math.sqrt(float(self.atom[i][4])*float(self.atom[j][4]))
+                #r_vdw = 2 * math.sqrt(float(self.atom[i][4])*float(self.atom[j][4]))
+                r_vdw = math.sqrt(float(self.atom[i][4])*float(self.atom[j][4]))
                 gamma_w = 0.5 * (float(self.atom[i][10]) + float(self.atom[j][10]))
                 eq23.append([i, j, epsilon, alpha, r_vdw, gamma_w])
 

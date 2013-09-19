@@ -4,7 +4,7 @@
 import sys
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo
+from output_conf import toReaxLammps, toGeo, toPdb
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -35,9 +35,11 @@ def withPbc(testfile="supper.pdb"):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
+    #b.translate(2.1, "x")
     b.geotag = "BIOGRF 200"
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")
+    toPdb(b, "out.pdb")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

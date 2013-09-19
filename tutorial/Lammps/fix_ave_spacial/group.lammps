@@ -1,0 +1,22 @@
+#--------Group info---------
+group    bottom id <> 1561 1680
+group    electrode id >= 1681
+group    electrode_all id >= 1561
+group    electrolyte id <= 1560
+group    dmc id <> 121 1560
+
+group    L1 id <> 1561 1620
+group    L2 id <> 1621 1680
+group    L3 id <> 1681 1740
+group    L4 id <> 1741 1800
+group    L5 id <> 1801 1860
+group    L6 id <> 1861 1920
+group    L7 id <> 1921 1980
+group    L8 id <> 1981 2040
+
+group    Li+ id <> 1 60
+group    Cl- id <> 61 120
+
+#velocity electrode create 300.0 4928459 rot yes dist gaussian
+velocity electrolyte create 300.0 4928459 rot yes dist gaussian
+

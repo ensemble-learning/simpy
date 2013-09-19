@@ -68,4 +68,5 @@ def main():
                 c.methods = [" ".join(tokens)]
                 toGjf(c, "conti.gjf")
 
-main()
+if __name__ == "__main__":
+    main()

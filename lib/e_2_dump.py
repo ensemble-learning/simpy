@@ -2,7 +2,7 @@ from block import dumpBlock
 from dump import Dump
 from output_conf import toXyz, toPdb
 
-lmpfile = "dump.lmp"
+lmpfile = "dump.lammpstrj"
 sepfile = "dump.sep"
 dt = 1
 
