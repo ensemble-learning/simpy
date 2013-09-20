@@ -279,6 +279,12 @@ class System():
         ang = get_angle(x1, x2, x3)
         return ang
         
+    def sortNdx(self, ndx):
+        atoms = []
+        for i in ndx:
+            atoms.append(self.atoms[i])
+        self.atoms = atoms
+
 class Molecule():
     """Basic class for molecular includes (name, atoms(list of atoms), 
     conn (connectivity))
@@ -338,7 +344,7 @@ class Molecule():
             if min > i.x[n]:
                 min = i.x[n]
         print min
-
+    
 def test():
     """test some functions
     """

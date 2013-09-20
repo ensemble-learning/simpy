@@ -18,14 +18,13 @@ class Atom_mdf():
         self.connect = []
         
 class Mdf():
-    def __init__(self,):
+    def __init__(self, mdffile):
         self.atoms = []
         self.atom_names = []
-        self.read()
-    def read(self,):
-        infile = "LGPS_right_ms"
+        self.read(mdffile)
+    def read(self, mdffile):
         atoms = []
-        f = open("%s.mdf"%infile, "r")
+        f = open(mdffile, "r")
         for i in f:
             if i.strip().startswith("@"):
                 pass
@@ -51,13 +50,13 @@ class Mdf():
             self.atoms.append(atom)
                 
 class Car():
-    def __init__(self,):
+    def __init__(self, carfile):
         self.pbc_tag = 0
         self.pbc = []
         self.coords = []
-        self.read()
-    def read(self,):
-        carfile = "LGPS_right_ms.car"
+        self.read( carfile)
+    def read(self, carfile):
+
         f = open(carfile, "r")
         counter = 0
         #!BIOSYM archive 3
@@ -95,33 +94,10 @@ class Car():
             a.x[1] = float(i[20:35])
             a.x[2] = float(i[35:50])
             s.atoms.append(a)
+        return s
             
-def sort_with_connect():
-    """Sort the atoms: gather the same atoms, and atoms in same
-    molecules according to connectivity (.mdf).
-    """
-    mdf = Mdf()
-    car = Car()
-    car.parser()
-    Li = []
-    Ge = []
-    P = []
-    atom_names = mdf.atom_names
-    for i in range(len(mdf.atoms)):
-        if mdf.atoms[i].element == "Li":
-            Li.append(i)
-        elif mdf.atoms[i].element == "Ge":
-            Ge.append(i)
-            for j in mdf.atoms[i].connect:
-                Ge.append(atom_names.index(j))
-        elif mdf.atoms[i].element == "P":
-            P.append(i)
-            for j in mdf.atoms[i].connect:
-                Ge.append(atom_names.index(j))
-    seq_new = Li + Ge + P
-    
 def test():
-    sort_with_connect()
+    pass
     
 if __name__ == "__main__":
     test()
