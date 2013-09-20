@@ -32,7 +32,7 @@ def plot_all():
     if os.path.exists("bonds"):
         x = np.loadtxt("bonds")
         xlabel = r"bond length $\AA$"
-        scale = -1
+        scale = 1
     elif os.path.exists("angles"):
         x = np.loadtxt("angles")
         xlabel = r"Angles $^{\circ}$"
@@ -122,8 +122,6 @@ def plot_in_block():
 \end{figure}
 """%(i, names[i].replace('_', ' '))
         #print tex
-
-
 
 
 if __name__ == "__main__":
