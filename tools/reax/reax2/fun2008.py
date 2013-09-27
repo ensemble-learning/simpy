@@ -355,7 +355,7 @@ def plot_bond_order(bonds, r):
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            if name == "S_P":
+            if name == "B_B":
                 plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
                 for ii in range(len(r)):
                     print r[ii], vdw[ii], inner[ii], be_s[ii]

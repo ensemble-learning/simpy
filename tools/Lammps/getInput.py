@@ -26,7 +26,7 @@ from ffield import Ffield
 FF = {}
 MASS = {12.011:"C", 14.007: "N", 15.994:"O", 1.0079:"H", 40.078:"Ca",\
         26.982:"Al", 28.086:"Si", 35.453:"Cl", 47.867:"Ti",  6.941:"Li",
-        30.974:"P", 32.065:"S", 72.64:"Ge"}
+        30.974:"P", 32.065:"S", 72.64:"Ge", 10.811:"B"}
 
 def usage():
     print """python genInput.py type

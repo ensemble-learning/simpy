@@ -123,6 +123,8 @@ boundary       p p p
 #read_data      lammps.data
 read_restart       min.rst
 
+reset_timestep   0
+
 #pair_style      reax/c control
 #pair_style      reax/c NULL lgvdw yes
 pair_style      reax/c NULL
