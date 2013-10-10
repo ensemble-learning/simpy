@@ -8,10 +8,8 @@ def usage():
     print """Operate all of the sub folders.
 """
 
+
 def get_folders():
-    """ Return a list of sub-folders
-    @todo: os.walk
-    """
     dlist = []
     cmd = " ".join([i for i in sys.argv[1:]])
     for i in os.listdir("./"):
@@ -23,13 +21,15 @@ def get_folders():
 
 
 def exec_folders(dlist, cmd, args):
-    """ Excute the cmd under each sub-folder
-    """
     for i in dlist:
+        run = cmd
         os.chdir(i)
         if args.v:
             print "cmd processing in %s"%os.getcwd()
-        os.system(cmd)
+        if args.arg:
+            folder = os.path.basename(os.getcwd())
+            run += " %s"%folder
+        os.system(run)
         os.chdir("..")
 
 def main():
@@ -37,6 +37,7 @@ def main():
     parser.add_argument("cmd", default="", nargs="*", help="command line to execute")
     parser.add_argument("-R", action="store_true", help="reverse the folder sequence")
     parser.add_argument("-v", action="store_true", help="verbose output")
+    parser.add_argument("-arg", action="store_true", help="take folder as argument")
     #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
     #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
     args = parser.parse_args()
@@ -44,16 +45,13 @@ def main():
     cmd = args.cmd
     cmd = " ".join(cmd)
 
-    # verbose output
     if args.v:
         print "CMD: ", cmd
 
     dlist = get_folders()
-    # Reverse the folders
     if args.R:
         dlist.sort(reverse=True)
-    
-    # Excute the CMD
+
     if len(cmd.strip()) > 0:
         exec_folders(dlist, cmd, args)
 
