@@ -1,0 +1,3 @@
+~huskeypm/source/swig-1.3.34/swig -perl5 Fsearch.i
+ g++ -fpic -c -Dbool=char -I/usr/lib/perl5/5.8.0/i386-linux-thread-multi/CORE Fsearch_wrap.c
+g++ -shared Fsearch_wrap.o -o Fsearch.so

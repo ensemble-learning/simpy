@@ -1,0 +1,277 @@
+
+=head1 NAME
+
+Kleene's Algorithm - the theory behind it
+
+brief introduction
+
+=head1 DESCRIPTION
+
+=head2 B<Semi-Rings>
+
+A Semi-Ring (S, +, ., 0, 1) is characterized by the following properties:
+
+=over 4
+
+=item 1)
+
+a)  C<(S, +, 0) is a Semi-Group with neutral element 0>
+
+b)  C<(S, ., 1) is a Semi-Group with neutral element 1>
+
+c)  C<0 . a = a . 0 = 0  for all a in S>
+
+=item 2)
+
+C<"+"> is commutative and B<idempotent>, i.e., C<a + a = a>
+
+=item 3)
+
+Distributivity holds, i.e.,
+
+a)  C<a . ( b + c ) = a . b + a . c  for all a,b,c in S>
+
+b)  C<( a + b ) . c = a . c + b . c  for all a,b,c in S>
+
+=item 4)
+
+C<SUM_{i=0}^{+infinity} ( a[i] )>
+
+exists, is well-defined and unique
+
+C<for all a[i] in S>
+
+and associativity, commutativity and idempotency hold
+
+=item 5)
+
+Distributivity for infinite series also holds, i.e.,
+
+  ( SUM_{i=0}^{+infty} a[i] ) . ( SUM_{j=0}^{+infty} b[j] )
+  = SUM_{i=0}^{+infty} ( SUM_{j=0}^{+infty} ( a[i] . b[j] ) )
+
+=back
+
+EXAMPLES:
+
+=over 4
+
+=item *
+
+C<S1 = ({0,1}, |, &, 0, 1)>
+
+Boolean Algebra
+
+See also L<Math::MatrixBool(3)>
+
+=item *
+
+C<S2 = (pos. reals with 0 and +infty, min, +, +infty, 0)>
+
+Positive real numbers including zero and plus infinity
+
+See also L<Math::MatrixReal(3)>
+
+=item *
+
+C<S3 = (Pot(Sigma*), union, concat, {}, {''})>
+
+Formal languages over Sigma (= alphabet)
+
+See also L<DFA::Kleene(3)>
+
+=back
+
+=head2 B<Operator '*'>
+
+(reflexive and transitive closure)
+
+Define an operator called "*" as follows:
+
+    a in S   ==>   a*  :=  SUM_{i=0}^{+infty} a^i
+
+where
+
+    a^0  =  1,   a^(i+1)  =  a . a^i
+
+Then, also
+
+    a*  =  1 + a . a*,   0*  =  1*  =  1
+
+hold.
+
+=head2 B<Kleene's Algorithm>
+
+In its general form, Kleene's algorithm goes as follows:
+
+    for i := 1 to n do
+        for j := 1 to n do
+        begin
+            C^0[i,j] := m(v[i],v[j]);
+            if (i = j) then C^0[i,j] := C^0[i,j] + 1
+        end
+    for k := 1 to n do
+        for i := 1 to n do
+            for j := 1 to n do
+                C^k[i,j] := C^k-1[i,j] + 
+                            C^k-1[i,k] . ( C^k-1[k,k] )* . C^k-1[k,j]
+    for i := 1 to n do
+        for j := 1 to n do
+            c(v[i],v[j]) := C^n[i,j]
+
+=head2 B<Kleene's Algorithm and Semi-Rings>
+
+Kleene's algorithm can be applied to any Semi-Ring having the properties
+listed previously (above). (!)
+
+EXAMPLES:
+
+=over 4
+
+=item *
+
+C<S1 = ({0,1}, |, &, 0, 1)>
+
+C<G(V,E)> be a graph with set of vortices V and set of edges E:
+
+C<m(v[i],v[j])  :=  ( (v[i],v[j]) in E ) ? 1 : 0>
+
+Kleene's algorithm then calculates
+
+C<c^{n}_{i,j} = ( path from v[i] to v[j] exists ) ? 1 : 0>
+
+using
+
+C<C^k[i,j]  =  C^k-1[i,j]  |  C^k-1[i,k]  &  C^k-1[k,j]>
+
+(remember C< 0*  =  1*  =  1 >)
+
+=item *
+
+C<S2 = (pos. reals with 0 and +infty, min, +, +infty, 0)>
+
+C<G(V,E)> be a graph with set of vortices V and set of edges E, with
+costs C<m(v[i],v[j])> associated with each edge C<(v[i],v[j])> in E:
+
+C<m(v[i],v[j])  :=  costs of (v[i],v[j])>
+
+C<for all (v[i],v[j]) in E>
+
+Set C<m(v[i],v[j]) := +infinity> if an edge (v[i],v[j]) is not in E.
+
+C<  ==E<gt>  a* = 0  for all a in S2>
+
+C<  ==E<gt>  C^k[i,j]  =  min( C^k-1[i,j] ,>
+
+C<           C^k-1[i,k]  +  C^k-1[k,j] )>
+
+Kleene's algorithm then calculates the costs of the "shortest" path
+from any C<v[i]> to any other C<v[j]>:
+
+C<C^n[i,j] = costs of "shortest" path from v[i] to v[j]>
+
+=item *
+
+C<S3 = (Pot(Sigma*), union, concat, {}, {''})>
+
+C<M in DFA(Sigma)> be a Deterministic Finite Automaton with a set of
+states C<Q>, a subset C<F> of C<Q> of accepting states and a transition
+function C<delta : Q x Sigma --E<gt> Q>.
+
+Define
+
+C<m(v[i],v[j])  :=>
+
+C<    { a in Sigma | delta( q[i] , a ) = q[j] }>
+
+and
+
+C<C^0[i,j] := m(v[i],v[j]);>
+
+C<if (i = j) then C^0[i,j] := C^0[i,j] union {''}>
+
+(C<{''}> is the set containing the empty string, whereas C<{}> is the
+empty set!)
+
+Then Kleene's algorithm calculates the language accepted by Deterministic
+Finite Automaton M using
+
+C<C^k[i,j] = C^k-1[i,j] union>
+
+C<    C^k-1[i,k] concat ( C^k-1[k,k] )* concat C^k-1[k,j]>
+
+and
+
+C<L(M)  =  UNION_{ q[j] in F }  C^n[1,j]>
+
+(state C<q[1]> is assumed to be the "start" state)
+
+finally being the language recognized by Deterministic Finite Automaton M.
+
+=back
+
+Note that instead of using Kleene's algorithm, you can also use the "*"
+operator on the associated matrix:
+
+Define  C<A[i,j]  :=  m(v[i],v[j])>
+
+C<  ==E<gt>   A*[i,j]  =  c(v[i],v[j])>
+
+Proof:
+
+C<A*  =  SUM_{i=0}^{+infty} A^i>
+
+where  C<A^0  =  E_{n}>
+
+(matrix with one's in its main diagonal and zero's elsewhere)
+
+and  C<A^(i+1)  =   A . A^i>
+
+Induction over k yields:
+
+C<A^k[i,j]  =  c_{k}(v[i],v[j])>
+
+=over 10
+
+=item C<k = 0:>
+
+C<c_{0}(v[i],v[j])  =  d_{i,j}>
+
+with  C<d_{i,j}  :=  (i = j) ? 1 : 0>
+
+and  C<A^0  =  E_{n}  =  [d_{i,j}]>
+
+=item C<k-1 -E<gt> k:>
+
+C<c_{k}(v[i],v[j])>
+
+C<= SUM_{l=1}^{n} m(v[i],v[l]) . c_{k-1}(v[l],v[j])>
+
+C<= SUM_{l=1}^{n} ( a[i,l] . a[l,j] )>
+
+C<= [a^{k}_{i,j}]  =  A^1 . A^(k-1)  =  A^k>
+
+=back
+
+qed
+
+In other words, the complexity of calculating the closure and doing
+matrix multiplications is of the same order C<S<O( n^3 )>> in Semi-Rings!
+
+=head1 SEE ALSO
+
+Math::MatrixBool(3), Math::MatrixReal(3), DFA::Kleene(3).
+
+(All contained in the distribution of the "Set::IntegerFast" module)
+
+Dijkstra's algorithm for shortest paths.
+
+=head1 AUTHOR
+
+This document is based on lecture notes and has been put into
+POD format by Steffen Beyer <sb@engelschall.com>.
+
+=head1 COPYRIGHT
+
+Copyright (c) 1997 by Steffen Beyer. All rights reserved.
+
