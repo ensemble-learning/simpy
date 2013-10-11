@@ -1,0 +1,34 @@
+units           real
+atom_style      full
+boundary        p p p
+dielectric      1
+special_bonds   lj/coul 0.0 0.0 1.0 
+
+pair_style      lj/charmm/coul/long/opt 13 14.00000 
+bond_style      harmonic  
+angle_style     hybrid cosine/squared  cosine/periodic  
+dihedral_style  harmonic  
+improper_style  umbrella  
+kspace_style    pppm 0.001   
+
+read_data       data.lammps
+
+pair_modify     mix geometric
+neighbor        2.0 multi
+neigh_modify    every 2 delay 4 check yes
+thermo_style    multi
+thermo_modify	line multi format float %14.6f
+angle_coeff	    1 cosine/periodic    39.93993057           -1            3 # C_3 C_2 O_3 
+angle_coeff	    2 cosine/squared     68.66000075    106.70000000 # C_3 N_3 H_ 
+angle_coeff	    3 cosine/squared     68.57506120    109.47120000 # C_2 C_3 H_ 
+angle_coeff	    4 cosine/squared    206.19712597    109.47120000 # C_2 C_3 N_3 
+angle_coeff	    5 cosine/periodic    40.37463524           -1            3 # O_2 C_2 C_3 
+angle_coeff	    6 cosine/periodic    50.56871567           -1            3 # O_2 C_2 O_3 
+angle_coeff	    7 cosine/squared     35.33180817    109.47120000 # H_ C_3 H_ 
+angle_coeff	    8 cosine/squared     37.72962975    106.70000000 # H_ N_3 H_ 
+angle_coeff	    9 cosine/squared     93.29111135    109.47120000 # N_3 C_3 H_ 
+
+variable        input index in.lammps
+variable        sname index lammps
+
+run 0

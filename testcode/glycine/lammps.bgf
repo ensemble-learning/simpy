@@ -1,0 +1,37 @@
+BIOGRF 200
+DESCRP test.pdb
+FORCEFIELD DREIDING  
+FORMAT ATOM   (a6,1x,i5,1x,a5,1x,a3,1x,a1,1x,a5,3f10.5,1x,a5,i3,i2,1x,f8.5)
+HETATM     1 O1    RES A   444   0.57500   1.25600   0.00000 O_3    2 0 -0.47973
+HETATM     2 O2    RES A   444   1.67700  -0.70400  -0.00000 O_2    1 0 -0.24958
+HETATM     3 C3    RES A   444  -0.74300  -0.75600   0.00000 C_3    4 0  0.09179
+HETATM     4 H4    RES A   444  -0.76100  -1.41900   0.87000 H_     1 0  0.05372
+HETATM     5 H5    RES A   444  -0.76100  -1.42000  -0.87000 H_     1 0  0.05372
+HETATM     6 C6    RES A   444   0.63600  -0.09900  -0.00000 C_2    3 0  0.31853
+HETATM     7 H7    RES A   444   1.49200   1.56800   0.00000 H_HB   1 0  0.29509
+HETATM     8 N8    RES A   444  -1.92700   0.08500  -0.00000 N_3    3 0 -0.32095
+HETATM     9 H9    RES A   444  -1.92500   0.69500   0.81100 H_     1 0  0.11870
+HETATM    10 H10   RES A   444  -1.92500   0.69500  -0.81100 H_     1 0  0.11870
+FORMAT CONECT (a6,12i6)
+
+CONECT     1     6     7
+ORDER      1     1     1
+CONECT     2     6
+ORDER      2     2
+CONECT     3     5     6     8     4
+ORDER      3     1     1     1     1
+CONECT     4     3
+ORDER      4     1
+CONECT     5     3
+ORDER      5     1
+CONECT     6     1     2     3
+ORDER      6     1     2     1
+CONECT     7     1
+ORDER      7     1
+CONECT     8    10     3     9
+ORDER      8     1     1     1
+CONECT     9     8
+ORDER      9     1
+CONECT    10     8
+ORDER     10     1
+END
