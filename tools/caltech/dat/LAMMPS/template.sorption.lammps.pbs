@@ -1,0 +1,132 @@
+#PBS -l nodes=nodes_here:ppn=ppn_here
+#PBS -l walltime=480:00:00
+#PBS -q workq
+#PBS -j oe
+#!/bin/tcsh
+#!/bin/csh
+#PBS -N name_here
+
+echo "Nodes:"
+cat $PBS_NODEFILE
+echo "JOB: MD Simulation of name_here at temps_here K"
+echo
+
+set prefix = name_here
+set num_h2 = num_h2_here
+set curr_dir = ${PBS_O_WORKDIR}
+set results_dir = ${curr_dir}/results/
+
+set temps = (temps_here)
+set temp_dir = /temp1/tpascal/${prefix}
+set data_file = (data_file_here)
+set nodes = 1
+set nprocs = `wc -l < $PBS_NODEFILE`
+set createGrpFile = "/ul/tpascal/scripts/bgf2VACgrp.pl -c 1 -f molsize -z 1"
+set tstep = 0.001
+
+if ($PBS_O_HOST == "matrix" || $PBS_O_HOST == "borg") then
+#use these for 32 bit machines (matrix/borg) etc
+	setenv LAMMPS_PARALLEL "/ul/tpascal/codes/openmpi/1.4.3/32/bin/mpirun -hostfile $PBS_NODEFILE -np $nprocs --path /ul/tpascal/openmpi/1.4.3/32/bin"
+	set executable = "/ul/tpascal/codes/bin/lmp_parallel32 -screen none"
+	set do2pt = /ul/tpascal/codes/bin/2pt_analysis32
+else
+#use these for hive new wolfs etc
+	setenv LAMMPS_PARALLEL "/ul/tpascal/codes/openmpi/1.4.3/64/bin/mpirun -hostfile $PBS_NODEFILE -np $nprocs --path /ul/tpascal/openmpi/1.4.3/64/bin"
+	set executable = "/ul/tpascal/codes/bin/lmp_parallel64 -screen none"
+	set do2pt = /ul/tpascal/codes/bin/2pt_analysis64
+endif
+
+echo Running $executable on $nodes nodes $nprocs processors launched from $PBS_O_HOST
+echo "Nodes:"
+cat $PBS_NODEFILE
+
+cat $PBS_NODEFILE > $curr_dir/nodelist.$PBS_JOBID
+
+mkdir -p $results_dir ${temp_dir}/analysis
+cd $temp_dir
+
+foreach j (`seq 1 $#data_file`)
+	set i = $data_file[$j]
+	if !(-e ${curr_dir}/$i) then
+		echo "ERROR: Cannot locate $i"
+		exit(1)
+	endif
+	set dirn = `dirname ${curr_dir}/${i}`
+	set molname = `basename $i`
+	set molname = `echo $molname | sed 's/^data\.//'`
+	set input_file = ${dirn}/in.${molname}.md
+	if !(-e $input_file) then
+		echo "ERROR: Cannot locate $input_file"
+		exit(1)
+	endif
+	set bgf_file = ${dirn}/${molname}.bgf
+	if !(-e $bgf_file) then
+		echo "ERROR: Cannot locate $bgf_file"
+		exit(1)
+	endif
+	$createGrpFile -b $bgf_file -s ${molname}.grps > /dev/null || goto error
+	echo "$molname"
+	foreach t ($temps)
+		echo "	$t K"
+		echo "	    1. LAMMPS dynamics"
+		$LAMMPS_PARALLEL $executable -in $input_file -var data_file ${curr_dir}/$i -var sname ${molname}.${t} -var rtemp $t -log ${molname}.${t}.equil.lammps.log -var input $input_file || goto error
+		echo "	    2. 2PT analysis"
+		cd analysis
+			foreach k (`seq 1 5`)
+                		cat > ${molname}.${t}.${k}.2pt.in <<DATA
+IN_LMPDATA                      ${curr_dir}/${i}
+IN_LMPTRJ                       ../${molname}.${t}.2pt.${k}
+IN_GROUPFILE                    ../${molname}.grps
+ANALYSIS_FRAME_INITIAL          1
+ANALYSIS_FRAME_STEP             1
+ANALYSIS_FRAME_FINAL            0
+ANALYSIS_VAC_CORLENGTH          0.5
+ANALYSIS_VAC_MEMORYMB           10000
+ANALYSIS_VAC_2PT                1
+ANALYSIS_LMP_TSTEP              ${tstep}
+ANALYSIS_VAC_LINEAR_MOL         0
+ANALYSIS_VAC_ROTN_SYMMETRY      1
+ANALYSIS_VAC_FIXED_DF           0
+ANALYSIS_OUT                    ${molname}.${t}.${k}
+ANALYSIS_SHOW2PT                1
+DATA
+
+				echo "          ${molname}.${t}.${k}"
+				$do2pt ${molname}.${t}.${k}.2pt.in > ${molname}.${t}.${k}.2pt.screen.out
+                		cp ${molname}.${t}.${k}.2pt.in ${molname}.${t}.${k}.2pt.mol.in
+				cat >> ${molname}.${t}.${k}.2pt.mol.in <<DATA
+ANALYSIS_VAC_2PT                3
+ANALYSIS_OUT                    ${molname}.${t}.${k}.mol
+ANALYSIS_VAC_LINEAR_MOL         g
+ANALYSIS_VAC_ROTN_SYMMETRY      g
+ANALYSIS_VAC_FIXED_DF           g
+DATA
+
+				echo "          ${molname}.${t}.${k}.mol"
+				$do2pt ${molname}.${t}.${k}.2pt.mol.in > ${molname}.${t}.${k}.2pt.mol.screen.out
+			end
+			tar -zcof ${molname}.results.tar.gz ${molname}.${t}.*.thermo ${molname}.${t}.*.pwr
+		cd ../
+		if ($j == 1) then
+			set h2_press = (`grep h2press ./${prefix}.sys.${t}.2pt.*.eng | grep "=" | awk '{print NR,$6}' | awk -f /ul/tpascal/scripts/computeTotals.awk | grep "^Mean" | awk '{print $3,$7}'`)
+		endif
+		rm -fr ./${molname}.${t}.2pt.*
+    	end
+end
+#calculate statstics
+foreach t ($temps)
+	csh -f /ul/tpascal/scripts/calc2PTsorption_stats.csh "./analysis/${prefix}.*.${t}.*.mol.thermo" > ${prefix}.${t}.stats.dat
+	set vals = ($num_h2 $h2_press `tail -1 ${prefix}.${t}.stats.dat`)
+	echo "#nmol h2_press G_avg G_dev S_avg S_dev H_avg H_dev" > ${results_dir}/${prefix}.${t}.stats.dat
+	echo $vals >> ${results_dir}/${prefix}.${t}.stats.dat
+end
+
+cp analysis/*.tar.gz ${results_dir}/
+
+exit:
+echo "All tasks completed"
+exit(0)
+
+error:
+echo "Error occurred"
+exit(1)

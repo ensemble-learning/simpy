@@ -1,0 +1,45 @@
+print                          .
+print ============================================================
+print "20000 STEPS NPT dynamics with an isotropic pressure of 1atm."
+print ============================================================
+print                       .
+
+velocity        all create 300.0 12345678 dist uniform
+timestep        1.0
+fix             1 all npt temp 300.0 300.0 100.0 iso 1.0 1.0 2000.0
+thermo          100
+thermo_style    multi
+restart         10 ${sname}_npt.restart1 ${sname}_npt.restart2
+dump            1 all atom 1000 ${sname}_npt.lammpstrj
+dump_modify     1 image yes scale yes
+run             20000 # run for 20 ps
+unfix           1
+undump          1
+
+log		${sname}_2pt.eng
+print                            .
+print ===================================================
+print "20000 STEPS NVT dynamics dumping velocities for vac"
+print ==================================================
+print                             .
+
+fix             1 all nvt temp 300.0 300.0 100.0
+thermo          4
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong ehbond press vol
+thermo_modify   line multi
+timestep        1.0
+dump            1 all custom 4 ${sname}_2pt.lammps id type xu yu zu vx vy vz
+run             20000 #run for 20ps dumping velocities every 2ps
+unfix           1
+undump          1
+
+kspace_style    ewald 1e-04
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+dump            4 all custom 10000 ${sname}_2pt.atom.eng id v_atomEng
+run             1
+undump          4
+uncompute       atomPE
+uncompute       atomKE
+

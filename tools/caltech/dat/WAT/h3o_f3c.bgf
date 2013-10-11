@@ -1,0 +1,19 @@
+BIOGRF 200
+DESCRP h3o
+REMARK BGF file created by Babel 1.6 
+FORCEFIELD DREIDING  
+FORMAT ATOM   (a6,1x,i5,1x,a5,1x,a3,1x,a1,1x,a5,3f10.5,1x,a5,i3,i2,1x,f8.5)
+ATOM       1 O1    H3O A     1  -0.58410   1.42950   0.02750 O_H3O  2 0 -0.38180
+ATOM       2 H2    H3O A     1  -1.35610   0.89220  -0.06440 H_H3O  1 0  0.46060
+ATOM       3 H3    H3O A     1   0.20920   0.91910  -0.02870 H_H3O  1 0  0.46060
+ATOM       4 H4    H3O A     1  -0.58260   2.15150  -0.58220 H_H3O  1 0  0.46060
+FORMAT CONECT (a6,12i6)
+CONECT     1     2     3     4
+ORDER      1     1     1     1
+CONECT     2     1
+ORDER      2     1
+CONECT     3     1
+ORDER      3     1
+CONECT     4     1
+ORDER      4     1
+END

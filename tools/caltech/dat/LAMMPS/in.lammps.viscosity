@@ -1,0 +1,42 @@
+# AJB: Viscosity calculations using Muller-Plathe method
+
+print .
+print ====================================================
+print "Calculate viscosity using Muller-Plathe algorithm"
+print "jz(px)=-n*dvx/dvz, where the momentum flux is given"
+print "by jz(px)=Px/(2tA); Px is the sum of delta(px);"
+print "t is the total simulation time, and A the cross-"
+print "sectional area.  Hence, the shear viscosity is"
+print "given by n=-jz(px)/(dvx/dvz)"
+print "jz(units)/fs=(g*A)/(mol*fs*A^2)"
+print "1.66057788403e-02=[0.001/(1e-10*6.022e23*1e-15)] Pa*s"
+print "10 P = 1 kg�m-1�s-1 = 1 Pa�s"
+print "1 cP = 0.001 Pa�s = 1 mPa�s"
+print ====================================================
+print                          .
+
+timestep        1.0
+
+log             ${sname}_viscosity.log
+
+run             0
+variable        z equal lz
+print           "Box length in z = $z"
+
+restart         10 ${sname}_viscosity.restart1 ${sname}_viscosity.restart2
+fix             1 all nvt 300.0 300.0 100.0
+fix             f1 all ave/spatial 100 10 1000 z lower 0.05 vx file ${sname}_tmp.profile units reduced
+fix             deltap all viscosity 5 x z 20
+
+# dp needs to be divided by the appropriate time intervals of the simulation (i.e. step*fs)
+variable        dp equal f_deltap/(2*lx*ly)
+
+thermo          1000
+thermo_style    custom step v_dp etotal temp
+
+run             2000000 # 2ns
+
+unfix           1
+unfix           f1
+unfix           deltap
+

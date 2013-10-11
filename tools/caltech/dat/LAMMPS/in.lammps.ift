@@ -1,0 +1,19 @@
+thermo		10
+timestep	1.0
+
+compute         stress all stress/atom
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press vol
+thermo_modify   line multi
+
+print                            .
+print ===================================================
+print "100000 STEPS NPT dynamics for RDF/IFT"
+print ==================================================
+print                             .
+                                                                                
+fix             1 all npt temp 300.0 300.0 100.0 iso 1.0 1.0 2000.0
+dump            1 all custom 10 ${sname}.ift.lammpstrj id type xu yu zu c_stress[1] c_stress[2] c_stress[3] c_stress[4] c_stress[5] c_stress[6]
+run             100000
+undump		1
+unfix           1
+uncompute	stress

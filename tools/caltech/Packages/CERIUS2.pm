@@ -7,7 +7,7 @@ use Math::Trig qw(pi);
 
 our(@EXPORT_OK, @ISA, @EXPORT, $VERSION);
 
-my $scripts_dir = "/ul/tpascal/scripts"; #change here as necessary
+my $scripts_dir = "/home/tao/Nutstore/code/simupy/tools/caltech"; #change here as necessary
 my $ff_dir = "/ul/tpascal/ff"; #change here as necessary
 @ISA = qw(Exporter);
 @EXPORT = ();

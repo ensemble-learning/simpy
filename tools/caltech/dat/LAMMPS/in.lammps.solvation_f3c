@@ -1,0 +1,51 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+fix		boxrel all box/relax iso 0.0 vmax 0.001
+dump            1 all atom 25 ${sname}_min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+fix             restraint solute spring/self 500.0
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+unfix           restraint
+#min_style	hftn
+#min_modify	line quadratic
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+unfix		boxrel
+
+fix             shakeH solute shake 0.0001 20 500 m shakeOpts
+velocity        all create 150.0 ${seed} dist gaussian 
+fix		1 all nve
+fix		2 solute langevin 150.0 150.0 10.0 542124
+fix		3 solvent langevin 150.0 150.0 10.0 654316
+run		10000
+unfix		1
+unfix		2
+unfix		3
+
+reset_timestep	0
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of 1atm."
+print ================================================
+print                       .
+
+timestep        1.0
+fix             2 all npt temp 300.0 300.0 100.0 iso 1.0 1.0 1000.0
+thermo          100
+thermo_style    multi
+restart         200000 ${sname}_npt.*.restart
+dump            1 all custom 10000 ${sname}_npt.lammps id type xu yu zu vx vy vz
+run             6000000 # run for 6 ns
+unfix           2
+undump          1
+
+unfix		shakeH

@@ -1,0 +1,73 @@
+READ xy "file.dat"
+READ xy "file_avg.dat"
+AUTOSCALE
+
+fit formula "y = a0*exp(-x/a1) + a2"
+fit with 3 parameters
+fit prec 0.005
+a0 = 55500
+a0 constraints off
+a1 = 0.3
+a1 constraints off
+a2 = -20
+a2 constraints off
+nonlfit (s1, 5000)
+
+s2 length s1.length
+s2.x = s1.x
+s2.y = a0*exp(-x/a1) + a2
+LEGEND ON
+LEGEND BOX on
+legend loctype view
+legend x1 0.8
+legend y1 0.8
+legend box color 1
+legend box pattern 1
+legend box linewidth 1
+legend box linestyle 1
+legend box fill color 0
+legend box fill pattern 1
+legend font 4
+legend char size 1.000000
+legend color 1
+legend length 4
+legend vgap 2
+legend hgap 1
+frame type 0
+frame linestyle 1
+frame linewidth 1
+frame color 1
+frame pattern 1
+frame background color 0
+frame background pattern 0
+
+TITLE "Plot of Total Energy vs C.O.M. Displacement for file_name"
+yaxis label "total energy (kcal/mol)"
+xaxis label "COM Displacement (Angstroms)"
+SUBTITLE "d0: ".A0." (kcal/mol), r0: ".A2." (A), alpha: ".A1." (kcal/mol*A), offset: ".A3." (kcal/mol)"
+
+s0 line type 1
+s0 line linestyle 2
+s0 line linewidth 1.0
+s0 line color 1
+s0 line pattern 1
+s0 legend "original data"
+
+s1 line type 1
+s1 line linestyle 1
+s1 line linewidth 2.0
+s1 line color 2
+s1 line pattern 1
+s1 legend  "window averaged"
+
+s2 line type 1
+s2 line linestyle 1
+s2 line linewidth 2.0
+s2 line color 3
+s2 line pattern 1
+s2 legend  "morse fit"
+
+WORLD XMAX 13.5
+
+REDRAW
+SAVEALL "file.agr"

@@ -1,0 +1,90 @@
+%OPTS = (
+          'BOND_FORCE_CONSTANT' => {
+                                     'HEADER' => 'k0',
+                                     'TYPE' => 'BONDS'
+                                   },
+          'MASS' => {
+                      'HEADER' => 'MASS',
+                      'TYPE' => 'ATOMS'
+                    },
+          'ATOM_NAME' => {
+                           'HEADER' => 'ATMNAME',
+                           'TYPE' => 'ATOMS'
+                         },
+          'BOND_EQUIL_VALUE' => {
+                                  'HEADER' => 'r0',
+                                  'TYPE' => 'BONDS'
+                                },
+          'DIHEDRAL_FORCE_CONSTANT' => {
+                                          'HEADER' => 'k0',
+                                          'TYPE' => 'DIHEDRALS'
+                                        },
+          'ATOM_TYPE_INDEX' => {
+                                 'HEADER' => 'TYPE',
+                                 'TYPE' => 'ATOMS'
+                               },
+          'BOX_DIMENSIONS' => {
+                                'HEADER' => '',
+                                'TYPE' => 'BOX'
+                              },
+          'DIHEDRAL_PHASE' => {
+                                 'HEADER' => 'phi0',
+                                 'TYPE' => 'DIHEDRALS'
+                               },
+          'RADII' => {
+                       'HEADER' => 'RADII',
+                       'TYPE' => 'ATOMS'
+                     },
+          'CHARGE' => {
+                        'HEADER' => 'CHARGE',
+                        'TYPE' => 'ATOMS'
+                      },
+          'RESIDUE_LABEL' => {
+                               'HEADER' => 'NAME',
+                               'TYPE' => 'RESIDUES'
+                             },
+          'RESIDUE_POINTER' => {
+                               'HEADER' => 'STARTATM',
+                               'TYPE' => 'RESIDUES'
+                             },
+          'DIHEDRAL_PERIODICITY' => {
+                                       'HEADER' => 'n',
+                                       'TYPE' => 'DIHEDRALS'
+                                     },
+          'ANGLE_EQUIL_VALUE' => {
+                                   'HEADER' => 'r0',
+                                   'TYPE' => 'ANGLES'
+                                 },
+          'ANGLE_FORCE_CONSTANT' => {
+                                      'HEADER' => 'k0',
+                                      'TYPE' => 'ANGLES'
+                                    },
+          'AMBER_ATOM_TYPE' => {
+                                 'HEADER' => 'FFTYPE',
+                                 'TYPE' => 'ATOMS'
+                               },
+          'BONDS_INC_HYDROGEN' => {
+                                 'HEADER' => 'wHYDROGEN',
+                                 'TYPE' => 'BONDLIST'
+                               },
+          'BONDS_WITHOUT_HYDROGEN' => {
+                                 'HEADER' => 'noHYDROGEN',
+                                 'TYPE' => 'BONDLIST'
+                               },
+          'ANGLES_INC_HYDROGEN' => {
+                                 'HEADER' => 'wHYDROGEN',
+                                 'TYPE' => 'ANGLELIST'
+                               },
+          'ANGLES_WITHOUT_HYDROGEN' => {
+                                 'HEADER' => 'noHYDROGEN',
+                                 'TYPE' => 'ANGLELIST'
+                               },
+          'DIHEDRALS_INC_HYDROGEN' => {
+                                 'HEADER' => 'wHYDROGEN',
+                                 'TYPE' => 'DIHEDRALLIST'
+                               },
+          'DIHEDRALS_WITHOUT_HYDROGEN' => {
+                                 'HEADER' => 'noHYDROGEN',
+                                 'TYPE' => 'DIHEDRALLIST'
+                               }
+        );

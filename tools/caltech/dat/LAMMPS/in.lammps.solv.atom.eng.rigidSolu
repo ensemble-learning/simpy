@@ -1,0 +1,11 @@
+shakeOpts
+kspace_style    ewald 1e-04
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+dump            4 all custom 10000 ${sname}.2pt.atom.eng id v_atomEng
+run             0
+undump          4
+uncompute       atomPE
+uncompute       atomKE
+

@@ -1,0 +1,22 @@
+print                          .
+print =====================================
+print "NVT dynamics to heat system"
+print =====================================
+print            .
+
+reset_timestep  0
+timestep        1.0
+fix             shakeH all shake 0.0001 20 500 m shakeOpts
+fix             restraint solute spring/self 10.0
+velocity        all create 0.0 12345678 dist uniform
+thermo          100
+thermo_style    multi
+timestep        1.0
+dump            1 all custom 1000 ${sname}.heat.lammpstrj id type xu yu zu vx vy vz
+fix             3 solute nvt temp 1.0 300.0 100.0
+fix             4 solvent nvt temp 1.0 300.0 100.0
+run             10000
+unfix           3
+unfix           4
+undump          1
+unfix           restraint

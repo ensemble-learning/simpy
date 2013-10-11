@@ -1,0 +1,93 @@
+#PBS -l nodes=1:ppn=8
+#PBS -l walltime=480:00:00
+#PBS -q workq
+#PBS -j oe
+#!/bin/tcsh
+#!/bin/csh
+#PBS -N name_here
+
+echo "Nodes:"
+cat $PBS_NODEFILE
+echo "JOB: MD Simulation of name_here at temps_here K"
+echo
+
+set prefix = name_here
+set curr_dir = ${PBS_O_WORKDIR}
+set results_dir = /project/dna_nano/tod/proteins/${prefix}/results/
+
+set bgf_file = ${curr_dir}/../build/${prefix}.solv.bgf
+set grp_file = ${prefix}.grps
+set input_file = in.${prefix}.md
+set data_file = data.${prefix}
+set twoPT_file = in.${prefix}.2pt
+
+set temp = 298
+set temp_dir = /temp1/tpascal/${prefix}
+set nodes = 1
+set nprocs = `wc -l < $PBS_NODEFILE`
+set tstep = 0.002
+
+if ($PBS_O_HOST == "matrix" || $PBS_O_HOST == "borg") then
+#use these for 32 bit machines (matrix/borg) etc
+	setenv LAMMPS_PARALLEL "/ul/tpascal/codes/openmpi/1.4.3/32/bin/mpirun -hostfile $PBS_NODEFILE -np $nprocs --path /ul/tpascal/openmpi/1.4.3/32/bin"
+	set executable = "/ul/tpascal/codes/bin/lmp_parallel32 -screen none"
+	set do2pt = /ul/tpascal/codes/bin/2pt_analysis32
+else
+#use these for hive new wolfs etc
+	setenv LAMMPS_PARALLEL "/ul/tpascal/codes/openmpi/1.4.3/64/bin/mpirun -hostfile $PBS_NODEFILE -np $nprocs --path /ul/tpascal/openmpi/1.4.3/64/bin"
+	set executable = "/ul/tpascal/codes/bin/lmp_parallel64 -screen none"
+	set do2pt = /ul/tpascal/codes/bin/2pt_analysis64
+endif
+
+echo Running $executable on $nodes nodes $nprocs processors launched from $PBS_O_HOST
+echo "Nodes:"
+cat $PBS_NODEFILE
+
+cat $PBS_NODEFILE > $curr_dir/nodelist.$PBS_JOBID
+
+mkdir -p $results_dir/logs/ ${results_dir}/restarts/completed ${results_dir}/2pt ${temp_dir}/analysis
+cd $temp_dir
+
+foreach i ($input_file $twoPT_file $data_file $grp_file)
+	if !(-e ${curr_dir}/${i}) then
+		echo "ERROR: Cannot locate ${curr_dir}/${i}"
+		exit(1)
+	endif
+	cp $i ./
+end
+
+echo "1. LAMMPS equilibration dynamics"
+$LAMMPS_PARALLEL $executable -in $input_file -var data_file ./${data_file} -var sname ${prefix}.${temp} -var rtemp $temp -log ${prefix}.${temp}.equil.lammps.log -var input $input_file || goto error
+
+cp ${prefix}.${temp}.equil.lammps.log ${results_dir}/logs/
+cp ${prefix}.${temp}.npt.*.restart ${results_dir}/restarts/
+
+echo "2. LAMMPS dynamics for 2PT"
+set list = (${results_dir}/restarts/${prefix}.${temp}.npt.*.restart)
+set t = $#list
+set c = 0
+foreach i (${results_dir}/restarts/${prefix}.${temp}.npt.*.restart)
+	@ c = $c + 1
+	if !(-e $r) continue
+	cp $r ./
+	mv $r ${results_dir}/restarts/completed/
+	set r = `basename $r`
+	set sname = $r:r
+	echo "	2.${c}.	$sname MD"
+	$LAMMPS_PARALLEL $executable -in $twoPT_file -var restart ./${r} -var sname ${sname} -var rtemp $temp || goto error
+	echo "	2.${c}. $sname 2PT analysis"
+	cd analysis
+		${create2PT} ../${sname}.2pt ../${data_file} 3 ${tstep} ../${grp_file}
+		${do2PT} ${sname}.2pt.mol.grps.in >& ${sname}.2pt.mol.grps.screen.out
+		cp ${sname}.2pt.mol.grps.* ${results_dir}/2pt/
+	cd ../
+	rm -fr ${sname}.2pt.*
+end
+
+exit:
+echo "All tasks completed"
+exit(0)
+
+error:
+echo "Error occurred"
+exit(1)

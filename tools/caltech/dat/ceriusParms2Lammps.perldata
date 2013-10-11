@@ -1,0 +1,131 @@
+%SHASH = (
+		'bond_morse'	=> {
+			'name' => 'morse',
+			'opts' => '',
+		},
+		'vdw_born' => {
+			'name' => 'born/coul/long',
+			'opts' => '6.0',
+		},
+		'vdw_vdw_morse' => {
+			'name' => 'morse/opt/coul/long',
+			'opts' => '10.0',
+		},
+		'vdw_stretch_morse' => {
+			'name' => 'morse/stretch',
+			'opts' => '10.0',
+		},
+		'vdw_buckingham'	 => {
+			'name' => 'buck/coul/long',
+			'opts' => '10.0 10.0',
+			  },
+		'vdw_dreidhb'	=> {
+			'name' => 'hbond/dreiding/lj',
+			'opts' => '2 5.0 90.0',
+		},
+		'angle_theta_harm' => {
+			'name' => 'harmonic',
+			'opts' => '',
+		},
+		'angle_charmm' => {
+			'name' => 'charmm',
+			'opts' => '',
+		},
+		'angle_sw' => {
+			'name' => 'sw',
+			'opts' => '',
+		},
+		'angle_cos_harmon' => {
+			'name' => 'cosine/squared',
+			'opts' => '',
+		},
+		'angle_cos_period' => {
+			'name' => 'cosine/periodic',
+			'opts' => '',
+		},
+		'angle_r-r' => {
+			'name' => 'cross/bb',
+			'opts' => '',
+		},
+		'angle_r-theta' => {
+			'name' => 'cross/ba',
+			'opts' => '',
+		},
+		'angle_r-cosine' => {
+			'name' => 'cross/ba/cosine',
+			'opts' => '',
+		},
+		'hbond_lj_12_10'   => {
+			'name' => 'hbond/dreiding/lj',
+			'opts' => '2 5.0 90',
+		},
+		'hbond_lj_cosp'	=> {
+			'name' => 'hbond/dreiding/lj',
+			'opts' => '2 5.0 90',
+		},
+		'hbond_morse_cosp'	=> {
+				'name' => 'hbond/dreiding/morse',
+				'opts' => '2 5.0 90',
+		},
+		'dihedral_shft_dihdr' => {
+			'name' => 'charmm',
+			'opts' => '',
+		},
+		'dihedral_dihedral'   => { 
+			'name' => 'charmm',
+			'opts' => '', 
+		},
+		'dihedral_r-r' => {
+			'name' => 'cross/13bb',
+			'opts' => '',
+		}, 
+		'dihedral_theta2-cos' => {
+			'name' => 'cross/aa',
+			'opts' => '',
+		}, 
+		'dihedral_multihar' => {
+			'name' => 'multi/harmonic',
+			'opts' => '',
+		},
+		'vdw_sw' => {
+			'name' => 'sw',
+			'opts' => '',
+		},	 
+		'vdw_lj_6_12'	=> {
+			'name'   => 'lj/charmm/coul/long/opt',
+			'opts' => ' 9.0 10.0',
+		},
+		'vdw_lj_6_12_tip4p'	=> {
+			'name'   => 'lj/cut/tip4p/long/opt',
+			'opts' => '',
+		},
+		'vdw_expo_6'	 => {
+			'name' => 'buck/coul/long',
+			'opts' => ' 10.0 10.0',
+		},
+		'vdw_lj_6_9'	=> {
+			'name'   => 'lj96/cut',
+			'opts' => ' 10.0',
+		},
+		'vdw_yukawa'	 => {
+			'name' => 'yukawa',
+			'opts' => ' 3.0 6.0',
+		},
+		'inversion_it_jikl'	=> {
+			'name'  => 'cvff',
+			'opts'  => '',
+		},
+		'inversion_it_ijkl'	 => {
+			'name' => 'harmonic',
+			'opts' => '',
+		},
+		'inversion_theta2' => {
+			'name' => 'cross/aa',
+			'opts' => '',
+		},
+		'inversion_cosine2' => {
+			'name' => 'cross/aa/cosine',
+			'opts' => '',
+		},
+	);
+

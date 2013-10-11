@@ -1,0 +1,51 @@
+print                          .
+print =====================================
+print "NVE dynamics with Langevin thermostat"
+print =====================================
+print            .
+
+reset_timestep  0
+timestep        1.0
+fix             shakeH all shake 0.0001 20 500 m shakeOpts
+fix             restraint solute spring/self 10.0
+fix             2 all nve
+velocity        all create 0.0 12345678 dist uniform
+thermo          100
+thermo_style    multi
+timestep        1.0
+restart         10 ${sname}_heat.restart1 ${sname}_heat.restart2
+dump            1 all atom 1000 ${sname}_heat.lammpstrj
+dump_modify     1 image yes scale yes
+variable        l loop 10 #number of increments
+variable        i index 30 #temp increments
+
+label           loop
+variable        t equal v_l*$i # temperature this loop
+print           "temperature: $t"
+fix             3 solute langevin $t $t 100.0 699483
+fix             4 solvent langevin $t $t 100.0 834729
+run             1000
+unfix           3
+unfix           4
+next            l
+jump            ${input} loop
+unfix           2
+undump          1
+unfix           restraint
+
+print                          .
+print =====================================
+print "10000 steps NVT dynamics at 300K"
+print =====================================
+print            .
+
+timestep        2.0
+fix             2 all nvt temp 300.0 300.0 250.0
+restart         10 ${sname}_nvt.restart1 ${sname}_nvt.restart2
+dump            1 all atom 1000 ${sname}_nvt.lammpstrj
+dump_modify     1 image yes scale yes
+run             10000
+unfix           2
+undump          1
+# End of NVT. Begining NPT
+

@@ -1,0 +1,74 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            1 all atom 25 ${sname}_min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+fix             restraint solute spring/self 500.0
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+unfix           restraint
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+
+fix		zconfine all wall/reflect zhi zlo
+
+print                          .
+print =====================================
+print "NVE dynamics with Langevin thermostat"
+print =====================================
+print            .
+
+reset_timestep  0
+timestep        1.0
+fix             shakeH solvent shake 0.0001 20 500 m shakeOpts
+fix             restraint solute spring/self 10.0
+fix             2 all nve
+velocity        all create 0.0 12345678 dist uniform
+thermo          100
+thermo_style    multi
+timestep        1.0
+dump            1 all atom 1000 ${sname}_heat.lammpstrj
+dump_modify     1 image yes scale yes
+variable        l loop 10 #number of increments
+variable        i index 30 #temp increments
+
+label           loop
+variable        t equal v_l*$i # temperature this loop
+print           "temperature: $t"
+fix             3 solute langevin $t $t 100.0 699483
+fix             4 solvent langevin $t $t 100.0 834729
+run             1000
+unfix           3
+unfix           4
+next            l
+jump            ${input} loop
+unfix           2
+undump          1
+unfix           restraint
+
+write_restart	${sname}_npt.%
+fix		extPressure solvent gravity ${pressVal} 0 0 -1
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of 1atm."
+print ================================================
+print                       .
+
+timestep        1.0
+fix             2 all npt temp 300.0 300.0 100.0 xy 1.0 1.0 2000.0 ploop 10 tloop 10 nreset 50000
+thermo          100
+thermo_style    multi
+restart         100000 ${sname}_npt.%
+dump            1 all custom 1000 ${sname}_npt.lammpstrj id type xu yu zu
+dump            2 all custom 1000 ${sname}_npt.lammpsvel id  vx vy vz
+run             5000000 # run for 5 ns
+unfix           2
+undump          1
+undump          2

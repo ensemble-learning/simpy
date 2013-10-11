@@ -1,0 +1,35 @@
+timestep	1.0
+thermo		100
+log		${sname}_nvt_log.lammps
+
+print                            .
+print ===================================================
+print "500000 STEPS NVT dynamics for bulk properties"
+print ==================================================
+print                             .
+  
+fix             1 all nvt temp 300.0 300.0 100.0
+restart         10 ${sname}_nvt.restart1 ${sname}_nvt.restart2
+dump            1 all custom 100 ${sname}_nvt.lammpstrj id type xu yu zu ix iy iz
+dump            2 all custom 100 ${sname}_nvt.vel id vx vy vz
+run             500000
+unfix           1
+undump          1
+undump          2
+
+print                            .
+print ===================================================
+print "100000 STEPS NVE dynamics for Self Diffusion Constant"
+print ==================================================
+print                             .
+                                                                                                            
+fix             1 all nve
+restart         10 ${sname}_nve_bulk.restart1 ${sname}_nve_bulk.restart2
+dump            1 all atom 100 ${sname}_nve_bulk.lammpstrj
+dump_modify     1 image yes scale yes
+dump            2 all custom 100 ${sname}_nve_bulk.vel id vx vy vz
+run             100000
+undump          1
+undump          2
+unfix           1
+
