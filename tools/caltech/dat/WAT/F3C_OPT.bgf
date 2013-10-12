@@ -1,0 +1,13 @@
+BIOGRF 200
+DESCRP F3C         
+REMARK BGF file created by Cerius2
+FORCEFIELD DREIDING  
+FORMAT ATOM   (a6,1x,i5,1x,a5,1x,a3,1x,a1,1x,a5,3f10.5,1x,a5,i3,i2,1x,f8.5,f10.5)
+ATOM       1 O1    WAT 1     1   0.38770   0.02814   0.02554 O_3F   0 2 -0.81026
+ATOM       2 H2    WAT 1     1  -0.12379  -0.45986  -0.97101 H_F    0 0  0.40513
+ATOM       3 H3    WAT 1     1  -0.27316   0.42100   0.95199 H_F    0 0  0.40513
+FORMAT CONECT (a6,12i6)
+CONECT     1
+CONECT     2
+CONECT     3
+END

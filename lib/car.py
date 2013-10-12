@@ -8,6 +8,7 @@ sequence of atoms are [c, o, o, o, c, o, o, o....]
 @ver: 1.01
 @log: 09182013: extend the mdf parser
 @log: 09192013: to simpy and renamed as car.py
+@log: 
 """
 from mytype import System, Molecule, Atom
 
@@ -41,11 +42,18 @@ class Mdf():
     def parser(self, atoms):
         for i in atoms:
             atom = Atom_mdf()
+            #if len(i[0]) > 4:
+            #    print i[0][:4]
             atom.name = i[0]
             atom.element = i[1]
             self.atom_names.append(atom.name)
             if len(i) > 12:
                 for j in i[12:]:
+                    if "/" in j:
+                        j = j.split("/")[0]
+                    if ":" not in j:
+                        head = atom.name.split(":")[0]
+                        j = head + ":" + j
                     atom.connect.append(j)
             self.atoms.append(atom)
                 

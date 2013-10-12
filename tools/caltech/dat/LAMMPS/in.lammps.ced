@@ -1,0 +1,125 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            1 all atom 25 ${sname}_min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+fix             restraint solute spring/self 500.0
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+unfix           restraint
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+
+fix             shakeH all shake 0.0001 20 500 shakeOpts
+
+variable        tempStart index 300 # starting temp for annealing cycle
+variable        tempStop index 600 # stopping temp for annealing cycle CHANGE!!! should be 2*flory temperature
+
+restart		100000 ${sname}.anneal.*.restart
+dump		1 all custom 1000 ${sname}.anneal.lammps id type xu yu zu vx vy vz
+
+reset_timestep  0
+timestep        1.0
+
+print                          .
+print =====================================
+print "Heating 0K -> ${tempStart}K"
+print =====================================
+print            .
+
+fix             2 all nve
+velocity        all create ${tempStart} ${seed} dist gaussian rot yes
+thermo          50
+thermo_style    multi
+fix             3 all langevin ${tempStart} ${tempStart} 5.0 ${seed}
+run             25000
+unfix           3
+fix             3 all temp/rescale 2 ${tempStart} ${tempStart} 0.05 0.5
+run             25000
+unfix		2
+unfix           3
+
+variable	cfactor equal 1.1
+variable	startDensity 0.5 #CHANGE!!
+variable	targetDensity 1.0 #CHANGE!!
+variable	k equal ($targetDensity-$startDensity)/($cfactor-1)
+variable	e loop ${k}
+
+label		expandLabel
+variable	dens equal $startDensity+($cfactor-1)*$k
+
+variable        c loop 5 #number of annealing cycles
+variable        tIncrement equal ${tempStart}/10
+
+thermo		100
+
+timestep	2.0
+label           cycle
+variable	force_constant equal 40/(2^v_c)
+fix             soluRestraint solute spring/self ${force_constant}
+print "Applying ${force_constant} kcal/mol to solute"
+print                          .
+print ===========================================================
+print "ANNEALING: Heating ${tempStart}K -> ${tempStop}K CYCLE ${c}"
+print ===========================================================
+print            .
+
+variable        l loop 10
+label           annealHeat
+variable        t equal ${tempStart}+v_l*${tIncrement}
+print           "temperature: $t"
+fix             3 all npt temp $t $t 10.0 x 1.0 1.0 2000 y 1.0 1.0 2000 couple none
+run             20000
+unfix		3
+next            l
+jump            ${input} annealHeat
+
+fix             3 all npt temp ${tempStop} ${tempStop} 10.0 x 1.0 1.0 2000 y 1.0 1.0 2000 couple none
+run             50000
+unfix           3
+
+print                          .
+print ==========================================================
+print "ANNEALING: Cooling ${tempStop}K -> ${tempStart}K CYCLE ${c}"
+print ==========================================================
+print            .
+
+variable        m loop 10
+label           annealCool
+variable        n equal ${tempStop}-v_m*${tIncrement}
+print           "temperature: $n"
+fix             3 all npt temp $n $n 10.0 x 1.0 1.0 2000 y 1.0 1.0 2000 couple none
+run             20000
+unfix           3
+next            m
+jump            ${input} annealCool
+
+fix             3 all npt temp ${tempStart} ${tempStart} 10.0 x 1.0 1.0 2000 y 1.0 1.0 2000 couple none
+run             50000
+unfix           3
+
+unfix		soluRestraint
+next            c
+jump            ${input} cycle
+
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of ${dens}atm."
+print ================================================
+print                       .
+timestep	2.0
+fix             2 all npt temp ${tempStop} ${tempStop} 100.0 x 1.0 1.0 2000.0 y ${dens} ${dens} 2000.0 couple xy
+thermo          100
+thermo_style    multi
+run             1250000 # run for 25 ns
+unfix           2
+unfix           shakeH
+next		k
+loop		${input} expandLabel

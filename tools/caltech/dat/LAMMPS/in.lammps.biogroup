@@ -1,0 +1,129 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            atomCoords all atom 25 ${sname}_min.lammpstrj
+dump_modify     atomCoords image yes scale yes
+thermo          10
+fix             restraint solute spring/self 500.0
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+unfix           restraint
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+
+print                          .
+print =====================================
+print "NVE dynamics with Langevin thermostat"
+print =====================================
+print            .
+
+reset_timestep  0
+timestep        1.0
+fix             shakeH all shake 0.0001 20 500 m 1.00800 a 11
+fix             restraint solute spring/self 10.0
+fix             dynamics all nve
+velocity        all create 0.0 12345678 dist uniform
+thermo          100
+thermo_style    multi
+timestep        1.0
+restart         10 ${sname}_heat.restart1 ${sname}_heat.restart2
+dump            atomCoords all atom 1000 ${sname}_heat.lammpstrj
+dump_modify     atomCoords image yes scale no
+variable        l loop 10 #number of increments
+variable        i index 30 #temp increments
+
+label           loop
+variable        t equal v_l*$i # tempreature this loop
+print           "tempreature: $t"
+fix             soluteThermostat solute langevin $t $t 100.0 699483
+fix             solventThermostat solvent langevin $t $t 100.0 834729
+run             1000
+unfix           soluteThermostat
+unfix           solventThermostat
+next            l
+jump            ${input} loop
+unfix           dynamics
+undump          atomCoords
+unfix           restraint
+
+print                          .
+print ====================================================================
+print "NPT dynamics with an isotropic pressure of 1atm. for equilibration"
+print ====================================================================
+print                       .
+
+timestep        2.0
+fix             dynamics all npt temp 300.0 300.0 100.0 iso 1.0 1.0 2000.0
+thermo          100
+thermo_style    multi
+restart         10 ${sname}_npt.restart1 ${sname}_npt.restart2
+dump            atomCoords all atom 5000 ${sname}_npt.lammpstrj
+dump_modify     atomCoords image yes scale yes
+dump            atomVels all custom 5000 ${sname}_npt.vel id  vx vy vz
+run             1000000 # run for 2 ns
+unfix           dynamics
+undump          atomCoords
+undump          atomVels
+
+#run  for 500ps - 5 steps of 500ps (480ps NPT, 20ps NVT for VAC)
+variable        e loop 5
+label eloop
+
+log             ${sname}_npt_${e}_log.lammps
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of 1atm."
+print ================================================
+print                       .
+
+timestep	1.0
+fix             dynamics all npt temp 300.0 300.0 100.0 iso 1.0 1.0 2000.0
+thermo          100
+thermo_style    multi
+restart         10 ${sname}_npt_${e}.restart1 ${sname}_npt_${e}.restart2
+dump            atomCoords all atom 1000 ${sname}_npt_${e}.lammpstrj
+dump_modify     atomCoords image yes scale no
+dump            atomVels all custom 1000 ${sname}_npt_${e}.vel id  vx vy vz
+run             240000 # run for 480 ps
+unfix           dynamics
+undump          atomCoords
+undump          atomVels
+
+log             ${sname}_2pt_${e}.eng
+print                            .
+print ============================================================
+print "20000 STEPS NVT dynamics dumping velocities for vac run $e"
+print ============================================================
+print                             .
+
+fix             dynamics all nvt temp 300.0 300.0 100.0
+timestep	1.0
+thermo          4
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong ehbond press vol
+thermo_modify   line multi
+timestep        1.0
+dump            atomData all custom 4 ${sname}_2pt_${e}.lammps id type xu yu zu vx vy vz
+run             20000 #run for 10ps dumping velocities every 2ps
+unfix           dyamics
+undump          atomData
+
+kspace_style    ewald 1e-04
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+dump            4 all custom 10000 ${sname}_2pt_${e}.atom.eng id v_atomEng
+run             1
+undump          4
+uncompute       atomPE
+uncompute       atomKE
+kspace_style	pppm 1e-04
+
+next            e
+jump            ${input} eloop
+

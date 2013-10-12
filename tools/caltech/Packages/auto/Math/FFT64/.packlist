@@ -1,0 +1,12 @@
+/ul/tpascal/scripts/Packages/Math/FFT.pm
+/ul/tpascal/scripts/Packages/Math/FFT/FFT.bs
+/ul/tpascal/scripts/Packages/Math/FFT/FFT.so
+/ul/tpascal/scripts/Packages/Math/FFT32.pm
+/ul/tpascal/scripts/Packages/auto/Math/FFT/FFT.bs
+/ul/tpascal/scripts/Packages/auto/Math/FFT/FFT.so
+/ul/tpascal/scripts/Packages/auto/Math/FFT32/FFT32.bs
+/ul/tpascal/scripts/Packages/auto/Math/FFT32/FFT32.so
+/ul/tpascal/scripts/Packages/auto/Math/FFT64/FFT64.bs
+/ul/tpascal/scripts/Packages/auto/Math/FFT64/FFT64.so
+/ul/tpascal/scripts/Packages/share/man/man3/Math::FFT.3pm
+/ul/tpascal/scripts/Packages/share/man/man3/Math::FFT32.3pm

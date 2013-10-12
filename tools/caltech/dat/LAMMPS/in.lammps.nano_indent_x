@@ -1,0 +1,89 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            1 all atom 25 ${sname}_min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+min_style	hftn
+min_modify	line backtrack
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+
+velocity        all create 300.0 12345678 dist gaussian rot yes mom yes
+dump            1 all custom 1000 ${sname}.lammpstrj id type xu yu zu vx vy vz
+
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of 1atm."
+print ================================================
+print                       .
+
+fix             2 all npt temp 300.0 300.0 50.0 y 1.0 1.0 1000.0 couple none
+thermo          100
+thermo_style    multi
+run             100000 # run for 15 ns
+unfix           2
+
+variable	ribbon_y_min equal bound(all,ymin)+6
+variable	ribbon_y_max equal bound(all,ymax)-6
+variable	zstart equal bound(all,zmax)+5
+variable	ycenter equal xcm(all,y)
+variable	i loop 15
+
+region		y_interior block EDGE EDGE ${ribbon_y_min} ${ribbon_y_max} EDGE EDGE side in units box
+group		movable region y_interior
+
+label		iLoop
+
+log		${sname}_indent_${i}_lammps.log
+thermo		100
+thermo_style	custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press vol pxx pyy pzz pxz pyz
+thermo_modify   line multi
+
+variable	z_coord equal ${zstart}-v_i
+
+fix		indenter movable indent 100 cylinder x ${ycenter} ${z_coord} 4.0 units box
+
+print "===================================================================="
+print "NVT dynamics for 30ps for equilibration of indenter displacement $i"
+print "===================================================================="
+
+fix		1 movable nvt temp 300.0 300.0 50.0
+run		30000
+
+log		${sname}_${i}_2pt.eng
+print "========================================="
+print "NVT dynamics for 20ps dumping velocities"
+print "========================================="
+
+thermo          2
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong ehbond press vol
+thermo_modify	line multi
+dump            2 all custom 2 ${sname}_${i}_2pt.lammps id type xu yu zu vx vy vz 
+run             20000
+undump          2
+
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+dump            3 all custom 10000 ${sname}_${i}_2pt.atom.eng id v_atomEng
+dump_modify	3 first yes
+run             0
+undump          3
+uncompute       atomPE
+uncompute       atomKE
+
+unfix		1
+
+unfix		indenter
+write_restart	${sname}_${i}.restart
+next		i
+jump		${input} iLoop

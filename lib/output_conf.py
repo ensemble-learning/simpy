@@ -143,6 +143,8 @@ def toPdb(system, outfile="test.pdb"):
     for i in system.atoms:
         o.write("HETATM")
         o.write("%5d"%counter)
+        if len(i.name) > 4:
+            i.name = i.name[:4]
         o.write("%4s"%i.name)
         o.write("%5s"%"LIG")
         o.write("%6d"%counter)

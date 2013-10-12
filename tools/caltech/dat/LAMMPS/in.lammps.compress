@@ -1,0 +1,24 @@
+variable        press index -1 0 1 2 3.5 5 10 15 20
+
+label           pressLoop
+log             log.press${press}
+print                          .
+print ==================================================
+print "NPT dynamics with an isotropic pressure of ${press}atm."
+print ==================================================
+print                       .
+
+fix             2 all npt temp 300.0 300.0 100.0 iso ${press} ${press} 2000.0
+dump            1 all atom 5000 ${sname}_npt_press${press}.lammpstrj
+dump_modify     1 image yes scale yes
+dump            2 all custom 5000 ${sname}_npt_press${press}.vel id  vx vy vz
+restart         10 ${sname}_npt_press${press}.restart1 ${sname}_npt_press${press}.restart2
+thermo          100
+thermo_style    multi
+run             125000 # run for 250 ps
+unfix           2
+undump          1
+undump          2
+next            press
+jump            ${input} pressLoop
+

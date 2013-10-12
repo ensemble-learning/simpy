@@ -1,0 +1,62 @@
+variable	t_start equal $t
+
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+thermo          10
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+fix		boxrel all box/relax iso ${p} vmax 0.01
+min_style	hftn
+min_modify	line backtrack
+minimize        1.0e-4 1.0e-4 500 5000
+unfix		boxrel
+
+fix             shakeH all shake 0.0001 20 500 m shakeOpts
+
+print                          .
+print =====================================
+print "NVE dynamics with Langevin thermostat"
+print =====================================
+print            .
+
+velocity        all create ${t_start} ${seed} dist gaussian rot yes mom yes
+thermo          100
+timestep        1.0
+reset_timestep  0
+
+fix		integrator all nve
+fix		thermostat all langevin ${t_start} ${t_start} 2000.0 ${seed} 
+run             100000
+unfix		thermostat
+unfix		integrator
+
+variable	i loop ${inc}
+label		tLoop
+
+variable	t_stop equal $t+${delT}*v_i
+
+log		${sname}.${t_stop}K.eng
+print                          .
+print ====================================================================
+print "NPT dynamics with an isotropic pressure of ${p} atm. temp ${t_stop}"
+print ====================================================================
+print                       .
+timestep	2.0
+thermo          100
+thermo_style    multi
+fix             ensemble all npt temp ${t_start} ${t_stop} 100.0 x ${p} ${p} 2000.0 y ${p} ${p} 2000.0 z ${p} ${p} 2000.0 couple none
+dump            traj all custom 1000 ${sname}.${t_stop}K.lammps id type xu yu zu vx vy vz
+run		100000
+restart		0
+unfix           ensemble
+undump          traj
+next		i
+variable	t_start equal ${t_start}+${delT}
+write_restart	${sname}.${t_stop}K.restart
+jump		${input} tLoop

@@ -1,0 +1,127 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+fix		boxrelax all box/relax x 0.0 y 0.0 couple xy vmax 0.01
+dump            1 all atom 25 ${sname}_min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+unfix		boxrelax
+
+velocity        all create 300.0 12345678 dist gaussian
+
+print                          .
+print =====================================
+print "10000 steps NVT dynamics at 300K"
+print =====================================
+print            .
+
+timestep        1.0
+fix             2 all nvt temp 300.0 300.0 250.0
+dump            1 all custom 1000 ${sname}_nvt.lammpstrj id type xu yu zu
+run             10000
+unfix           2
+undump          1
+# End of NVT. Begining NPT
+
+print                          .
+print ================================================
+print "NPT dynamics with an isotropic pressure of 1atm."
+print ================================================
+print                       .
+
+fix             2 all npt temp 300.0 300.0 100.0 x 1.0 1.0 2000.0 y 1.0 1.0 2000.0 couple xy ploop 10 tloop 10
+thermo          100
+thermo_style    multi
+restart         100000 ${sname}_npt.*.restart
+dump            1 all custom 500 ${sname}_npt.lammpstrj id type xu yu zu
+dump            2 all custom 500 ${sname}_npt.vel id  vx vy vz
+run             500000 # run for 15 ns
+unfix           2
+undump          1
+undump          2
+
+print                          .
+print ================================================
+print "NVE dynamics for temp equilibration"
+print ================================================
+print                       .
+
+fix		2 all nve
+restart         100000 ${sname}_nve.*.restart
+dump            1 all custom 500 ${sname}_nve.lammpstrj id type xu yu zu
+dump            2 all custom 500 ${sname}_nve.vel id  vx vy vz
+run 		100000
+unfix           2
+undump          1
+undump          2
+
+log		${sname}_thermal_conductivity_gk.lammps
+print                          .
+print ================================================
+print "NVE dynamics for thermal conductivity using GK"
+print ================================================
+print                       .
+
+fix             2 all nve
+compute		myKE all ke/atom
+compute		myPE all pe/atom
+compute		myStress all stress/atom virial
+compute		flux all heat/flux myKE myPE myStress
+variable	J equal c_flux[1]/vol
+thermo_style	custom step temp v_J
+restart         100000 ${sname}_tc_gk.*.restart
+run             4000000
+unfix           2
+uncompute	myPE
+uncompute	myStress
+write_restart	${sname}_gk.restart
+
+log		${sname}_x_thermal_conductivity_mp.lammps
+print                          .
+print ================================================
+print "NVE dynamics for thermal conductivity by MP"
+print ================================================
+print                       .
+
+fix		2 all nve
+variable	temp atom c_myKE[]/1.5
+fix		3 all ave/spatial 10 100 1000 x lower 3.0 v_temp file ${sname}_x_heat_flux_profile.dat units box
+fix		flux all thermal/conductivity 50 x 24
+restart         100000 ${sname}_x_tc_mp.*.restart
+thermo_style	custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press f_flux
+thermo_modify   line multi
+run 		4000000
+unfix		flux
+unfix		3
+unfix		2
+
+read_restart	${sname}_gk.restart
+log             ${sname}_y_thermal_conductivity_mp.lammps
+print                          .
+print ================================================
+print "NVE dynamics for thermal conductivity by MP"
+print ================================================
+print                       .
+
+fix             2 all nve
+variable        temp atom c_myKE[]/1.5
+fix             3 all ave/spatial 10 100 1000 y lower 3.0 v_temp file ${sname}_y_heat_flux_profile.dat units box
+fix             flux all thermal/conductivity 50 y 24
+restart         100000 ${sname}_y_tc_mp.*.restart
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press f_flux
+thermo_modify   line multi
+run             4000000
+unfix           flux 
+unfix           3
+unfix           2 
+

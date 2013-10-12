@@ -1,0 +1,577 @@
+sub parseCerius2FF {
+    my ($ff_file, $alter, $oldFF) = @_;
+    my (%PARMS, $which_var, $in_data, $type_counter, @vdws, $hb_counter, $pi);
+    my ($type_id, $type_id2, @bonds, $type_id3, @angles, $tmp1, @inversions);
+    my ($type_id4, @torsions, $torsion_type, $inversion_type, $counter, $use_hb, $use_charge);
+    my ($bond_counter, $angle_counter, $torsion_counter, @tmp, $inversion_counter, $bool);
+    my ($atom1, $atom2, $vdwType, $vdwDat, $i, $dihdr_scale, $CNV, $vdw_counter, $crossType);
+
+    $CNV = &loadConverter;
+    $which_var = $bond_counter = $angle_counter = $torsion_counter = $counter = 0;
+    $use_hb = $hb_counter = $crossType = 0;
+    if (defined($oldFF)) {
+	%PARMS = %{ $oldFF };
+    }
+    $PARMS{"PARMS"}{"cut_vdw"} = 14.0;
+    $PARMS{"PARMS"}{"cut_coul"} = 15.0;
+    $PARMS{"PARMS"}{"coul_accuracy"} = 0.0001;
+    $PARMS{"PARMS"}{"hbond_distance"} = 2.5;
+    $PARMS{"PARMS"}{"hbond_angle"} = 90;
+    $PARMS{"PARMS"}{"scale_torsions"} = 0;
+    $PARMS{"PARMS"}{"single_inversion"} = 0;
+    $PARMS{"PARMS"}{"dielectric"} = 1;
+    $use_charge = 0;
+    $pi = 3.141592654;
+
+    open FORCEFIELD, $ff_file or die "Cannot open force field file $ff_file: $!\n";
+    while (<FORCEFIELD>) {
+	chomp;
+	$in_data = $_;
+        if ($in_data =~ /^END/) {
+	    $which_var = 0;
+	} elsif ($in_data =~ /^\s*COU_DIELETRIC_CONSTANT\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"dielectric"} = $1;
+	} elsif ($in_data =~ /^\s*SINGLE_INVERSION\s+T/) {
+	    $PARMS{"PARMS"}{"single_inversion"} = 1;
+ 	} elsif ($in_data =~ /^\s*SCALE_TORSIONS_ABOUT_COMMON_BOND\s+T/) {
+	    $PARMS{"PARMS"}{"scale_torsions"} = 1;
+	} elsif ($in_data =~ /^\s*COU_SPLINE_OFF\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"cut_coul"} = $1;
+	} elsif ($in_data =~ /^\s*VDW_SPLINE_OFF\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"cut_vdw"} = $1;
+	} elsif ($in_data =~ /^\s*VDW_COMBINATION_RULE\s+(\w+)/) {
+	    $PARMS{"PARMS"}{"mix_rule"} = lc($1);
+	} elsif ($in_data =~ /^\s*EWALD_SUM_COU_ACCURACY\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"coul_accuracy"} = $1;
+	} elsif ($in_data =~ /^\s*(COU|VDW)_EXCLUDE_(\d)\-(\d)\s+(\w)/) {
+	    if (lc($4) eq "t") {
+		$bool = 0;
+	    } else {
+		$bool = 1;
+	    }
+	    $PARMS{"PARMS"}{"scale_" . lc($1) . "_" . $2 . $3} = $bool;
+ 	} elsif ($in_data =~ /^\s*COU_1-4_SCALE_FACTOR\s+(\d+\.\d+)/) {
+            $PARMS{"PARMS"}{"scale_coulomb"} = $1;
+	    $PARMS{"PARMS"}{"scale_coulomb_14"} = $1 if ($PARMS{"PARMS"}{"scale_coulomb_14"})
+ 	} elsif ($in_data =~ /^\s*VDW_1-4_SCALE_FACTOR\s+(\d+\.\d+)/) {
+            $PARMS{"PARMS"}{"scale_vdw"} = $1;
+	    $PARMS{"PARMS"}{"scale_vdw_14"} = $1 if ($PARMS{"PARMS"}{"scale_vdw_14"});
+            if($PARMS{"PARMS"}{"scale_coulomb"} ne $PARMS{"PARMS"}{"scale_vdw"}) { 
+		$PARMS{"PARMS"}{"same_scale"} = 0;
+	    } else {
+		$PARMS{"PARMS"}{"same_scale"} = 1;
+	    }
+	} elsif ($in_data =~ /^ HYDROGEN_BONDS\s+T/) {
+	    $use_hb = 1;
+	    $PARMS{"PARMS"}{"hbond_distance"} = 4.5;
+	    $PARMS{"PARMS"}{"hbond_angle"} = 60;
+	} elsif ($use_hb and $in_data =~ /^ H-BOND_LIST_DISTANCE_OFF\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"hbond_distance"} = $1;
+	} elsif ($use_hb and $in_data =~ /^ H-BOND_LIST_ANGLE_OFF\s+(\d+\.\d+)/) {
+	    $PARMS{"PARMS"}{"hbond_angle"} = $1;
+	} elsif ($in_data =~ /^ ASSIGN_CHARGE\s+T/) {
+	    $use_charge  = 1;
+	} elsif ($in_data =~ /^ATOMTYPES/) {
+	    $which_var = 1;
+	} elsif ($in_data =~ /HYDROGEN_BONDS/) {
+		$which_var = 2;	    
+	} elsif ($in_data =~ /^DIAGONAL_VDW/) {
+		$which_var = 3;
+	} elsif ($in_data =~ /^BOND_STRETCH/) {
+	    $which_var = 4;
+	} elsif ($in_data =~ /^ANGLE_BEND/) {
+	    $which_var = 5;
+	    $crossType = "";
+	} elsif ($in_data =~ /^TORSIONS/) {
+	    $which_var = 6;
+	    $crossType = "";
+	} elsif ($in_data =~ /^INVERSIONS/) {
+	    $which_var = 7;
+	    $crossType = "";
+	} elsif ($in_data =~ /^STRETCH_STRETCH/) {
+	    $which_var = 5;
+	    $crossType = "BondBond";
+	} elsif ($in_data =~ /^STRETCH_BEND_STRETCH/) {
+	    $which_var = 5;
+	    $crossType = "BondAngle";
+	} elsif ($in_data =~ /^OFF_DIAGONAL_VDW/) {
+	    $which_var = 8;
+	} elsif ($in_data =~ /^UREY_BRADLEY/) {
+	    $which_var = 9;
+	    $crossType = "";
+	} elsif ($in_data =~ /^SEPARATED_STRETCH_STRETCH/) {
+	    $which_var = 6;
+	    $crossType = "13BondBond";
+	} elsif ($in_data =~ /^TORSION_BEND_BEND/) {
+	    $which_var = 6;
+	    $crossType = "AngleAngle";
+	} elsif ($in_data =~ /^BEND_BEND/) {
+	    $which_var = 7;
+	    $crossType = "AngleAngle";
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\w+)\s+(\d+\.\d+)\s+(\-?\d+\.\d+)\s+(\d+)\s+(\d+)\s+(\d+)/ and ($which_var == 1)) {
+	    $type_counter += 1;
+	    $PARMS{"ATOMTYPES"}{$1} = (
+				       {
+					   "TYPEID"     => $type_counter,
+					   "ATOM"       => $2,
+					   "MASS"       => $3,
+					   "CHARGE"     => $4,
+					   "NUMBONDS"   => $5,
+					   "LONEPAIRS"  => $6,
+					   "OTHER"      => $7,
+					   "LABEL"      => $1,
+					   "USED"       => 0,
+					   "USE_CHARGE" => $use_charge,
+				       }
+				       );
+#	    print "ATOMTYPES: $1: $type_counter\n";
+        } elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\d+.*)/i and $which_var == 2) { #hbonds
+            next if (! exists($PARMS{"ATOMTYPES"}{$1}));
+            next if (! exists($PARMS{"ATOMTYPES"}{$2}));
+            next if (! exists($PARMS{"ATOMTYPES"}{$3}));
+	    $atom1 = $1;
+            $atom2 = $3;
+	    if ($atom1 lt $atom2) {
+		($atom1, $atom2) = ($atom2, $atom1);
+	    }
+            $vdwType = $4;
+            @vdws = split /\s+/, "$2 $5";
+            if (! exists($PARMS{VDW}{$atom1}{$atom2})) {
+                $vdw_counter = 1;
+            } else {
+                $vdw_counter = scalar(keys %{ $PARMS{VDW}{$atom1}{$atom2} }) + 1;
+            }
+	    if ($vdwType eq "LJ_12_10") { # append the power for the cosine - 4 - to the end of the data
+		push @vdws, "4";
+	    }
+            $PARMS{"VDW"}{$atom1}{$atom2}{$vdw_counter} = (
+                                             {
+                                                 "TYPE"   => $vdwType,
+                                                 "Lammps" => getLammpsOpts($vdwType,"hbond", $CNV),
+                                                 "KEY"    => "$atom1 $atom2 ",
+                                                 "VALS"   => [@vdws],
+                                                 "ATOM"   => "$atom1 $atom2 ",
+                                                 "USED"   => 0,
+                                                 "IT"     => "hbond",
+                                            }
+                                            );
+
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s*(.*)/i and ($which_var == 3 or $which_var == 8)) {
+	    $atom1 = $1;
+	    if ($which_var == 3) {
+		$atom2 = $1;
+		$vdwType = $2;
+		$vdwDat = "$3 $4 $5";
+	    } else {
+		$atom2 = $2;
+		$vdwType = $3;
+		$vdwDat = "$4 $5";
+	    }
+            if ($atom1 lt $atom2) {
+                ($atom1, $atom2) = ($atom2, $atom1);
+            }
+	    if (uc($vdwType) ne "IGNORE") {
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$1}));
+
+		$type_id = $PARMS{"ATOMTYPES"}{$atom1}{"TYPEID"};
+		if ($vdwDat =~ /(.*)\# 1\-4 scaling: (.*)/) {
+		    @vdws = split /\s+/, "$1 $2";
+		} else {
+		    @vdws = split /\s+/, $vdwDat;
+		}
+		@vdws = GetAbs(\@vdws);
+
+		if (! defined($alter) || $alter != 0) {
+		    if (uc($vdwType) eq "VDW_MORSE") {
+			($vdws[0], $vdws[1]) = ($vdws[1], $vdws[0]);
+			($vdws[1], $vdws[2]) = ($vdws[2], $vdws[1]);
+			$vdws[1] /= ($vdws[2] * 2); # changed from div to multi 07/28/2007
+			#$vdws[0] *= 2;
+			#$vdws[1] /= ($vdws[2]/2);
+		    } elsif (uc($vdwType) eq "LJ_6_12") {
+			($vdws[0],$vdws[1]) = ($vdws[1],$vdws[0]);
+			$vdws[1] = $vdws[1] / (2**(1/6));
+			if ($#vdws > 1) {
+			    ($vdws[2],$vdws[3]) = ($vdws[3],$vdws[2]);
+			    $vdws[3] = $vdws[3] /(2**(1/6));
+			}
+#			$vdws[1] = $vdws[1]/2;
+		    } elsif (uc($vdwType) eq "EXPO_6") {
+			($vdws[0],$vdws[1]) = ($vdws[1],$vdws[0]);
+			@tmp = @vdws;
+			@vdws = ();
+			#$vdws[0] = 6 * $tmp[1] * exp($tmp[2]) / ($tmp[2] - 6);
+			#$vdws[1] = $tmp[0]/$tmp[2];
+			#$vdws[2] = $tmp[1] * $tmp[2] * $tmp[0]**6/($tmp[2] - 6);
+			$vdws[0] = $tmp[0] * (6/($tmp[2]-6)) * exp($tmp[2]);
+			$vdws[1] = $tmp[1]/$tmp[2];
+			$vdws[2] = $tmp[1]**6 * $tmp[0] * ($tmp[2]/($tmp[2] - 6));
+		    } 
+		}
+		if (! exists($PARMS{VDW}{$atom1}{$atom2})) {
+		    $vdw_counter = 1;
+		} else {
+		    $vdw_counter = scalar(keys %{ $PARMS{VDW}{$atom1}{$atom2} }) + 1;
+		}
+		$tmp1 = "vdw";
+		$PARMS{"VDW"}{$atom1}{$atom2}{$vdw_counter} = (
+						 {
+						     "TYPE"   => $vdwType,
+						     "Lammps" => getLammpsOpts($vdwType,"vdw", $CNV),
+						     "KEY"    => "$atom1 $atom2 ",
+						     "VALS"   => [@vdws],
+						     "ATOM"   => "$atom1 $atom2 ",
+						     "USED"   => 0,
+						     "IT"     => "vdw",
+						 }
+						 );
+#		print "VDW: $1: $type_id\n"
+	    }
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\w+)\s+(.+)/ and ($which_var == 4)) {
+	    if (uc($3) ne "IGNORE") {
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$1}) and lc($1) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$2}) and lc($2) ne "x");
+		
+		$bond_counter++;
+		@bonds = split /\s+/, $4;
+		next if (! @bonds);
+#		GetAbs(\@bonds);
+		if (! defined($alter) || $alter != 0) {
+                    $bonds[0] = $bonds[0] / 2; #fix for the 1/2 factor in harmonic eqns between cerius and lammps
+		    if (uc($3) eq "MORSE") {
+			$bonds[0] *= 2;
+			($bonds[0], $bonds[2]) = ($bonds[2], $bonds[0]); # kb is now bonds[0]
+			($bonds[1], $bonds[2]) = ($bonds[2], $bonds[1]); # r0 is now bonds[2]
+			$bonds[1] = sqrt($bonds[1]/(2 * $bonds[0]));
+			pop @bonds if ($#bonds > 2);
+		    }
+		}
+		$PARMS{"BONDS"}{$1}{$2}{$bond_counter} = (
+					   {
+					       "INDEX"    => $bond_counter,
+					       "TYPE"     => $3,
+					       "Lammps"   => getLammpsOpts($3,"bond"),
+					       "VALS"     => [@bonds],
+					       "USED"     => 0,
+					       "KEY"      => "$1 $2 ",
+					   }
+					   );
+
+#		print "BOND $bond_counter: $key_code\n";
+	    }
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/ and ($which_var == 5)) {
+	    if (uc($4) ne "IGNORE") {
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$1}) and lc($1) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$2}) and lc($2) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$3}) and lc($3) ne "x");
+		
+		$angle_counter++;
+		@angles = split /\s+/, $5;
+		next if (! @angles);
+#		GetAbs(\@angles);
+		if ($crossType eq "" && (! defined($alter) || $alter != 0)) {
+	            $angles[0] = $angles[0]/2; #same fix as bonds
+		}
+		if ($4 eq "COS_HARMON") {
+		    if (sin($angles[1] * $pi/180) > 0.001) {
+			$angles[0] /= sin($angles[1] * $pi/180)**2;
+		    }
+		} elsif ($4 eq "R-COSINE") { #bond angle cosine cross term
+		    $angles[3] = -$angles[3]/sin($angles[2] * $pi/180);
+		    $angles[4] = -$angles[4]/sin($angles[2] * $pi/180);
+		}
+		$PARMS{"ANGLES"}{$1}{$2}{$3}{$angle_counter} =  (
+						{
+						    "INDEX"    => $angle_counter,
+						    "TYPE"     => $4,
+						    "Lammps"   => getLammpsOpts($4,"angle", $CNV),
+						    "VALS"     => [@angles],
+						    "USED"     => 0,
+						    "KEY"      => "$1 $2 $3 ",
+						    "CTYPE"    => $crossType,
+						}
+						);
+#		print "ANGLE $angle_counter: $key_code\n";
+	    }
+        } elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/ and ($which_var == 9)) {
+            if (uc($4) ne "IGNORE") {
+                next
+                    if (! exists($PARMS{"ATOMTYPES"}{$1}) and lc($1) ne "x");
+                next
+                    if (! exists($PARMS{"ATOMTYPES"}{$2}) and lc($2) ne "x");
+                next
+                    if (! exists($PARMS{"ATOMTYPES"}{$3}) and lc($3) ne "x");
+
+                $angle_counter++;
+                @angles = split /\s+/, $5;
+#               GetAbs(\@angles);
+                if ($crossType eq "" && (! defined($alter) || $alter != 0)) {
+                    $angles[0] = $angles[0]/2; #same fix as bonds
+                }
+	        $PARMS{"ANGLES"}{$1}{$2}{$3}{$angle_counter} = (
+            					   {
+                                                    "INDEX"    => $angle_counter,
+                                                    "TYPE"     => $4,
+						    "Lammps"   => getLammpsOpts($4,"angle"),
+                                                    "VALS"     => [@angles],
+                                                    "USED"     => 0,
+                                                    "KEY"      => "$1 $2 $3 ",
+						    "CTYPE"    => $crossType,
+                                                   }
+                                                   );
+#               print "ANGLE $angle_counter: $key_code\n";
+            }
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/ and ($which_var == 6)) {
+	    $torsion_type = $5;
+	    if (uc($torsion_type) ne "IGNORE") {
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$1}) and lc($1) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$2}) and lc($2) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$3}) and lc($3) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$4}) and lc($4) ne "x");
+
+		$torsion_counter++;
+                @torsions = split /\s+/, $6;
+#		GetAbs(\@torsions);
+ 
+                if ($crossType eq "" && (! defined($alter) || $alter != 0)) {
+                    if (lc($torsion_type) eq "dihedral") {
+			if ($torsions[2] == 1) {
+			    $torsions[2] = 180;
+		    	} else {
+			    $torsions[2] = 0;
+		    	}
+                    }
+                    $torsions[0] = $torsions[0] / 2; #1/2 fix again
+		}
+		#$torsions[2] = 360 - $torsions[2];
+		$PARMS{"TORSIONS"}{$1}{$2}{$3}{$4}{$torsion_counter} =  (
+						      {
+							  "TYPE"     => $torsion_type,
+							  "Lammps"   => getLammpsOpts($torsion_type,"dihedral", $CNV),
+							  "INDEX"    => $torsion_counter,
+							  "VALS"     => [@torsions],
+							  "USED"     => 0,
+							  "KEY"      => "$1 $2 $3 $4 ",
+							  "NUM"      => 1,
+							  "PER"      => ($#torsions + 1),
+							  "1_4scale" => $PARMS{"PARMS"}{"scale_vdw_14"},
+							  "CTYPE"    => $crossType,
+							  "do_scale" => $PARMS{"PARMS"}{"scale_torsions"},
+						      }
+						      );
+		($type_id, $type_id2, $type_id3, $type_id4)  = ($1, $2, $3, $4);
+#		print "TORSION $torsion_counter: $key_code\n";
+	    }
+	} elsif ($in_data =~ /^\s+(\-?\d+\.\d+)\s+(.+)/ and $which_var == 6) { #multiple torsions
+	    @torsions = ();
+	    @torsions = split /\s+/, $2;
+#	    GetAbs(\@torsions);
+            if ($crossType eq "" && (! defined($alter) || $alter != 0)) {
+                if (lc($torsion_type) eq "dihedral") {
+		    if ($torsions[1] == 1) {
+			$torsions[1] = 180;
+		    } else {
+			$torsions[1] = 0;
+		    }
+            	}
+
+                $tmp1 = $1 / 2; #1/2 fix again
+	    } else {
+		$tmp1 = $1;
+	    }
+	    push @{ $PARMS{"TORSIONS"}{$type_id}{$type_id2}{$type_id3}{$type_id4}{$torsion_counter}{"VALS"} }, $tmp1;
+	    push @{ $PARMS{"TORSIONS"}{$type_id}{$type_id2}{$type_id3}{$type_id4}{$torsion_counter}{"VALS"} }, @torsions;
+	    $PARMS{"TORSIONS"}{$type_id}{$type_id2}{$type_id3}{$type_id4}{$torsion_counter}{NUM}++;
+#	    print "FOUND MULTIPLE TORSIONS FOR $key_code\n";
+	} elsif ($in_data =~ /^\s*(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(.+)/ and ($which_var == 7)) {
+	    $inversion_type = $5;
+	    if (uc($inversion_type) ne "IGNORE") {
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$1}) and lc($1) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$2}) and lc($2) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$3}) and lc($3) ne "x");
+		next
+		    if (! exists($PARMS{"ATOMTYPES"}{$4}) and lc($4) ne "x");
+
+		$inversion_counter++;
+                @inversions = split /\s+/, $6;
+		next if (! @inversions);
+#		GetAbs(\@torsions);
+ 
+                if ($crossType eq "" && (! defined($alter) || $alter != 0)) {
+                    if (lc($inversion_type) eq "it_jikl") {
+			$type_id = $2;
+			$type_id2 = $3;
+			$type_id3 = $1;
+			$type_id4 = $4;
+			if ($inversions[1] == 180) {
+			    $inversions[1] = -1;
+			} else {
+			    $inversions[1] = 1;
+			}
+                    } else {
+			($type_id, $type_id2, $type_id3, $type_id4)  = ($1, $2, $3, $4);
+	   	    }
+		    $inversions[0] = $inversions[0] / 2 if ($inversion_type ne "UMBRELLA"); #1/2 fix again
+		}
+		$PARMS{"INVERSIONS"}{$1}{$2}{$3}{$4}{$inversion_counter} = (
+							{
+							    "TYPE"     => $inversion_type,
+							    "Lammps"   => getLammpsOpts($inversion_type,"inversion", $CNV),
+							    "INDEX"    => $inversion_counter,
+							    "VALS"     => [@inversions],
+							    "USED"     => 0,
+							    "KEY"      => "$1 $2 $3 $4 ",
+							    "CTYPE"    => $crossType,
+							}
+							);
+#		print "TORSION $torsion_counter: $key_code\n";
+	    }
+	}	    
+	
+    }
+    close FORCEFIELD;
+
+    die "ERROR: Force Field file $ff_file is invalid!\n"
+	if (! %PARMS);
+    
+    if ($PARMS{"PARMS"}{"cut_vdw"} > $PARMS{"PARMS"}{"cut_coul"}) {
+	$PARMS{"PARMS"}{"cut_vdw"} = $PARMS{"PARMS"}{"cut_coul"};
+    }
+
+    return (\%PARMS);
+}
+
+sub saveCeriusFF {
+    my ($ffData, $save_name, $ELEMENTS) = @_;
+    my ($c, $shft_angle, $torsions, $counter, $element, $vdws, $i);
+    my ($atom1, $atom2, $atom3, $atom4, @ATMS, $hk, $inversions, @TMP);
+    my ($pi) = atan2(1,1) *4;
+
+    open OUTFILE, "> $save_name" or die "Cannot create file $save_name: $!\n";
+    print OUTFILE "ATOMTYPES\n";
+    for $atom1 (keys %{ $ffData->{"atoms"} }) {
+	next
+	    if ($atom1 eq "?");
+	$c = \%{ $ffData->{"atoms"}{$atom1}{"VALS"}[0] };
+	next if (! exists($c->{r}));
+        $element = $ELEMENTS->{ $c->{"element"} }{"SYMBOL"};
+	printf OUTFILE " %-11s%-3s%12.5f%8.4f%4s%4s%4s",
+	$atom1,$element,$c->{"mass"},0,$c->{"hybrid"},0,0;
+        $vdws .= sprintf(" %-11s LJ_6_12%14.4f%8.4f",
+	$atom1, ($c->{"r"}  * 2), $c->{"e"});
+	$c->{r} = 0.00001 if ($c->{r} == 0);
+	#if (! exists($c->{"1_4"})) {
+	    #$c->{"1_4"}{"r"} = $c->{"r"};
+	    #$c->{"1_4"}{"e"} = $c->{"e"};
+	#}
+        if (exists($c->{"1_4"})) {
+	    $vdws .= sprintf(" # 1-4 scaling: %8.5f%8.5f\n",($c->{"1_4"}{"r"}*2),abs($c->{"1_4"}{"e"}));
+	} else {
+	    $vdws .= "\n";
+        }
+	if (exists($c->{"name"})) {
+	    printf OUTFILE " # $c->{name}";
+	}
+	printf OUTFILE "\n";
+    }
+    print OUTFILE "END\n#\nDIAGONAL_VDW\n$vdws";
+    print OUTFILE "END\n#\nATOM_TYPING_RULES\nEND\n\#\nOFF_DIAGONAL_VDW\nEND\n#\nBOND_STRETCH\n";
+    for $atom1 (keys %{ $ffData->{"bonds"} }) {
+        for $atom2 (keys %{ $ffData->{"bonds"}{$atom1} }) {
+            $c = \%{ $ffData->{"bonds"}{$atom1}{$atom2}{"VALS"}[0] };
+            printf OUTFILE " %-9s%-11s HARMONIC%13.4f%10.4f\n",
+            $atom1, $atom2, ($c->{"kb"}  * 2), $c->{"r0"};
+        }
+    }
+    print OUTFILE "END\n#\nANGLE_BEND\n";
+    for $atom1 (keys %{ $ffData->{"angles"} }) {
+        for $atom2 (keys %{ $ffData->{"angles"}{$atom1} }) {
+            for $atom3 (keys %{ $ffData->{"angles"}{$atom1}{$atom2} }) {
+                $c = \%{ $ffData->{"angles"}{$atom1}{$atom2}{$atom3}{"VALS"}[0] };
+                $c->{"t0"} = int($c->{"t0"} * 180/$pi);
+                printf OUTFILE " %-9s%-9s%-11s THETA_HARM%10.4f%10.4f\n",
+                $atom1, $atom2, $atom3, ($c->{"kt"} * 2), $c->{"t0"};
+            }
+        }
+    }
+    print OUTFILE "END\n#\nUREY_BRADLEY\n";
+    for $atom1 (keys %{ $ffData->{"urey_bradley"} }) {
+        for $atom2 (keys %{ $ffData->{"urey_bradley"}{$atom1} }) {
+            for $atom3 (keys %{ $ffData->{"urey_bradley"}{$atom1}{$atom2} }) {
+                $c = \%{ $ffData->{"urey_bradley"}{$atom1}{$atom2}{$atom3}{"VALS"}[0] };
+                printf OUTFILE " %-9s%-9s%-11s HARMONIC%13.4f%10.4f\n",
+                $atom1, $atom2, $atom3, ($c->{"ku"} * 2), $c->{"su"};
+            }
+        }
+    }
+    print OUTFILE "END\n#\nTORSIONS\n";
+    for $atom1 (keys %{ $ffData->{"torsions"} }) {
+        for $atom2 (keys %{ $ffData->{"torsions"}{$atom1} }) {
+            for $atom3 (keys %{ $ffData->{"torsions"}{$atom1}{$atom2} }) {
+                for $atom4 (keys %{ $ffData->{"torsions"}{$atom1}{$atom2}{$atom3} }) {
+                    @TMP = @ATMS = ();
+                    $torsions = \@{ $ffData->{"torsions"}{$atom1}{$atom2}{$atom3}{$atom4}{"VALS"} };
+                    @TMP = ( $atom1, $atom2, $atom3, $atom4 );
+                    $i = $ffData->{"torsions"}{$atom1}{$atom2}{$atom3}{$atom4}{"counter"};
+                    while ($ffData->{"torsionOrders"}{$i} =~ /(\d)/g) {
+                        push @ATMS, $TMP[$1];
+                    }
+                    printf OUTFILE " %-9s%-9s%-9s%-11s SHFT_DIHDR", 
+                    $ATMS[0], $ATMS[1], $ATMS[2], $ATMS[3];
+                    for $counter (0 .. $#{ $torsions }) {
+                        $c = \%{ $torsions->[$counter] };
+                        $c->{"p0"} = (int($c->{"p0"} * 180/$pi));# % 360);
+                        if ($counter == 0) {
+                            printf OUTFILE "%11.4f%10.4f%10.4f\n", ($c->{"kp"} * 2), $c->{"n"}, $c->{"p0"};
+                        } else {
+                            printf OUTFILE "%50s%11.4f%10.4f%10.4f\n", "", ($c->{"kp"} * 2), $c->{"n"}, $c->{"p0"};
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    print OUTFILE "END\n#\nINVERSIONS\n";
+    for $atom1 (keys %{ $ffData->{"inversions"} }) {
+        for $atom2 (keys %{ $ffData->{"inversions"}{$atom1} }) {
+            for $atom3 (keys %{ $ffData->{"inversions"}{$atom1}{$atom2} }) {
+                for $atom4 (keys %{ $ffData->{"inversions"}{$atom1}{$atom2}{$atom3} }) {
+                    @TMP = @ATMS = ();
+                    $torsions = \@{ $ffData->{"inversions"}{$atom1}{$atom2}{$atom3}{$atom4}{"VALS"} };
+                    @TMP = ( $atom1, $atom2, $atom3, $atom4 );
+                    $i = $ffData->{"inversions"}{$atom1}{$atom2}{$atom3}{$atom4}{"counter"};
+                    while ($ffData->{"inversionOrders"}{$i} =~ /(\d)/g) {
+                        push @ATMS, $TMP[$1];
+                    }
+                    $c = \%{ $torsions->[0] };
+		    if (! defined($c->{type}) || $c->{type} eq "IT_JIKL") {
+			printf OUTFILE " %-9s%-9s%-9s%-11s IT_JIKL%14.4f%10.4f%10.4f\n",
+			     $ATMS[0], $ATMS[1], $ATMS[2], $ATMS[3],
+			     ($c->{"kp"} * 2), $c->{"p0"},$c->{"n"};
+		    } else {
+			printf OUTFILE " %-9s%-9s%-9s%-11s IT_IJKL%14.4f%10.4f\n",
+			     $ATMS[0], $ATMS[1], $ATMS[2], $ATMS[3],
+			     ($c->{"kp"} * 2), $c->{"p0"};
+		    }
+                }  
+            }
+        }
+    }
+    print OUTFILE "END\n\#\nCOULOMBIC\n X        X           CONST-EPS\nEND\n";
+    close OUTFILE;
+}
+

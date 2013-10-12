@@ -1,0 +1,18 @@
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            1 all atom 25 ${sname}.min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+fix             restraint solute spring/self 500.0
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+#now minimize the entire system
+unfix           restraint
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1

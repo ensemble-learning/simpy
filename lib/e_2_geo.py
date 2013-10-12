@@ -12,13 +12,14 @@ def convertors(b):
     toGeo(b, b.name+'.geo')
     toXyz(b, b.name+'.xyz')
     toXyz(b, b.name+'.gjf')
+    toPdb(b, b.name+'.pdb')
     toReaxLammps(b)
-    toPdb(b)
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("fname", default="geo", nargs="?", help="geo file name")
     parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
+    parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
     parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
     parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
     parser.add_argument("-vol", action="store_true", help="get the volume of the simulation box")
@@ -33,6 +34,8 @@ def main():
 
     if args.c:
         print "converting %s to geo, xyz, gjf and lammps..."%fname
+        if args.pbc:
+            b.pbc = [50, 50, 50, 90.0, 90.0, 90.0]
         convertors(b)
 
     if args.b:

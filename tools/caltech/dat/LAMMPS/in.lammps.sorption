@@ -1,0 +1,73 @@
+
+print                          .
+print ==========================================
+print "500 steps CG Minimization"
+print ==========================================
+print                          .
+
+dump            1 all atom 25 ${sname}.min.lammpstrj
+dump_modify     1 image yes scale yes
+thermo          10
+min_style       sd
+minimize        1.0e-4 1.0e-4 500 5000
+min_style       cg
+minimize        1.0e-4 1.0e-4 500 5000
+undump          1
+
+
+print                          .
+print =====================================
+print "NVT dynamics to heat system"
+print =====================================
+print            .
+
+reset_timestep  0
+timestep        1.0
+velocity        all create 0.0 12345678 dist uniform
+thermo          100
+timestep        1.0
+dump            1 all custom 1000 ${sname}.heat.lammpstrj id type xu yu zu vx vy vz
+fix             4 all nvt temp 1.0 ${rtemp} 100.0
+run             10000
+unfix           4
+undump          1
+
+print                          .
+print ================================================
+print "NVT dynamics at ${rtemp} K"
+print ================================================
+print                       .
+
+timestep        1.0
+fix             2 all nvt temp ${rtemp} ${rtemp} 100.0 
+thermo          100
+dump            1 all custom 1000 ${sname}.nvt.lammps id type xu yu zu vx vy vz
+run             500000 # run for 15 ns
+unfix           2
+
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+
+print "================================================"
+print "NVT dynamics for 500ps dumping velocities"
+print "================================================"
+thermo          4
+fix             1 all nvt temp ${rtemp} ${rtemp} 100.0
+
+variable	i loop 5
+label		rloop
+
+log             ${sname}.2pt.${i}.eng
+dump            2 all custom 4 ${sname}.2pt.${i}.lammps id type xu yu zu vx vy vz 
+dump            4 all custom 400 ${sname}.2pt.${i}.atom.eng id v_atomEng
+run             100000
+undump          2
+undump          4
+
+next		i
+jump		${input} rloop
+uncompute       atomPE
+uncompute       atomKE
+undump          1
+

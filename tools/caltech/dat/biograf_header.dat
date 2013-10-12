@@ -1,0 +1,36 @@
+PARAMETER FORMAT (12-86)
+  233    3    0    0    0    0    0    0    0    0    0    0    0    0    0    0
+FORCEFIELD AMBER
+DEFAULTS  xxxdataxxx plus comments
+LBOND      T         T >> use bond terms
+LANGLE     T         T >> use angle terms
+ANGX 2 K   F         T >> use true force constants for cosine ang-str cross terms
+ANGANGINV  F         T >> use angle-angle inversion terms
+LINVERSN   T         T >> use inversion terms
+ALL INVER  F         T >> force all inversions to be used
+BNDXANG    F         T >> use bond cross angle terms
+ANGXANG    F         T >> use angle cross angle terms
+LTORSION   T         T >> use torsion terms
+BNDBNDTOR  F         T >> allow coupling of the 1-2 and 3-4 bonds of torsions
+ANGANGTOR  F         T >> allow coupling of the 1-2-3 and 2-3-4 angles of torsions
+LPITWIST   F         T >> use pi twist terms
+TORS SCAL  T         T >> will renormalize torsions (not allow SNGTOR)
+ALL TORSN  F         T >> force all torsions to be used
+ETOR SCAL     1.0000 exocyclic scaling factor
+TORANGSW   F         T >> switch torsion barrier off as angle becomes linear
+TORANGR     90. 180. on and off angles for torsion angle switch
+LNONBOND   T         T >> use nonbond terms
+RNB GEOMN  T         T >> use geom mean for nonbond cross terms
+NBEXBND    T         T >> exclude 1-2 terms from nonbonds
+NBEXANG    T         T >> exclude 1-3 terms from nonbonds
+SCAL NB14     0.5000 factor scale 1-4 nonbonds (1.0 >> full value)
+SHRINK CH  F         T >>  allow shrunk CH bonds for
+SHRINK FC     1.0000 shrink factor for CH bonds
+LCOULMB    T         T >> use Coulomb terms
+R*EPS      F         T >> use shielded Coulomb 1/eps*R**2
+LHBOND     F         T >> use hb interactions
+ATM DEFLT CT         default atom for FF
+MASSZER    F         T >> use zero mass option
+POLYENE    F         T >> use polyene option
+USRENERGY  F         T >> use user energy expression
+*

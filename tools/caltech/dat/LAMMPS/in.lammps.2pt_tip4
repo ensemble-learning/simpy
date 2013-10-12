@@ -1,0 +1,26 @@
+log             ${sname}_2pt.eng
+timestep	2.0
+
+print "================================================"
+print "NVT dynamics for 20ps dumping velocities"
+print "================================================"
+thermo          2
+thermo_style    custom etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong ehbond press vol
+thermo_modify	line multi
+fix             1 all nvt temp 300.0 300.0 100.0
+dump            1 all custom 2 ${sname}_2pt.lammps id type xu yu zu vx vy vz 
+run             10000
+undump          1
+unfix           1
+
+pair_style	lj/gromacs/coul/gromacs 9 10 14 15
+kspace_style    none
+compute         atomPE all pe/atom
+compute         atomKE all ke/atom
+variable        atomEng atom c_atomPE+c_atomKE
+dump            4 all custom 10000 ${sname}_2pt.atom.eng id v_atomEng
+run             1
+undump          4
+uncompute       atomPE
+uncompute       atomKE
+

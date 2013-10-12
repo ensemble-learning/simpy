@@ -1,0 +1,109 @@
+#PBS -l nodes=1:ppn=8
+#PBS -l walltime=480:00:00
+#PBS -q workq
+#PBS -j oe
+#!/bin/tcsh
+#!/bin/csh
+#PBS -N lammps
+
+echo "Nodes:"
+cat $PBS_NODEFILE
+echo "JOB: MD Simulation of lammps"
+echo
+
+set prefix = lammps
+set curr_dir = /net/hulk/home6/chengtao/test/chno/glycine
+set temp_dir = /temp1/chengtao/lammps
+set bgf_file = /net/hulk/home6/chengtao/test/chno/glycine/lammps.bgf
+set force_field = "/net/hulk/home6/chengtao/test/chno/UFF.ff"
+set input_file = in.lammps
+set data_file = data.lammps
+set twoPT_file = in.${prefix}.2pt
+set grp_file = ${curr_dir}/${prefix}.grps
+set nodes = 1
+set nprocs = `wc -l < $PBS_NODEFILE`
+set outputfiles = "*"
+set do_2pt = 0 # change this flag to do the 2pt analysis
+
+if($do_2pt) then
+  set create2PT = "csh -f /net/hulk/home3/tpascal/scripts/createVacInp.csh"
+  set do2PT = /ul/tpascal/codes/bin/2pt.gnu.64
+  set host = `echo $PBS_O_HOST | sed 's/.wag.caltech.edu//'`
+  if ($host == "hive") set do2PT = /ul/tpascal/codes/bin/2pt_analysis
+
+  set tstep = 0.002 #CHANGE!!! default to 2fs
+  set rotational_symmetry = 2 # **IMPORTANT** change this value to match your system if doing 2PT. Defaults to 2 for water!!
+  if (-e $bgf_file) then
+    if ! (-e ${grp_file}) then
+      /net/hulk/home3/tpascal/scripts/bgf2VACgrp.pl -b $bgf_file -f resname -c 1 -o 1 -s $grp_file >& /dev/null
+    endif
+  endif
+  if ! (-e ${grp_file}) then
+    set grp_file = `/net/hulk/home3/tpascal/scripts/getDOF.pl -b $bgf_file -v 0`
+    set grp_file = "${grp_file} ${rotational_symmetry}"
+  endif
+  if (-e ${curr_dir}/in.${prefix}_singlepoint) then
+    set shakeStr = `grep "fix             shakeH" ${curr_dir}/in.${prefix}`
+    cp ${curr_dir}/in.${prefix}_singlepoint ${curr_dir}/_in.test
+    sed -i 's/read_data.*$/read_restart ${restart}/' ${curr_dir}/_in.test
+    sed -i -r 's/(variable.*|group.*|run.*)//' ${curr_dir}/_in.test
+    cat ${curr_dir}/_in.test /ul/tpascal/scripts/dat/LAMMPS/in.lammps.2pt > ${curr_dir}/in.${prefix}.2pt
+    sed -i "s/fix             shakeH.*/$shakeStr/" ${curr_dir}/in.${prefix}.2pt
+    rm -fr ${curr_dir}/_in.test
+  endif
+endif
+
+#use these for hive
+setenv LD_LIBRARY_PATH /ul/tpascal/codes/lib:/ul/tpascal/codes/openmpi/1.4.3/64/lib:/ul/tpascal/codes/lib/ifcore/64:$LD_LIBRARY_PATH
+setenv LAMMPS_PARALLEL "/exec/lammps/bin/mpirun -hostfile $PBS_NODEFILE -np $nprocs --path /ul/tpascal/codes/openmpi/1.4.3/64/bin"
+set executable = "/exec/lammps/bin/lmp_parallel64 -screen none"
+
+#for other clusters locate an openmpi 32 bit installation. Currently only the serial version is supported
+#setenv LAMMPS_PARALLEL ""
+#set executable = /exec/lammps/bin/lmp_serial32
+
+echo Running $executable on $nodes nodes $nprocs processors launched from $PBS_O_HOST
+echo "Nodes:"
+cat $PBS_NODEFILE
+
+cat $PBS_NODEFILE > $curr_dir/nodelist.$PBS_JOBID
+
+mkdir -p $temp_dir/analysis ${curr_dir}/results
+cd $temp_dir
+foreach i ($input_file $data_file $twoPT_file)
+  if (-e ${curr_dir}/${i}) cp ${curr_dir}/${i} ./
+end
+
+
+
+echo "LAMMPS equilibration dynamics of ${prefix}"
+$LAMMPS_PARALLEL $executable  -in $input_file -log ${prefix}.equil.lammps.log || goto error
+
+if !(-e ${twoPT_file}) set do_2pt = 0
+if ($do_2pt == 1) then
+  foreach i (${prefix}.npt.*.restart)
+    cd ${temp_dir}
+    set sname = `basename $i .restart`
+    echo "2PT analysis using $sname"
+    $LAMMPS_PARALLEL $executable  -in $twoPT_file -var restart $i -var sname $sname || continue
+    cd ${temp_dir}/analysis
+      ${create2PT} ../${sname}.2pt ../${data_file} 3 ${tstep} ${grp_file}
+      ${do2PT} ${sname}.2pt.mol.grps.in >& ${sname}.2pt.mol.grps.screen.out
+      cp ${sname}.2pt.mol.grps.* ${curr_dir}/results
+    cd ../
+    rm -fr ./${sname}.2pt.lammps
+  end
+endif
+
+exit:
+echo " "
+echo No errors detected
+echo " "
+exit(0)
+
+error:
+echo " "
+echo ERROR OCCURRED: Check output file
+echo " "
+exit(1)
+
