@@ -78,6 +78,8 @@ def main():
         print "warning: no bonds were read!!!"
         x = np.arange(len(ener.e_total))
 
+    for i in ener.e_total:
+        print i
     e_total = ener.e_total - ener.e_total[-1]
     e_bond = ener.e_bond - ener.e_bond[-1]
     e_atom = ener.e_atom - ener.e_atom[-1]
@@ -90,7 +92,7 @@ def main():
 
     plt.xlabel(r"Bond length ($\AA$)", size="x-large")
     plt.ylabel("Potential energy (kcal/mol)", size="x-large")
-    plt.legend()
+    plt.legend(loc=4)
     plt.savefig("bondEnergy.eps")
 
     plt.show()

@@ -352,6 +352,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("fname", default="ffield", nargs="?", help="force field file name")
     parser.add_argument("-D", action="store_true", help="Debug the code")
+    parser.add_argument("-trans", action="store_true", help="transform ffield to more readable format")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
@@ -367,10 +368,12 @@ def main():
         ntype = args.type[0]
     else:
         ntype = 0
-        print "Warning: Using default force field type"
+        print "Note: Using default force field type"
 
+     
     ff = Ffield(fname, ntype)
-    ff.toEquation()
+    if args.trans:
+        ff.toEquation()
 
 if __name__ == "__main__":
     main()

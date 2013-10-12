@@ -60,5 +60,5 @@ if int(flag):
     decrease = 1.0 - scale
     t[nt][n] = "%.4f"%(temp*decrease)
     toFfield(ff, "ffield")
-    os.system("./run.sh")
+    os.system("bash ./run.sh")
     os.chdir("..")
