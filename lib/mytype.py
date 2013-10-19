@@ -83,6 +83,10 @@ class System():
         """@ivar: system name
         @type: char
         """
+        self.step = 0
+        """@ivar: time step
+        @type: int
+        """
         self.atoms = []
         """@ivar: atoms in system
         @type: list
