@@ -15,6 +15,11 @@ class Pdb():
     def read(self, filename):
         """ read data from pdb
         """
+        if filename.endswith(".pdb"):
+            self.name = filename.split(".")[0]
+        else:
+            self.name = filename
+            
         f = open(filename, 'r')
         for i in f:
             if i.strip().startswith("ATOM"):

@@ -11,7 +11,7 @@ def toReaxLammps(system, outfile="lammps.data"):
     """
 
     o = open(outfile, 'w')
-    o.write("# Created by simulation python\n")
+    o.write("# \n")
     o.write("\n")
     o.write("%d atoms\n\n"%len(system.atoms))
     o.write("%d atom types\n\n"%len(system.map))
@@ -40,7 +40,7 @@ def toReaxLammps(system, outfile="lammps.data"):
             if j.isdigit():
                 break
             atn += j
-        o.write("%d %s\n"%(i[0], ELEMENT2MASS[atn]))
+        o.write("%d %s # %s\n"%(i[0], ELEMENT2MASS[atn], atn))
     o.write("\n")
     o.write("Atoms\n")
     o.write("\n")
