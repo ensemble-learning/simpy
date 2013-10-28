@@ -1,11 +1,30 @@
 """ read the geo file and output to data (LAMMPS), geo and xyz file.
 """
 from mytype import System, Molecule, Atom
-from g03 import G03LogConf
-from output_conf import toXyz
+from xyz import Xyz
+from output_conf import toDump
+from block import xyzBlock
 
-for i in range(21):
-    testfile = "scan%02d.log"%i
-    a = G03LogConf(testfile)
-    b = a.parser()
-    toXyz(b, "scan%02d.xyz"%i)
+nframe = xyzBlock("movie.xyz", 194)
+
+if nframe > 1:
+    for i in range(nframe):
+        a = Xyz("output%05d.xyz"%i)
+        b = a.parser()
+        b.pbc = [10.739, 11.747, 13.083, 90.00, 95.77, 90.00] 
+        b.step = i
+        toDump(b, "output%05d.dump"%i)
+    o = open("total.dump", "w")
+    for i in range(nframe):
+        f = open("output%05d.dump"%i, "r")
+        for j in f:
+            o.write(j)
+        f.close()
+    o.close()
+        
+"""
+testfile = "out.pdb"
+a = Pdb(testfile)
+b = a.parser()
+toDump(b)
+"""

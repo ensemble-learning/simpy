@@ -11,7 +11,7 @@ def toReaxLammps(system, outfile="lammps.data"):
     """
 
     o = open(outfile, 'w')
-    o.write("# Created by simulation python\n")
+    o.write("# \n")
     o.write("\n")
     o.write("%d atoms\n\n"%len(system.atoms))
     o.write("%d atom types\n\n"%len(system.map))
@@ -40,7 +40,7 @@ def toReaxLammps(system, outfile="lammps.data"):
             if j.isdigit():
                 break
             atn += j
-        o.write("%d %s\n"%(i[0], ELEMENT2MASS[atn]))
+        o.write("%d %s # %s\n"%(i[0], ELEMENT2MASS[atn], atn))
     o.write("\n")
     o.write("Atoms\n")
     o.write("\n")
@@ -216,4 +216,44 @@ def toTop(system, outfile="topol.top"):
     WAT_1  1024
     HEP_2     1
     """
-    
+def toDump(system, outfile="output.dump"):
+    """Output the dump file
+    """
+    o = open(outfile, "w")
+    o.write("ITEM: TIMESTEP\n")
+    o.write("%d\n"%system.step)
+    o.write("ITEM: NUMBER OF ATOMS\n")
+    o.write("%d\n"%len(system.atoms))
+    # write the pbc
+    pbc = system.pbc
+    """ITEM: BOX BOUNDS xy xz yz xx yy zz 
+       xlo_bound xhi_bound xy
+       ylo_bound yhi_bound xz
+       zlo_bound zhi_bound yz 
+    """
+    if len(pbc) >= 6:
+        if pbc[3] == 90.0 and pbc[4] == 90 and pbc[5] == 90:
+            o.write("ITEM: BOX BOUNDS pp pp pp\n")
+            o.write(" 0.0 %9.4f 0.0\n"%pbc[0])
+            o.write(" 0.0 %9.4f 0.0\n"%pbc[1])
+            o.write(" 0.0 %9.4f 0.0\n"%pbc[2])
+        else:
+            o.write("ITEM: BOX BOUNDS xy xz yz pp pp pp\n")
+            xx, xy, xz, yy, yz, zz = lattice2v(pbc)
+            o.write(" %9.4f %9.4f %9.4f\n"%(xz, xx, xy))
+            o.write(" 0.0 %9.4f %9.4f\n"%(yy, xz))
+            o.write(" 0.0 %9.4f %9.4f\n"%(zz, yz))
+    else:
+        print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
+        o.write(" 0.0 %9.4f xlo xhi\n"%5.0)
+        o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
+        o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
+    o.write("ITEM: ATOMS id type x y z\n")
+    for i in system.atoms:
+        o.write("%-9d"%i.an)
+        o.write("%6d"%i.type1)
+        o.write("%14.6f"%i.x[0])
+        o.write("%14.6f"%i.x[1])
+        o.write("%14.6f"%i.x[2])
+        o.write("\n")
+    o.close()

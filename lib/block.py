@@ -60,25 +60,32 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
-def xyzBlock(xyzfile, n, dt=1):
-    f = open(xyzfile, "r")
-    o = open("out.xyz", "w")
-    n = n + 2
-    flag = 1
-    counter = 1
+def xyzBlock(xyzfile, n, outfile="output", dt=1):
+    """parse the xyz file into blocks
+    @return: the number of frames in dump file.
+    """
+    counter = 0
+    tag = 0
+    f = open(xyzfile, 'r')
+    lines = ''
     block = []
-    nframe = 0
     for i in f:
-        block.append(i)
-        if counter % n == 0:
-            if nframe % dt == 0:              
+        if counter > 0 and counter%n == 0: 
+            if tag % dt == 0:
+                o = open(outfile+"%05d"%tag+".xyz", 'w')
                 for j in block:
                     o.write(j)
+                o.close()
             block = []
-            nframe += 1
+            tag += 1
+        block.append(i)
         counter += 1
-    f.close()
+    o = open(outfile+"%05d"%tag+".xyz", 'w')
+    for j in block:
+        o.write(j)
     o.close()
+    f.close()
+    return tag
 
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks

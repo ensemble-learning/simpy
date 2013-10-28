@@ -17,12 +17,14 @@ from pdb import Pdb
 from output_conf import toReaxLammps, toGeo
 
 def test():
-    testfile = "output.pdb"
+    testfile = "test.pdb"
     a = Pdb(testfile)
     b = a.parser()
-    b.getMass()
-    print b.mass
-    #toReaxLammps(b)
+    atoms = b.atoms
+    print atoms[0].x
+    b.sortZ()
+    atoms = b.atoms
+    print atoms[0].x
 
 if __name__ == "__main__":
-    pass
+    test()

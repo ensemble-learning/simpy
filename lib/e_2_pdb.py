@@ -2,6 +2,7 @@
 """
 
 import sys
+import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
 from output_conf import toReaxLammps, toGeo, toPdb
@@ -36,26 +37,37 @@ def withPbc(testfile="supper.pdb"):
     b = a.parser()
     b.assignAtomTypes()
     #b.translate(2.1, "x")
-    b.geotag = "BIOGRF 200"
+    if len(b.pbc) == 0:
+        b.geotag = "BIOGRF 200"
+    else:
+        b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")
     toPdb(b, "out.pdb")
 
+def sortXYZ(testfile="input.pdb", axis="z"):
+    a = Pdb(testfile)
+    b = a.parser()
+    atoms = b.atoms
+    b.sortXYZ(axis)
+    toPdb(b, "out_sorted.pdb")
+
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        usage()
-        print """Waring: using default pdb file (output.pdb) and no pdb!!
-        """
-        fortranOut()
-    else:
-        pdbfile = sys.argv[1]
-        opt = "nopbc"
-        if len(sys.argv) > 2:
-            opt = sys.argv[2]
-        if opt == "pbc":
-            withPbc(pdbfile)
-        elif opt == "nopbc":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fname", default="input.pdb", nargs="?", help="geo file name")
+    parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
+    parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
+    parser.add_argument("-sort", nargs=1, help="Sort the coordinations according to x, y or z")
+    args = parser.parse_args()
+    
+    pdbfile = args.fname
+    
+    if args.c:
+        if args.pbc:
             fortranOut(pdbfile)
         else:
-            usage()
+            withPbc(pdbfile)
 
+    if args.sort:
+        sortXYZ(pdbfile, args.sort[0])
+    

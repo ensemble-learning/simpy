@@ -83,6 +83,10 @@ class System():
         """@ivar: system name
         @type: char
         """
+        self.step = 0
+        """@ivar: time step
+        @type: int
+        """
         self.atoms = []
         """@ivar: atoms in system
         @type: list
@@ -285,6 +289,20 @@ class System():
             atoms.append(self.atoms[i])
         self.atoms = atoms
 
+    def sortXYZ(self, axis="z"):
+        atoms = []
+        if axis == "x":
+            atoms = sorted(self.atoms, key=lambda atom: atom.x[0])
+        elif axis == "y":
+            atoms = sorted(self.atoms, key=lambda atom: atom.x[1])
+        elif axis == "z":
+            atoms = sorted(self.atoms, key=lambda atom: atom.x[2])
+        else:
+            print "Error: non-sense input"
+            atoms = self.atoms
+
+        self.atoms = atoms
+
 class Molecule():
     """Basic class for molecular includes (name, atoms(list of atoms), 
     conn (connectivity))
@@ -347,7 +365,7 @@ class Molecule():
     
 def test():
     """test some functions
-    """
+    """ 
     pass
 
 if __name__ == "__main__":
