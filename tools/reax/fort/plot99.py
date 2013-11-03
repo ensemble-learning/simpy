@@ -125,5 +125,5 @@ def plot_in_block():
 
 
 if __name__ == "__main__":
-    #plot_all()
-    plot_geo()
+    plot_all()
+    #plot_geo()

@@ -29,9 +29,9 @@ def toReaxLammps(system, outfile="lammps.data"):
             o.write("%9.4f%9.4f%9.4f xy xz yz\n\n"%(xy, xz, yz))        
     else:
         print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
-        o.write(" 0.0 %9.4f xlo xhi\n"%5.0)
-        o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
-        o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
+        o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
     o.write("Masses\n\n")
     for i in system.map:
         # atom name 
