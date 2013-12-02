@@ -206,15 +206,23 @@ class Ffield():
                         eq2[n][8] = float(k[7])
                         n1 += 1
                 n += 1
+        # equation 3
+        eq3 = []
+        for i in range(len(self.atom)):
+            val = int(float(self.atom[i][2]))
+            val_boc = int(float(self.atom[i][28]))
+            eq3.append([i, val, val_boc])
 
         # equation 4
         eq4 = []
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
+                p_boc1 = float(self.gl[0])
+                p_boc2 = float(self.gl[1])
                 p_o_131 = math.sqrt(float(self.atom[i][20])*float(self.atom[j][20]))
                 p_o_132 = math.sqrt(float(self.atom[i][21])*float(self.atom[j][21]))
                 p_o_133 = math.sqrt(float(self.atom[i][22])*float(self.atom[j][22]))
-                eq4.append([i, j, p_o_132, p_o_131, p_o_133])
+                eq4.append([i, j, p_boc1, p_boc2, p_o_132, p_o_131, p_o_133])
         # equation 6
         eq6 = []
         n1 = 0
@@ -234,6 +242,25 @@ class Ffield():
                         p_be1, p_be2 = float(k[5]), float(k[10])
                         n1 += 1
                 eq6.append([i, j, de_s, p_be1, p_be2, de_p, de_pp])
+
+        # equation 7
+        eq7 = []
+        for i in range(len(self.atom)):
+            val = int(float(self.atom[i][2]))
+            val_e = int(float(self.atom[i][8]))
+            nlp_opt = int(0.5 * (val_e - val))
+            plp1 = float(self.gl[15])
+            plp2 = float(self.atom[i][18])
+            eq7.append([i, val_e, plp1, nlp_opt, plp2])
+        
+        # equation 11
+        # equation 12
+        # equation 13
+        # equation 14
+        # equation 15
+        # equation 16
+        # equation 17
+        # equation 18
 
         # equation 23
         eq23 = []
@@ -264,6 +291,8 @@ class Ffield():
                         n1 += 1
                 n += 1
 
+        # equation 24
+
         # equation 26
         eq26 = []
         for i in range(len(self.atom)):
@@ -289,6 +318,18 @@ class Ffield():
                 counter += 1
             o.write("\n")
         
+        o.write("# equation 3: coarse bond order\n") 
+        o.write("%4s%8s%8s\n"%("a1", "val", "val_boc"))
+        for i in range(len(eq3)):
+            counter = 0 
+            for j in range(len(eq3[i])):
+                if counter < 1:
+                    o.write("%4s"%self.elements[eq3[i][j]])
+                else:
+                    o.write("%8d"%eq3[i][j])
+                counter += 1
+            o.write("\n")
+
         o.write("# equation 4: bond order corrections\n")
         o.write("%4s%4s%8s%8s%8s\n"%("a1", "a2", "pboc3", "pboc4", "pboc5"))
         for i in range(len(eq4)):
@@ -311,6 +352,18 @@ class Ffield():
                     o.write("%4s"%self.elements[eq6[i][j]])
                 else:
                     o.write("%10.4f"%eq6[i][j])
+                counter += 1
+            o.write("\n")
+
+        o.write("# equation 7: lone pair energy\n") 
+        o.write("%4s%8s%8s%8s%8s\n"%("a1", "val_e", "p_lp1", "nlp_opt", "p_lp2"))
+        for i in range(len(eq7)):
+            counter = 0 
+            for j in range(len(eq7[i])):
+                if counter < 1:
+                    o.write("%4s"%self.elements[eq7[i][j]])
+                else:
+                    o.write("%9.4f"%eq7[i][j])
                 counter += 1
             o.write("\n")
 

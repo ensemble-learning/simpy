@@ -10,6 +10,7 @@ class Pdb():
         self.name = ''
         self.pbc = []
         self.coords = []
+        self.connect = []
         self.read(filename)
 
     def read(self, filename):
@@ -28,7 +29,10 @@ class Pdb():
                 self.coords.append(i.strip())
             elif i.strip().startswith("CRYST1"):
                 self.pbc = i.strip().split()[1:7]
+            elif i.strip().startswith("CONECT"):
+                self.connect.append(i.strip())
         f.close()
+
     def parser(self,):
         s = System()
         if self.name:
@@ -44,6 +48,15 @@ class Pdb():
             a.x[1] = float(i[39:47])
             a.x[2] = float(i[47:55])
             s.atoms.append(a)
+
+        # only storage the first half of the bond matrix
+        for i in self.connect:
+            tokens = i.strip().split()
+            a1 = int(tokens[1])
+            for j in [int(k) for k in tokens[2:]]:
+                a2 = j
+                if a2 > a1:
+                    s.connect.append([a1, a2])
         return s
 
 if __name__ == "__main__":
