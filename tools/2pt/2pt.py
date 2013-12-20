@@ -2,6 +2,7 @@ import os
 import sys
 import shutil
 import subprocess
+import argparse
 
 def get_2pt(output, tpt="2pt.inp"):
     output.write("2pt analysis configurations:\n")
@@ -68,6 +69,10 @@ def get_lammps_inp(output, lammps_input="lammps_input"):
     output.write("    save trj every %6.2f fs\n"%(timestep * savefreq))
 
 def run_2pt():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-n", nargs=1, type=int, help="number of CPU")
+    args = parser.parse_args()
+
     o = open("run.log", "w")
 
     get_lammps_inp(o)
@@ -75,8 +80,13 @@ def run_2pt():
     
     get_2pt(o)
 
-    ppn = 1
+    if args.n:
+        ppn = args.n[0]
+    else:
+        ppn = 16
+
     iters = 20
+    mpirun = "/net/hulk/home6/chengtao/bin/openmpi/bin/mpirun"
     
     o.write("Using %d cpu and %d steps\n"%(ppn, iters))
     o.flush()
@@ -97,11 +107,7 @@ def run_2pt():
         log = open("lammps.run", "w")
         error = open("lammps.err", "w")
         o.write("    Runing Lammps\n")
-        if ppn > 1:
-            signal = subprocess.call(["mpirun", "-np", str(ppn), "lammps", "-in", "lammps_input"], \
-                 stdout=log, stderr=error)
-        else:
-            signal = subprocess.call(["lammps", "-in", "lammps_input"], \
+        signal = subprocess.call([mpirun, "-np", str(ppn), "lammps", "-in", "lammps_input"], \
                  stdout=log, stderr=error)
         if signal > 0:
             sys.exit()

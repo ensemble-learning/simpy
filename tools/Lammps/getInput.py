@@ -36,9 +36,12 @@ def usage():
     type: NVT, MIN
     """
 
-def getElements():
+def getElements(args):
     assert os.path.exists("ffield")
-    a = Ffield("ffield", 0 )
+    if args.lg:
+        a = Ffield("ffield", 1 )
+    else:
+        a = Ffield("ffield", 0 )
     counter = 1
     for i in a.elements:
         FF[i] = counter
@@ -67,7 +70,7 @@ def parseData(fname="lammps.data"):
 def main(args):
     """ generate the lammps input file
     """
-    getElements()
+    getElements(args)
     m = parseData()
     ty = []
     elem = []
@@ -99,10 +102,10 @@ def main(args):
     else:
         lines = lines.replace("%reax_potential%", "reax/c NULL")
     
-    if args.lammps2013:
-        lines = lines.replace("%ffield_atoms%", " ".join(elem))
-    else:
+    if args.lammps2012:
         lines = lines.replace("%ffield_atoms%", " ".join(ty))
+    else:
+        lines = lines.replace("%ffield_atoms%", " ".join(elem))
 
     lines = lines.replace("%elements%", " ".join(elem))
 
@@ -114,7 +117,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("type", default="MIN", nargs="?", help="simulation type")
     parser.add_argument("-lg", action="store_true", help="using lg type ffield")
-    parser.add_argument("-lammps2013", action="store_true", help="using lg type ffield")
+    parser.add_argument("-lammps2012", action="store_true", help="using lg type ffield")
     #parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
     #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
     #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
