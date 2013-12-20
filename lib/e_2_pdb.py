@@ -5,7 +5,7 @@ import sys
 import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo, toPdb, toMsd
+from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -46,6 +46,7 @@ def withPbc(testfile="supper.pdb"):
     toGeo(b, "sim.geo")
     toMsd(b, "sim.msd")
     toPdb(b, "out.pdb")
+    toXyz(b, "out.xyz")
 
 def sortXYZ(testfile="input.pdb", axis="z"):
     a = Pdb(testfile)
