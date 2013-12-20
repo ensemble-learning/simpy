@@ -3,7 +3,7 @@
 01-04-2013: debug toPdb
 @todo: finish to Top
 """
-from cons import ELEMENT2MASS
+from cons import ELEMENT2MASS, ELEMENT2ATN
 from utilities import lattice2v
 
 def toReaxLammps(system, outfile="lammps.data"):
@@ -29,9 +29,9 @@ def toReaxLammps(system, outfile="lammps.data"):
             o.write("%9.4f%9.4f%9.4f xy xz yz\n\n"%(xy, xz, yz))        
     else:
         print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
-        o.write(" 0.0 %9.4f xlo xhi\n"%5.0)
-        o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
-        o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
+        o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
     o.write("Masses\n\n")
     for i in system.map:
         # atom name 
@@ -249,6 +249,7 @@ def toDump(system, outfile="output.dump"):
         o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
         o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
     o.write("ITEM: ATOMS id type x y z\n")
+
     for i in system.atoms:
         o.write("%-9d"%i.an)
         o.write("%6d"%i.type1)
@@ -256,4 +257,48 @@ def toDump(system, outfile="output.dump"):
         o.write("%14.6f"%i.x[1])
         o.write("%14.6f"%i.x[2])
         o.write("\n")
+    o.close()
+
+def toMsd(system, outfile="dff.msd"):
+    """Output the msd file
+    """
+    o = open(outfile, "w")
+    o.write("#Associated PPF =\n") 
+    o.write("#DFF:MSD\n")
+    o.write("#Model Structure Data File    Energy = 0.0\n")
+    pbc = system.pbc
+    if len(pbc) >= 6:
+        o.write("PBC: ")
+        o.write("%9.4f%9.4f%9.4f"%(pbc[0], pbc[1], pbc[2]))
+        o.write("%6.2f%6.2f%6.2f\n"%(pbc[3], pbc[4], pbc[5]))
+
+    system.assignEleTypes()
+    o.write("%-d\n"%len(system.atoms))
+    n = 1
+    for i in system.atoms:
+        step = n
+        atp1 = i.element
+        atp2 = i.element
+        atp3 = i.element
+        an = ELEMENT2ATN[atp1]
+        q = 0.0
+        o.write("%-8d"%step)
+        o.write("%5s"%atp1)
+        o.write("%5d"%an)
+        o.write("%5s"%atp2)
+        o.write("%5s"%atp3)
+        o.write("%10.4f"%q)
+        o.write("%12.6f"%i.x[0])
+        o.write("%12.6f"%i.x[1])
+        o.write("%12.6f"%i.x[2])
+        o.write(" 1  UNK  0\n")
+        n += 1
+
+    o.write("%-d\n"%len(system.connect))
+    for i in system.connect:
+        o.write("%-6d%-6d%4d\n"%(i[0], i[1], 1))
+    o.write("#DFF:END\n")
+    o.close()
+        
+    o.write
     o.close()

@@ -4,14 +4,17 @@ according to lammps.data (also generated from simpy
 import sys
 import os
 import socket
+import argparse
 
 LIB = ''
 
 if socket.gethostname() == "cluster.hpc.org":
-    LIB = "/home/chengtao/packages/simupy/simpy/lib"
+    LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
 elif socket.gethostname() == "atom.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
@@ -33,9 +36,12 @@ def usage():
     type: NVT, MIN
     """
 
-def getElements():
+def getElements(args):
     assert os.path.exists("ffield")
-    a = Ffield("ffield", 1 )
+    if args.lg:
+        a = Ffield("ffield", 1 )
+    else:
+        a = Ffield("ffield", 0 )
     counter = 1
     for i in a.elements:
         FF[i] = counter
@@ -61,17 +67,24 @@ def parseData(fname="lammps.data"):
     f.close()
     return m
 
-def main(rtype="MIN"):
+def main(args):
     """ generate the lammps input file
     """
-    getElements()
+    getElements(args)
     m = parseData()
     ty = []
+    elem = []
     for i in m:
         #i = int(i*1000)/1000.0
         at = MASS[i]
+        elem.append(at)
         ff = FF[at]
         ty.append("%d"%ff)
+
+    rtype = args.type
+    lg = 0
+    if args.lg:
+        lg = 1
 
     if rtype == "NVT":
         lines = NVT
@@ -83,16 +96,33 @@ def main(rtype="MIN"):
         lines = MIN_CELL
 
     print "processing %s simulation......"%rtype
-    lines = lines.replace("%ffield_atoms%", " ".join(ty))
+    
+    if lg:
+        lines = lines.replace("%reax_potential%", "reax/c NULL lgvdw yes")
+    else:
+        lines = lines.replace("%reax_potential%", "reax/c NULL")
+    
+    if args.lammps2012:
+        lines = lines.replace("%ffield_atoms%", " ".join(ty))
+    else:
+        lines = lines.replace("%ffield_atoms%", " ".join(elem))
+
+    lines = lines.replace("%elements%", " ".join(elem))
+
     o = open("lammps_input", "w")
     o.write(lines)
     o.close()
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        usage()
-        print "Waring: using default input type (MIN)"
-        main()
-    else:
-        main(sys.argv[1])
+    parser = argparse.ArgumentParser()
+    parser.add_argument("type", default="MIN", nargs="?", help="simulation type")
+    parser.add_argument("-lg", action="store_true", help="using lg type ffield")
+    parser.add_argument("-lammps2012", action="store_true", help="using lg type ffield")
+    #parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
+    #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
+    #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
+    #parser.add_argument("-vol", action="store_true", help="get the volume of the simulation box")
+    args = parser.parse_args()
+    main(args)
+
 

@@ -132,7 +132,8 @@ class System():
         self.connect = []
         """@ivar: connectivity in gjf file
         @type: list 
-        @note: """
+        @note: should make a standary here
+        """
         self.redundant = []
         """@ivar: redundant info, such as fix bond distances
         @type: list 
