@@ -278,7 +278,7 @@ def plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name):
     ax1.set_xlabel("Bond length ($\AA$)", size="x-large")
     ax1.set_ylabel("Bond order", size="x-large")
     ax1.set_title(name, size="x-large")
-    ax1.legend()
+    ax1.legend(loc=3)
     # plot bond order
     ax2.plot(r, be, '-o', label="be")
     #ax2.plot(r, vdw, '-o')
@@ -355,7 +355,7 @@ def plot_bond_order(bonds, r):
             vdw = np.array(vdw)
             inner = np.array(inner)
             name = bonds[i].a1 + "_" + bonds[i].a2
-            if name == "B_B":
+            if name == "Li_Li":
                 plot_bo_be(r, bo, bo_s, bo_p, bo_pp, be, vdw, inner, name)
                 for ii in range(len(r)):
                     print r[ii], vdw[ii], inner[ii], be_s[ii]

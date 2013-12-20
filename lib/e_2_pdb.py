@@ -5,7 +5,7 @@ import sys
 import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo, toPdb
+from output_conf import toReaxLammps, toGeo, toPdb, toMsd
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -30,6 +30,7 @@ def fortranOut(testfile = "output.pdb"):
     b.pbc = [50.00, 50.00, 50.00, 90.0, 90.0, 90.0]
     b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
+    toMsd(b, "sim.msd")
     toGeo(b, "sim.geo")
 
 def withPbc(testfile="supper.pdb"):
@@ -43,6 +44,7 @@ def withPbc(testfile="supper.pdb"):
         b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")
+    toMsd(b, "sim.msd")
     toPdb(b, "out.pdb")
 
 def sortXYZ(testfile="input.pdb", axis="z"):
@@ -52,7 +54,7 @@ def sortXYZ(testfile="input.pdb", axis="z"):
     b.sortXYZ(axis)
     toPdb(b, "out_sorted.pdb")
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("fname", default="input.pdb", nargs="?", help="geo file name")
     parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
@@ -71,3 +73,5 @@ if __name__ == "__main__":
     if args.sort:
         sortXYZ(pdbfile, args.sort[0])
     
+if __name__ == "__main__":
+    main()
