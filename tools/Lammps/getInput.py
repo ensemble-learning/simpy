@@ -8,7 +8,7 @@ import socket
 LIB = ''
 
 if socket.gethostname() == "cluster.hpc.org":
-    LIB = "/home/chengtao/packages/simupy/simpy/lib"
+    LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
 elif socket.gethostname() == "atom.wag.caltech.edu":
@@ -37,7 +37,7 @@ def usage():
 
 def getElements():
     assert os.path.exists("ffield")
-    a = Ffield("ffield", 1 )
+    a = Ffield("ffield", 0 )
     counter = 1
     for i in a.elements:
         FF[i] = counter
