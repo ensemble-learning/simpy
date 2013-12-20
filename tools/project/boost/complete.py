@@ -3,9 +3,22 @@ convert the simulation time to real time.
 """
 
 import os
-#import argparse
+import argparse
+import sys
 
-def get_sim_time(n = 66):
+def get_sim_time(args, n = 66):
+
+    if args.mol:
+        molname = args.mol[0]
+    else:
+        print "Exit! no molecular name given"
+        sys.exit()
+
+    if args.nmol:
+        n = args.nmol[0]
+    else:
+        print "Exit! no molecular number given"
+        sys.exit()
 
     flag = 0
 
@@ -18,12 +31,17 @@ def get_sim_time(n = 66):
              if counter == 0:
                  start = step
              counter += 1
-        if "C3H6O3" in i:
+        if molname in i:
             tokens = i.strip().split()
-            nwater = int(tokens[0])
-            if nwater <= n:
-                flag = 1
-                break
+            nmol = int(tokens[0])
+            if args.reactant:
+                if nmol <= n:
+                    flag = 1
+                    break
+            if args.product:
+                if nmol >= n:
+                    flag = 1
+                    break
 
     f.close()
 
@@ -31,17 +49,20 @@ def get_sim_time(n = 66):
         return step, start
     else:
         print "Warning: not finish half reaction!"
-        print "Only %d molecules have reacted"%nwater
+        print "Only %d molecules have reacted"%nmol
         return 0, 0
 
-def get_real_time(nstep):
+def get_real_time(args, nstep, start):
     
-    if not os.path.exists("water.bboost"):
-        realtime = nstep
+    if args.fname:
+        boostfile = args.fname[0] + ".bboost"
+    
+    if not os.path.exists(boostfile):
+        realtime = nstep - start
     else:
         counter = 0
         realtime = 0.0
-        f = open("water.bboost", "r")
+        f = open(boostfile, "r")
         for i in f:
             if counter > 0:
                 tokens = i.strip().split()
@@ -53,21 +74,21 @@ def get_real_time(nstep):
         f.close()
     return realtime
 
-def get_half_time():
-    nstep, start = get_sim_time(16)
-    realtime = get_real_time(nstep)
+def get_half_time(args):
+    nstep, start = get_sim_time(args)
+    realtime = get_real_time(args,nstep, start)
     print nstep - start, realtime
 
 def main():
-    #parser = argparse.ArgumentParser()
-    #parser.add_argument("fname", default="geo", nargs="?", help="geo file name")
-    #parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
-    #parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
-    #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
-    #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fname", default="water", nargs="?", help="simulation name")
+    parser.add_argument("-reactant", action="store_true", help="input reactant")
+    parser.add_argument("-product", action="store_true", help="input product")
+    parser.add_argument("-mol", nargs=1, help="mol to analyze")
+    parser.add_argument("-nmol", nargs=1, type=int,help="number of mols")
     #parser.add_argument("-vol", action="store_true", help="get the volume of the simulation box")
-    #args = parser.parse_args()
-    get_half_time()
+    args = parser.parse_args()
+    get_half_time(args)
 
 if __name__ == "__main__":
     main()
