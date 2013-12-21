@@ -55,7 +55,7 @@ def get_sim_time(args, n = 66):
 def get_real_time(args, nstep, start):
     
     if args.fname:
-        boostfile = args.fname[0] + ".bboost"
+        boostfile = args.fname + ".bboost"
     
     if not os.path.exists(boostfile):
         realtime = nstep - start
