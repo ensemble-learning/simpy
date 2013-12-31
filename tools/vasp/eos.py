@@ -1,69 +1,70 @@
-import math
+"""
+call the eos program to calculate the bulk moldulus.
+"""
 import numpy as np
-from scipy import interpolate
+import math
+import sys
+import os
 
-def getY(start, end, n):
-    interp = []
+doc = """                         +---------------------------+
+                         |     EOS Version 1.4.0     |
+                         +---------------------------+
 
-    a = np.linspace(0.8, 1.2, 11)
-    x = a*a*a
-    data = np.loadtxt("results")
-    data = data.transpose()
-    y = data
+Equation of state (EOS) program for fitting energy-volume data. The following
+variables are set in the file eos.in:
 
-    tck = interpolate.UnivariateSpline(x, y, w=None, bbox=[None, None], k=5, s=2)
+ cname               : name of crystal up to 256 characters
+ natoms              : number of atoms in unit cell
+ etype               : equation of state type (see below)
+ vplt1, vplt2, nvplt : volume interval over which to plot energy, pressure etc.
+                       as well as the number of points in the plot
+ nevpt               : number of energy-volume points to be inputted
+ vpt(i) ept(i)       : energy-volume points (atomic units)
 
-    for i in np.linspace(start, end, n):
-        interp.append(tck(i))
+Note that the input units are atomic - Bohr and Hartree (NOT Rydbergs).
 
-    return interp
+The equations of state currently implemented are:
+ 1. Universal EOS (Vinet P et al., J. Phys.: Condens. Matter 1, p1941 (1989))
+ 2. Murnaghan EOS (Murnaghan F D, Am. J. Math. 49, p235 (1937))
+ 3. Birch-Murnaghan 3rd-order EOS (Birch F, Phys. Rev. 71, p809 (1947))
+ 4. Birch-Murnaghan 4th-order EOS
+ 5. Natural strain 3rd-order EOS (Poirier J-P and Tarantola A, Phys. Earth
+    Planet Int. 109, p1 (1998))
+ 6. Natural strain 4th-order EOS
+ 7. Cubic polynomial in (V-V0)
 
-def getV():
-    f = open("./scan_05/CONTCAR", 'r')
-    f.readline()
-    scale = f.readline()
-    a = f.readline().strip().split()
-    b = f.readline().strip().split()
-    c = f.readline().strip().split()
-    v = float(a[0]) * float(b[1]) * float(c[2])
-    return v
+--------------------------------------------------------------------------------
+J. K. Dewhurst
+August 2005
+"""
 
+A2B = math.pow(1.8897, 3) # angstrom to bohr
+E2H = 0.037  # ev to hartree
 
-A2B = math.pow(1.8897, 3)
-E2H = 0.037
+x = np.loadtxt("vol")
+y = np.loadtxt("results")
 
-V0 = getV()
+if not len(x) == len(y):
+    sys.exit() 
 
-start = 0.9
-end = 1.1
-
-npoints = 1000
-
-n = 20
-
-x = np.linspace(start, end, n)
-x = x*V0*A2B
-y = getY(start, end, n)
-y = np.array(y)
+x = x*A2B
 y = y*E2H
 
 o = open("eos.in", 'w')
-o.write(' "genenerated from python"     :cname\n')
-o.write(" 28                            :natoms\n")
+o.write(' "eos calculation"     :cname\n')
+o.write(" 1                            :natoms\n")
 o.write(" 2                           : etype\n")
-o.write(" %.2f  %.2f     %d    :vplt1, vplt2, nvplt\n"%(x[0], x[-1], npoints))
+o.write(" %.2f  %.2f  %d  :vplt1, vplt2, nvplt\n"%(x[0], x[-1], len(x)))
 o.write(" %d            :nevpt\n"%(len(y)))
-
-INP = """ "Silicon"                    : cname
- 28                            : natoms
- 2                            : etype
- 1 2 1000             : vplt1, vplt2, nvplt
- 11                            : nevpt
-"""
-
-for i in range(n):
+for i in range(len(x)):
     o.write("%15.7f"%x[i])
     o.write("%15.7f"%y[i])
     o.write("\n")
 o.close()
+
+sig = os.system("eos")
+if sig == 0:
+    os.system("cat PARAM.OUT")
+else:
+    print "Error in calculation!"
 
