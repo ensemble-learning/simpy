@@ -37,9 +37,10 @@ class Poscar():
         self.c = tmp[4].strip().split()
         if len(tmp) == 6:
             self.atoms = tmp[5].strip().split()
+            self.atomtypes = self.readPotcar()
         if len(tmp) == 7:
             self.atoms = tmp[6].strip().split()
-        self.atomtypes = self.readPotcar()
+            self.atomtypes = tmp[5].strip().split()
 
     def readPotcar(self, potcar="POTCAR"):
         """read atom types form POTCAR file

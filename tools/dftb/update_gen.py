@@ -1,3 +1,6 @@
+"""update the coordinations from input to dftb_in.hsd
+"""
+
 import sys
 import shutil
 
