@@ -401,11 +401,159 @@ class Ffield():
 
         o.close()
 
+    def toParams(self,):
+        """
+        Generate params file for training
+        """
+        scale = 0.2
+        o = open("params_total", "w")
+        #@note: need to finish
+              # 1        2         3         4      5
+        GL = ["p_boc1", "p_boc2", "p_coa2", "Null", "Null", 
+              # 6        7         8         9      10
+              "Null", "p_ovun6", "Null", "Null", "Null", 
+              # 11       12        13        14     15
+              "Null", "Null", "Null", "Null", "Null", 
+              # 16       17        18        19     20
+              "p_lp1", "Null", "Null", "Null", "Null", 
+              # 21       22        23        24     25
+              "Null", "Null", "Null", "p_tor2", "p_tor2", 
+              # 26       27        28        29     30
+              "p_tor2", "Null", "p_cot2", "p_vdW1", "p_coa4", 
+              # 31       32        33        34     35
+              "Null", "p_ovun4", "p_ovun3", "Null", "Null", 
+              # 36       37        38        39     40
+              "Null", "Null", "Null", "p_coa3", "Null",]
+              # 1        2         3         4      5
+        GLE = ["4c", "4d", "15", "Null", "Null", 
+              # 6        7         8         9      10
+              "p_boc1", "12", "p_coa2", "Null", "Null", 
+              # 11       12        13        14     15
+              "p_boc1", "p_boc2", "p_coa2", "Null", "Null", 
+              # 16       17        18        19     20
+              "8", "p_boc2", "p_coa2", "Null", "Null", 
+              # 21       22        23        24     25
+              "p_boc1", "p_boc2", "p_coa2", "16a", "16b", 
+              # 26       27        28        29     30
+              "16b", "p_boc2", "17b", "23b", "15", 
+              # 31       32        33        34     35
+              "p_boc1", "11b", "11b", "Null", "Null", 
+              # 36       37        38        39     40
+              "p_boc1", "p_boc2", "p_coa2", "15", "Null",]
+        n = 1
+        for i in self.gl:
+            val = i
+            start = val * (1-scale)
+            end = val * (1+scale)
+            interval = abs(end -start) /20.0
+            o.write("%4d%6d%12.4f%12.4f%12.4f\n"%(1, n, interval, start, end))
+            n += 1
+
+        ATOM = ["ro(sigma)", "Val", "mass", "Rvdw", "Dij", "gamma", "ro(pi)", "Val(e)",
+                "alfa", "gamma(w)", "Val(angle)", "p(ovun5)", "Null", "ChiEEM", "etaEEM", "Null",
+                "ro(pipi)", "p(lp2)", "Heat", "p(boc4)", "p(boc3)", "p(boc5)", "Null", "Null",
+                "p(ovun2)", "p(val3)", "Null", "Val(boc)", "p(val5)", "r_inner", "D_inner", "alpha_inner",]
+        ATOME = ["2", "3a", "Null", "23a", "23a", "24", "2", "7",
+                 "23a", "23b", "13e", "12", "Null", "qeq", "qeq", "Null",
+                 "2", "10", "Null", "4e", "4e", "4e", "Null", "Null",
+                 "11a & 12", "13b", "Null", "3b", "13c", "25", "25", "25"]
+        n1 = 1
+        for i in self.atom:
+            n2 = 1
+            for j in i[1:]:
+                a1 = i[0]
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                if n2 in [2, 3, 8, 11, 13, 16, 19, 23, 24, 27]:
+                    pass
+                else:
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(2, n1, n2, interval, start, end))
+                    o.write(" ! %4s %s in %s\n"%("@"+a1, ATOM[n2-1], ATOME[n2-1]))
+                n2 += 1
+            n1 += 1
+
+        BOND = ["De(sigma)", "De(pi)", "De(pipi)", "p(be1)", "p(bo5)", "13corr", "p(bo6)", "p(ovun1)",
+                "p(be2)", "p(bo3)", "p(bo4)", "Null", "p(bo1)", "p(bo2)", "ovc(3bond)", "Null"]
+        BONDE = ["6", "6", "6", "6", "2", "Null", "2", "11a",  
+                 "6", "2", "2", "Null", "2", "2", "Null", "Null", ]
+        n1 = 1
+        for i in self.bond:
+            n2 = 1
+            for j in i[2:]:
+                a1 = self.elements[int(i[0]) -1]
+                a2 = self.elements[int(i[1]) -1]
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end))
+                o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
+                n2 += 1
+            n1 += 1
+
+        OFF = ["Dij", "RvdW", "alfa", "ro(sigma)", "ro(pi)", "ro(pipi)"]
+        OFFE = ["23a", "23a", "23a", "2", "2", "2"]
+        n1 = 1
+        for i in self.off:
+            n2 = 1
+            for j in i[2:]:
+                a1 = self.elements[int(i[0]) -1]
+                a2 = self.elements[int(i[1]) -1]
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(4, n1, n2, interval, start, end))
+                o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, OFF[n2-1], OFFE[n2-1]))
+                n2 += 1
+            n1 += 1
+
+        n1 = 1
+        for i in self.angle:
+            n2 = 1
+            for j in i[3:]:
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(5, n1, n2, interval, start, end))
+                n2 += 1
+            n1 += 1
+
+        n1 = 1
+        for i in self.torsion:
+            n2 = 1
+            for j in i[4:]:
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(6, n1, n2, interval, start, end))
+                n2 += 1
+            n1 += 1
+
+        n1 = 1
+        for i in self.hbond:
+            n2 = 1
+            for j in i[3:]:
+                val = float(j)
+                start = val * (1-scale)
+                end = val * (1+scale)
+                interval = abs(end -start) /20.0
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(7, n1, n2, interval, start, end))
+                n2 += 1
+            n1 += 1
+
+        o.close()
+    
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("fname", default="ffield", nargs="?", help="force field file name")
     parser.add_argument("-D", action="store_true", help="Debug the code")
     parser.add_argument("-trans", action="store_true", help="transform ffield to more readable format")
+    parser.add_argument("-params", action="store_true", help="generate params for training")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
@@ -423,10 +571,17 @@ def main():
         ntype = 0
         print "Note: Using default force field type"
 
-     
     ff = Ffield(fname, ntype)
     if args.trans:
         ff.toEquation()
+    if args.params:
+        ff.toParams()
 
+def test():
+    fname = "ffield"
+    ntype = 0
+    ff = Ffield(fname, ntype)
+    ff.toParams()
+    
 if __name__ == "__main__":
     main()

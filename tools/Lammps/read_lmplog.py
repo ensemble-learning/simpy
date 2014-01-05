@@ -20,6 +20,8 @@ def getEnerTerms(logfile):
     for i in f:
         if "---------------- Step" in i:
             break
+        elif "Loop time" in i:
+            break
         else:
             tokens = i.strip().split()
             n =  len(tokens)/3
@@ -58,6 +60,9 @@ def getData(logfile, key):
     ave = np.average(data[len(data)/10:])
     std = np.std(data[len(data)/10:])
 
+    print ave
+
+    """
     data = np.array(data)
     textx = (np.average(x) + np.min(x))/2
     texty = (np.average(data) + np.max(data))/2
@@ -69,6 +74,7 @@ def getData(logfile, key):
     plt.ylabel(key)
     plt.savefig("%s.eps"%key)
     plt.show()
+    """
 
 def main():
     if len(sys.argv) < 2:

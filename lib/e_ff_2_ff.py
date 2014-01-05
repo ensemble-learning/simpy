@@ -2,7 +2,7 @@ import os
 from ffield import Ffield
 from output_ff import toFfield
 
-ff = Ffield("ffield")
+ff = Ffield("ffield", 1)
 print "Force Field Terms:"
 print "atom  : 1"
 print "bond  : 2"
@@ -42,6 +42,8 @@ scale = float(raw_input("scale factor: "))
 flag = raw_input("Continue:yes(1);no(0): ")
 if int(flag):
     # Increase
+    if not os.path.exists("in"):
+        os.mkdir("in")
     os.chdir("in")
     increase = 1.0 + scale
     t[nt][n] = "%.4f"%(temp*increase)
@@ -49,6 +51,8 @@ if int(flag):
     os.system("bash ./run.sh")
     os.chdir("..")
     # Original
+    if not os.path.exists("or"):
+        os.mkdir("or")
     os.chdir("or")
     origin = 1.0
     t[nt][n] = "%.4f"%(temp*origin)
@@ -56,6 +60,8 @@ if int(flag):
     os.system("bash ./run.sh")
     os.chdir("..")
     # Decrease
+    if not os.path.exists("de"):
+        os.mkdir("de")
     os.chdir("de")
     decrease = 1.0 - scale
     t[nt][n] = "%.4f"%(temp*decrease)
