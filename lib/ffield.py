@@ -16,6 +16,7 @@ To output the ffield
 import os
 import math
 import argparse
+from output_ff import toFfield
 DEBUG = 0
 
 class Ffield():
@@ -142,6 +143,30 @@ class Ffield():
             for j in tokens:
                 params.append(j)
         return params
+
+    def completeOff(self,):
+        off_ext = []
+        for i in range(len(self.atom)):
+            for j in range(i+1, len(self.atom)):
+                a1 = i + 1
+                a2 = j + 1
+                flag = 0
+                for k in self.off:
+                    off1 = int(k[0])
+                    off2 = int(k[1])
+                    if (a1 == off1 and a2 == off2) or (a1 == off2 and a2 == off1):
+                        flag += 1
+                if flag == 0:
+                    atom1 = str(a1)
+                    atom2 = str(a2)
+                    Dij = math.sqrt(float(self.atom[i][5])*float(self.atom[j][5]))
+                    RvdW = math.sqrt(float(self.atom[i][4])*float(self.atom[j][4]))
+                    alpha = math.sqrt(float(self.atom[i][9])*float(self.atom[j][9]))
+                    r_s = (float(self.atom[i][1])*float(self.atom[j][1]))/2.0
+                    r_pi = (float(self.atom[i][7])*float(self.atom[j][7]))/2.0
+                    r_pipi = (float(self.atom[i][17])*float(self.atom[j][17]))/2.0
+                    off_ext.append([atom1, atom2, Dij, RvdW, alpha, r_s, r_pi, r_pipi])
+        self.off = self.off + off_ext
 
     def toEquation(self,):
         """output the force field parameter to more readable form.
@@ -452,11 +477,13 @@ class Ffield():
         ATOM = ["ro(sigma)", "Val", "mass", "Rvdw", "Dij", "gamma", "ro(pi)", "Val(e)",
                 "alfa", "gamma(w)", "Val(angle)", "p(ovun5)", "Null", "ChiEEM", "etaEEM", "Null",
                 "ro(pipi)", "p(lp2)", "Heat", "p(boc4)", "p(boc3)", "p(boc5)", "Null", "Null",
-                "p(ovun2)", "p(val3)", "Null", "Val(boc)", "p(val5)", "r_inner", "D_inner", "alpha_inner",]
+                "p(ovun2)", "p(val3)", "Null", "Val(boc)", "p(val5)", "r_inner", "D_inner", "alpha_inner",
+                "D_lg", "r_lg", ]
         ATOME = ["2", "3a", "Null", "23a", "23a", "24", "2", "7",
                  "23a", "23b", "13e", "12", "Null", "qeq", "qeq", "Null",
                  "2", "10", "Null", "4e", "4e", "4e", "Null", "Null",
-                 "11a & 12", "13b", "Null", "3b", "13c", "25", "25", "25"]
+                 "11a & 12", "13b", "Null", "3b", "13c", "25", "25", "25",
+                 "26", "26",]
         n1 = 1
         for i in self.atom:
             n2 = 1
@@ -488,13 +515,16 @@ class Ffield():
                 start = val * (1-scale)
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end))
-                o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
+                if n2 in [6, 12, 15, 16]:
+                    pass
+                else:
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end))
+                    o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
                 n2 += 1
             n1 += 1
 
-        OFF = ["Dij", "RvdW", "alfa", "ro(sigma)", "ro(pi)", "ro(pipi)"]
-        OFFE = ["23a", "23a", "23a", "2", "2", "2"]
+        OFF = ["Dij", "RvdW", "alfa", "ro(sigma)", "ro(pi)", "ro(pipi)", "D_lg"]
+        OFFE = ["23a", "23a", "23a", "2", "2", "2", "26"]
         n1 = 1
         for i in self.off:
             n2 = 1
@@ -554,6 +584,7 @@ def main():
     parser.add_argument("-D", action="store_true", help="Debug the code")
     parser.add_argument("-trans", action="store_true", help="transform ffield to more readable format")
     parser.add_argument("-params", action="store_true", help="generate params for training")
+    parser.add_argument("-complete", action="store_true", help="complete the off table")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
@@ -576,12 +607,16 @@ def main():
         ff.toEquation()
     if args.params:
         ff.toParams()
+    if args.complete:
+        ff.completeOff()
+        toFfield(ff)
 
 def test():
     fname = "ffield"
     ntype = 0
     ff = Ffield(fname, ntype)
-    ff.toParams()
+    ff.completeOff()
+    toFfield(ff)
     
 if __name__ == "__main__":
     main()

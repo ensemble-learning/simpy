@@ -29,7 +29,7 @@ class Geo():
             elif i.strip().startswith("CRYSTX"):
                 self.pbc = i.strip().split()[1:]
             elif i.strip().startswith("HETATM"):
-                self.coords.append(i.strip().split())
+                self.coords.append(i.strip())
             else:
                 pass
     def parser(self,):
@@ -41,10 +41,10 @@ class Geo():
         s.geotag = self.type
         for i in self.coords:
             a = Atom()
-            a.name= i[2]
-            a.x[0] = float(i[3])
-            a.x[1] = float(i[4])
-            a.x[2] = float(i[5])
+            a.name= i[13:16]
+            a.x[0] = float(i[31:41])
+            a.x[1] = float(i[41:51])
+            a.x[2] = float(i[51:61])
             s.atoms.append(a)
         return s
 
