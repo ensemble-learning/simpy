@@ -9,9 +9,10 @@ from geo import Geo
 from output_conf import toGeo, toXyz, toReaxLammps, toPdb, toGjf
 
 def convertors(b):
-    toGeo(b, b.name+'.geo')
+    #toGeo(b, b.name+'.geo')
+    toGeo(b, 'geo')
     toXyz(b, b.name+'.xyz')
-    toXyz(b, b.name+'.gjf')
+    toGjf(b, b.name+'.gjf')
     toPdb(b, b.name+'.pdb')
     toReaxLammps(b)
 
@@ -31,6 +32,7 @@ def main():
     a = Geo(fname)
     b = a.parser()
     b.assignAtomTypes()
+    b.assignEleTypes()
 
     if args.c:
         print "converting %s to geo, xyz, gjf and lammps..."%fname

@@ -54,6 +54,8 @@ def geoBlock(geofile, ext="geo"):
             elif "DESCRP" in i:
                 out = i.strip().split()[-1]
             block.append(i)
+        if counter == 0:
+            block.append(i)
         counter += 1
     o = open("%s"%out + ".%s"%ext, 'w')
     for j in block:

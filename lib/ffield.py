@@ -12,6 +12,7 @@ To output the ffield
     comb2: math.sqrt(a*b)
     comb3: 2*math.sqrt(a*b)
     comb4: math.pow(a*b, 1.5)
+@0108_2014: to complete the checkRedudant()
 """
 import os
 import math
@@ -145,6 +146,8 @@ class Ffield():
         return params
 
     def completeOff(self,):
+        """ Complete the off-dia section using combination rule
+        """
         off_ext = []
         for i in range(len(self.atom)):
             for j in range(i+1, len(self.atom)):
@@ -167,6 +170,10 @@ class Ffield():
                     r_pipi = (float(self.atom[i][17])*float(self.atom[j][17]))/2.0
                     off_ext.append([atom1, atom2, Dij, RvdW, alpha, r_s, r_pi, r_pipi])
         self.off = self.off + off_ext
+
+    def checkRedudant(self,):
+        for i in self.angle:
+            print i
 
     def toEquation(self,):
         """output the force field parameter to more readable form.
@@ -615,8 +622,7 @@ def test():
     fname = "ffield"
     ntype = 0
     ff = Ffield(fname, ntype)
-    ff.completeOff()
-    toFfield(ff)
+    ff.checkRedudant()
     
 if __name__ == "__main__":
     main()
