@@ -478,7 +478,8 @@ class Ffield():
             start = val * (1-scale)
             end = val * (1+scale)
             interval = abs(end -start) /20.0
-            o.write("%4d%6d%12.4f%12.4f%12.4f\n"%(1, n, interval, start, end))
+            o.write("%4d%6d%12.4f%12.4f%12.4f"%(1, n, interval, start, end))
+            o.write(" ! %s\n"%("gl"))
             n += 1
 
         ATOM = ["ro(sigma)", "Val", "mass", "Rvdw", "Dij", "gamma", "ro(pi)", "Val(e)",
@@ -504,7 +505,7 @@ class Ffield():
                     pass
                 else:
                     o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(2, n1, n2, interval, start, end))
-                    o.write(" ! %4s %s in %s\n"%("@"+a1, ATOM[n2-1], ATOME[n2-1]))
+                    o.write(" ! %s %4s %s in %s\n"%("at", "@"+a1, ATOM[n2-1], ATOME[n2-1]))
                 n2 += 1
             n1 += 1
 
@@ -526,7 +527,7 @@ class Ffield():
                     pass
                 else:
                     o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end))
-                    o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
+                    o.write(" ! %s %4s %4s %s in %s\n"%("bo", "@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
                 n2 += 1
             n1 += 1
 
@@ -543,7 +544,7 @@ class Ffield():
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
                 o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(4, n1, n2, interval, start, end))
-                o.write(" ! %4s %4s %s in %s\n"%("@"+a1, "@"+a2, OFF[n2-1], OFFE[n2-1]))
+                o.write(" ! %s %4s %4s %s in %s\n"%("of", "@"+a1, "@"+a2, OFF[n2-1], OFFE[n2-1]))
                 n2 += 1
             n1 += 1
 
@@ -576,8 +577,12 @@ class Ffield():
             n2 = 1
             for j in i[3:]:
                 val = float(j)
-                start = val * (1-scale)
-                end = val * (1+scale)
+                if val > 0:
+                    start = val * (1-scale)
+                    end = val * (1+scale)
+                else:
+                    end = val * (1-scale)
+                    start = val * (1+scale)
                 interval = abs(end -start) /20.0
                 o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(7, n1, n2, interval, start, end))
                 n2 += 1

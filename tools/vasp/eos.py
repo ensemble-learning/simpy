@@ -41,7 +41,7 @@ August 2005
 A2B = math.pow(1.8897, 3) # angstrom to bohr
 E2H = 0.037  # ev to hartree
 
-x = np.loadtxt("vol")
+x = np.loadtxt("vols")
 y = np.loadtxt("results")
 
 if not len(x) == len(y):
