@@ -475,8 +475,12 @@ class Ffield():
         n = 1
         for i in self.gl:
             val = i
-            start = val * (1-scale)
-            end = val * (1+scale)
+            if val > 0:
+                start = val * (1-scale)
+                end = val * (1+scale)
+            else:
+                end = val * (1-scale)
+                start = val * (1+scale)
             interval = abs(end -start) /20.0
             o.write("%4d%6d%12.4f%12.4f%12.4f"%(1, n, interval, start, end))
             o.write(" ! %s\n"%("gl"))
@@ -498,8 +502,12 @@ class Ffield():
             for j in i[1:]:
                 a1 = i[0]
                 val = float(j)
-                start = val * (1-scale)
-                end = val * (1+scale)
+                if val > 0:
+                    start = val * (1-scale)
+                    end = val * (1+scale)
+                else:
+                    end = val * (1-scale)
+                    start = val * (1+scale)
                 interval = abs(end -start) /20.0
                 if n2 in [2, 3, 8, 11, 13, 16, 19, 23, 24, 27]:
                     pass

@@ -221,6 +221,12 @@ class System():
         for i in self.atoms:
             i.x[n] = i.x[n] + delta
     
+    def scale(self, scale=1.0):
+        """ scale the  coordinations
+        """
+        for i in self.atoms:
+            i.x[n] = i.x[n] * scale
+
     def getMin(self, axis="z"):
         """ get the min value in x, y or z
         """
