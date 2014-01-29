@@ -14,6 +14,7 @@ else:
         if os.path.exists(i):
             a = G03LogConf(i)
             b = a.parser()
+            b.assignEleTypes()
             b.geotag = "BIOGRF 200"
             toXyz(b, outfile+".xyz")
             toGeo(b, outfile+".geo")
