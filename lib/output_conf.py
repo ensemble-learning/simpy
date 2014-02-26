@@ -129,7 +129,7 @@ def toXyz(system, outfile="test.xyz"):
         o.write(line)
     o.close()
 
-def toPdb(system, outfile="test.pdb"):
+def toPdb(system, outfile="test.pdb", element=0):
     """ output to pdb file format
     """
     o = open(outfile, 'w')
@@ -148,6 +148,8 @@ def toPdb(system, outfile="test.pdb"):
         o.write("%5d"%counter)
         if len(i.name) > 4:
             i.name = i.name[:4]
+        if element:
+            i.name = i.element
         o.write("%4s"%i.name)
         o.write("%5s"%"LIG")
         o.write("%6d"%counter)

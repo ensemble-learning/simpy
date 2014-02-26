@@ -15,6 +15,8 @@ def get_2pt(output, tpt="2pt.inp"):
             pass
         elif "IN_LMPTRJ" in i:
             pass
+        elif "IN_GROUPFILE" in i:
+            pass
         elif "ANALYSIS_FRAME_INITIAL" in i:
             pass
         elif "ANALYSIS_FRAME_FINAL" in i:
@@ -71,6 +73,7 @@ def get_lammps_inp(output, lammps_input="lammps_input"):
 def run_2pt():
     parser = argparse.ArgumentParser()
     parser.add_argument("-n", nargs=1, type=int, help="number of CPU")
+    parser.add_argument("-t", nargs=1, type=int, help="number of 2pt iterations")
     args = parser.parse_args()
 
     o = open("run.log", "w")
@@ -85,12 +88,14 @@ def run_2pt():
     else:
         ppn = 16
 
-    iters = 20
+    if args.t:
+        iters = args.t[0]
+    else:
+        iters = 5
     mpirun = "/net/hulk/home6/chengtao/bin/openmpi/bin/mpirun"
     
     o.write("Using %d cpu and %d steps\n"%(ppn, iters))
     o.flush()
-    
     
     for i in range(iters):
         o.write("Runing step %8d\n"%i)

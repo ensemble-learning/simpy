@@ -23,6 +23,7 @@ class Param():
                 self.comments.append(comment)
     def update(self,):
         ff = Ffield("ffield", self.ntype)
+        scale = 0.2
         for i in self.params:
             nsec = int(i[0]) 
             if nsec == 1:
@@ -41,11 +42,11 @@ class Param():
                 val = float(ff.off[np][nval])
             step = val*0.05
             if val > 0:
-                start = val * 0.8
-                end = val * 1.2
+                start = val * (1-scale)
+                end = val * (1+scale)
             else:
-                start = val * 1.2
-                end = val * 0.8
+                start = val * (1-scale)
+                end = val * (1+scale)
             i[3] = step
             i[4] = start
             i[5] = end
@@ -68,7 +69,7 @@ class Param():
             print i
           
 def test():
-    a = Param("params")
+    a = Param("params", 0)
     a.update()
     a.output_param()
 

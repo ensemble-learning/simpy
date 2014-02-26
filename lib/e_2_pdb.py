@@ -23,17 +23,22 @@ def test():
     b.pbc = [20.80, 20.80, 20.80, 90.0, 90.0, 90.0]
     toReaxLammps(b)
 
-def fortranOut(testfile = "output.pdb"):
+def fortranOut(testfile = "output.pdb", args=''):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
     b.pbc = [50.00, 50.00, 50.00, 90.0, 90.0, 90.0]
     b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
+    if args:
+        if args.element:
+            toPdb(b, "out.pdb", 1)
+    else:
+        toPdb(b, "out.pdb")
     toMsd(b, "sim.msd")
     toGeo(b, "sim.geo")
 
-def withPbc(testfile="supper.pdb"):
+def withPbc(testfile="supper.pdb", args=''):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
@@ -45,7 +50,12 @@ def withPbc(testfile="supper.pdb"):
     toReaxLammps(b, "lammps.data")
     toGeo(b, "sim.geo")
     toMsd(b, "sim.msd")
-    toPdb(b, "out.pdb")
+    if args:
+        if args.element:
+            print "I am here!!!!!!"
+            toPdb(b, "out.pdb", 1)
+    else:
+        toPdb(b, "out.pdb")
     toXyz(b, "out.xyz")
 
 def sortXYZ(testfile="input.pdb", axis="z"):
@@ -61,15 +71,16 @@ def main():
     parser.add_argument("-c", action="store_true", help="convert the file to other formats (geo, xyz, gjf, lammps)")
     parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
     parser.add_argument("-sort", nargs=1, help="Sort the coordinations according to x, y or z")
+    parser.add_argument("-element",action="store_true" , help="convert the atom name to element")
     args = parser.parse_args()
     
     pdbfile = args.fname
     
     if args.c:
         if args.pbc:
-            fortranOut(pdbfile)
+            fortranOut(pdbfile, args)
         else:
-            withPbc(pdbfile)
+            withPbc(pdbfile, args)
 
     if args.sort:
         sortXYZ(pdbfile, args.sort[0])
