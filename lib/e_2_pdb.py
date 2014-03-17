@@ -52,7 +52,6 @@ def withPbc(testfile="supper.pdb", args=''):
     toMsd(b, "sim.msd")
     if args:
         if args.element:
-            print "I am here!!!!!!"
             toPdb(b, "out.pdb", 1)
     else:
         toPdb(b, "out.pdb")

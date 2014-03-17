@@ -22,12 +22,13 @@ from poscar import Poscar
 from output_conf import toXyz, toGeo, toPdb
 
 POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P", 
-       "Ca":"Ca_pv", "Al":"Al"}
+       "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl"}
 POT_DATA_BASE = "/project/source/VASP/vasp.5.2/potcar/potpaw_PBE"
 
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
 for i in a.atomtypes:
+    print i
     pot = os.path.join(POT_DATA_BASE, POT[i])
     pot = os.path.join(pot, "POTCAR")
     f = open(pot, "r")

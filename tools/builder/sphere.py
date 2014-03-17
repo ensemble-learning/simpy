@@ -13,6 +13,12 @@ LIB = ''
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
+elif socket.gethostname() == "atom.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "ion.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "giant12.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
 
@@ -23,6 +29,7 @@ from pdb import Pdb
 from output_conf import toReaxLammps, toGeo, toPdb
 from cons import ATOMIC_MASS_CONSTANT as amc
 from utilities import get_dist
+from index import Group
 
 # max atoms allowed
 MAX_ATOMS = 99999999
@@ -37,6 +44,10 @@ class SphereCut():
         self.atoms = []
         self.natoms = []
         self.output = "tmp.pdb"
+        self.grp = ""
+        self.grpfile = ""
+        self.grpnatoms = []
+        self.grpatomscenter = []
 
 def read_inp(control):
     """Read the input file
@@ -67,11 +78,18 @@ def read_inp(control):
         if "natoms" in o:
             tokens = cf.get("SPHERE", "natoms").strip().split()
             control.natoms = [int(i) for i in tokens]
-        if "natoms" in o:
-            tokens = cf.get("SPHERE", "natoms").strip().split()
-            control.natoms = [int(i) for i in tokens]
         if "outfile" in o:
             control.output = cf.get("SPHERE", "outfile").strip()
+        if "void" in o:
+            control.void = cf.get("SPHERE", "void").strip()
+        if "grp" in o:
+            control.grp = cf.get("SPHERE", "grp").strip()
+        if "grpfile" in o:
+            control.grpfile = cf.get("SPHERE", "grpfile").strip()
+        if "grpatoms" in o:
+            control.grpnatoms = cf.get("SPHERE", "grpatoms").strip().split()
+        if "grpatomscenter" in o:
+            control.grpatomscenter = cf.get("SPHERE", "grpatomscenter").strip().split()
 
 def read_pdb(control):
     print "    Reading pdb file ..."
@@ -84,7 +102,26 @@ def read_pdb(control):
     print "            a = %8.3f: "%b.pbc[2]
     return b
 
-def sphere_cut(control, b):
+def read_grp(control):
+    grp = Group(control.grpfile)
+    #print grp.names
+    #print grp.groups
+    # check the
+    print "    Reading group file ..."
+    if len(grp.groups) == len(control.natoms):
+        print "        import %d groups"%len(grp.groups)
+    else:
+        print "    Warning: inconsistent defination in index file"
+    for i in range(len(grp.groups)):
+        print "        %s atom(s) in group %d"%(control.grpnatoms[i], i+1)
+        grp.grpnatoms.append(int(control.grpnatoms[i]))
+    if len(grp.grpnatoms) > 0:
+        print "        prococessing atoms into sub groups"
+        grp.tosubgroups()
+    
+    return grp
+
+def sphere_cut(control, b, grp):
     """Cut the sphere and balance the charge.
     Here, we use the ratio from input as criteria. We eliminate the extra 
     atoms according to the distances to the center. (So we first sort the 
@@ -94,13 +131,28 @@ def sphere_cut(control, b):
     # coarse cut (only according to radius
     print "    Cutting the sphere ..."
     natoms = [0]*len(control.atoms)
-    ndx1 = []
-    ndx2 = []
+    ndx1 = [] # coarse cut
+    ndx2 = [] # refine cut
+    ndx3 = [] # final atoms
     for i in range(len(control.atoms)):
         ndx1.append([])
         ndx2.append([])
+        ndx3.append([])
 
-    counter = 0
+    for i in range(len(grp.subgroups)):
+        nc = int(control.grpatomscenter[i]) - 1
+        counter = 0
+        for j in grp.subgroups[i]:
+            at = b.atoms[j[nc]]
+            dist = get_dist(at.x, control.center)
+            if dist < control.radius:
+                natoms[i] += 1
+                ndx1[i].append("%09d_%08d"%(dist*1000, counter))
+            counter += 1
+    #print ndx1[0]
+    #print ndx1[1]
+
+    """
     for i in b.atoms:
         dist = get_dist(i.x, control.center)
         if dist < control.radius:
@@ -108,6 +160,7 @@ def sphere_cut(control, b):
             natoms[n] += 1
             ndx1[n].append("%09d_%08d"%(dist*1000, counter))
         counter += 1
+    """
 
     # print information of coarse cut 
     print "        After Coarse cut we get:"
@@ -132,27 +185,46 @@ def sphere_cut(control, b):
     print "        After balancing charge we get:"
     for i in range(len(control.atoms)):
         print "            %-6s = %8d"%(control.atoms[i], len(ndx2[i]))
-    return ndx2
+    
+    for i in range(len(ndx2)):
+        for j in ndx2[i]:
+            for k in grp.subgroups[i][j]:
+                ndx3[i].append(k)
+    return ndx3
     
 def output_pdb(control, b, ndx):
     """Output the atoms in ndx to pdb file
     """
     c = copy.deepcopy(b)
     c.atoms = []
+    sphere = []
+    void = []
     for i in range(len(ndx)):
         for j in range(len(ndx[i])):
-            c.atoms.append(b.atoms[ndx[i][j]])
+            sphere.append((ndx[i][j]))
+    for i in range(len(b.atoms)):
+        if i not in sphere:
+            void.append(i)
+    if control.void == "yes":
+        for i in void:
+            c.atoms.append(b.atoms[i])
+    else:
+        for i in sphere:
+            c.atoms.append(b.atoms[i])
     toPdb(c, control.output)
 
 def main():
-
     control = SphereCut()
     # read input
     read_inp(control)
     # read pdb
     b = read_pdb(control)
+    # read the group index file
+    grp = Group()
+    if control.grp == "yes":
+        grp = read_grp(control)
     # sphere cut
-    ndx = sphere_cut(control, b)
+    ndx = sphere_cut(control, b, grp)
     # output
     output_pdb(control, b, ndx)
 

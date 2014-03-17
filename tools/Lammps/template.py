@@ -183,7 +183,7 @@ tabulate_long_range     0 ! denotes the granularity of long range tabulation, 0 
 energy_update_freq      0
 remove_CoM_vel          500 ! remove the trans. & rot. vel around the CoM every 'this many' steps
 
-nbrhood_cutoff          3.0  ! near neighbors cutoff for bond calculations in A
+nbrhood_cutoff          5.0  ! near neighbors cutoff for bond calculations in A
 hbond_cutoff            3.5  ! cutoff distance for hydrogen bond interactions
 bond_graph_cutoff       0.3  ! bond strength cutoff for bond graphs
 thb_cutoff              0.001 ! cutoff value for three body interactions

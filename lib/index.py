@@ -8,6 +8,8 @@ class Group():
         self.name = filename
         self.names = []
         self.groups = []
+        self.subgroups = []
+        self.grpnatoms = [] # number of atoms in each group
         self.read(filename)
         
     def read(self, filename):
@@ -28,9 +30,28 @@ class Group():
                 if len(tokens) > 0:
                     self.groups[counter] += [int(j) - 1 for j in tokens]
 
+    def tosubgroups(self,): 
+        """Catlog the atoms into subgroups
+        """
+        for i in range(len(self.grpnatoms)):
+            self.subgroups.append([])
+            natom = self.grpnatoms[i]
+            counter = 0
+            subgrp = []
+            for j in self.groups[i]:
+                if counter % natom == 0:
+                    if counter > 0:
+                        self.subgroups[i].append(subgrp)
+                        subgrp = []
+                subgrp.append(j)
+                counter += 1
+            self.subgroups[i].append(subgrp)
+
 def test():
     a = Group("index.ndx")
-
+    print a.name
+    print a.names
+    print a.groups
 
 if __name__ == "__main__":
     test()
