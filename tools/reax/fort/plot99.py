@@ -68,8 +68,8 @@ def plot_all():
     plt.savefig("fort99.eps")
     plt.show()
 
-def parse_trainset():
-    f = open("trainset.in", 'r')
+def parse_trainset(fname="trainset.in"):
+    f = open(fname, 'r')
     for i in f:
         if i.strip().startswith("ENERGY"):
             break
@@ -95,9 +95,42 @@ def parse_trainset():
 
     return names, nframes
 
+def parse_trainset_ext(fname="trainset.ext"):
+    f = open(fname, 'r')
+    for i in f:
+        if i.strip().startswith("ENERGY"):
+            break
+    counter = 0
+    title = ''
+    names = []
+    nframes = []
+    vals = []
+    for i in f:
+        if i.strip().startswith("#"):
+            if title:
+                names.append(title)
+                nframes.append(counter)
+            title = i[1:].strip()
+            counter = 0
+        else:
+            if i.strip().startswith("END"):
+                pass
+            else:
+                vals.append(float(i.strip()))
+                counter +=1
+    names.append(title)
+    nframes.append(counter)
+    f.close()
+
+    return names, nframes, vals
+
 def plot_in_block():
     reax, qm = parse_fort99()
     names, nframes = parse_trainset()
+    tmp1, tmp2, xvals = parse_trainset_ext()
+    print len(reax), reax[0], reax[-1]
+    print len(xvals), xvals[0], xvals[-1]
+
     start = 0
     end = 0
     for i in range(len(names)):
@@ -109,14 +142,14 @@ def plot_in_block():
             end += nframes[i]
         fig = plt.figure()
         ax = fig.add_subplot(111)
-        ax.plot(reax[start:end], 'ro', ls='-', label='ReaxFF')
-        ax.plot(qm[start:end], 'bo', ls='--', label='QM')
+        ax.plot(xvals[start:end], reax[start:end], 'ro', ls='-', label='ReaxFF')
+        ax.plot(xvals[start:end], qm[start:end], 'bo', ls='--', label='QM')
         ax.set_title(names[i])
         ax.legend()
-        plt.savefig("fig%02d.eps"%i)
+        plt.savefig("%s_%02d.png"%(names[i], i))
         #latex
         tex = r"""\begin{figure}[htbp]
-  \includegraphics[width=9cm]{fig%02d.eps}
+  \includegraphics[width=9cm]{fig%02d.png}
   \caption{\label{fig:fig1}
   %s}
 \end{figure}
@@ -125,5 +158,6 @@ def plot_in_block():
 
 
 if __name__ == "__main__":
-    plot_all()
+    #plot_all()
+    plot_in_block()
     #plot_geo()

@@ -1,4 +1,5 @@
 import os
+import shutil
 import numpy as np
 
 lines = []
@@ -20,6 +21,10 @@ for i in range(n):
     if not os.path.exists(folder):
         os.mkdir(folder)
     os.chdir(folder)
+    shutil.copy("../INCAR", ".")
+    shutil.copy("../POTCAR", ".")
+    shutil.copy("../KPOINTS", ".")
+    shutil.copy("../pbs", ".")
     o = open("POSCAR", "w")
     lines[1] = "    %.4f\n"%x[i]
     for j in lines:

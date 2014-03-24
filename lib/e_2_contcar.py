@@ -4,6 +4,7 @@ from output_conf import toXyz, toGeo, toPdb
 
 a = Poscar("CONTCAR")
 b = a.parser()
+b.assignEleTypes()
 print b.getVol()
 
 toXyz(b)

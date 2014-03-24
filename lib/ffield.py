@@ -3,16 +3,17 @@
          into functions as JPCB 2008.
          05-30: support Inner-wall and lg
 @todo:
-To output the ffield
+@0108_2014: to complete the checkRedudant()
+@Sun Mar 23 23:06:46 PDT 2014
+    - check out & merge
+
 @see: output_ff.py
 @note: for ATOM n index is exactly n in table
-
 1. Combination rules:
     comb1: (a + b) / 2
     comb2: math.sqrt(a*b)
     comb3: 2*math.sqrt(a*b)
     comb4: math.pow(a*b, 1.5)
-@0108_2014: to complete the checkRedudant()
 """
 import os
 import math
@@ -125,6 +126,15 @@ class Ffield():
         f.close()
         # Get elements map
         self.getMap()
+    
+    def clearup(self,):
+        self.atom = []
+        self.bond = []
+        self.off = []
+        self.angle = []
+        self.torsion = []
+        self.hbond = []
+        self.elements= []
 
     def ati(self, line):
         return int(line.strip().split()[0])
@@ -174,6 +184,69 @@ class Ffield():
     def checkRedudant(self,):
         for i in self.angle:
             print i
+    
+    def checkout(self, atoms):
+        b = Ffield()
+        b.clearup()
+        index = []
+
+        b.elements = atoms
+
+        for i in self.atom:
+            if i[0] in atoms:
+                b.atom.append(i)
+
+        for i in atoms:
+            index.append(self.elements.index(i) + 1)
+        
+        for i in self.bond:
+            i[0] = int(i[0])
+            i[1] = int(i[1])
+            if (i[0] in index) and  (i[1] in index):
+                i[0] = index.index(i[0]) + 1
+                i[1] = index.index(i[1]) + 1
+                b.bond.append(i)
+
+        for i in self.off:
+            i[0] = int(i[0])
+            i[1] = int(i[1])
+            if (i[0] in index) and  (i[1] in index):
+                i[0] = index.index(i[0]) + 1
+                i[1] = index.index(i[1]) + 1
+                b.off.append(i)
+        
+        for i in self.angle:
+            i[0] = int(i[0])
+            i[1] = int(i[1])
+            i[2] = int(i[2])
+            if (i[0] in index) and  (i[1] in index) and (i[2] in index):
+                i[0] = index.index(i[0]) + 1
+                i[1] = index.index(i[1]) + 1
+                i[2] = index.index(i[2]) + 1
+                b.angle.append(i)
+
+        for i in self.torsion:
+            i[0] = int(i[0])
+            i[1] = int(i[1])
+            i[2] = int(i[2])
+            i[3] = int(i[3])
+            if (i[0] in index) and  (i[1] in index) and (i[2] in index) and (i[3] in index):
+                i[0] = index.index(i[0]) + 1
+                i[1] = index.index(i[1]) + 1
+                i[2] = index.index(i[2]) + 1
+                i[3] = index.index(i[3]) + 1
+                b.torsion.append(i)
+
+        for i in self.hbond:
+            i[0] = int(i[0])
+            i[1] = int(i[1])
+            i[2] = int(i[2])
+            if (i[0] in index) and  (i[1] in index) and (i[2] in index):
+                i[0] = index.index(i[0]) + 1
+                i[1] = index.index(i[1]) + 1
+                i[2] = index.index(i[2]) + 1
+                b.hbond.append(i)
+        return b
 
     def toEquation(self,):
         """output the force field parameter to more readable form.
@@ -606,6 +679,7 @@ def main():
     parser.add_argument("-params", action="store_true", help="generate params for training")
     parser.add_argument("-complete", action="store_true", help="complete the off table")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
+    parser.add_argument("-checkout", nargs='+', help="check out the force field")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
     
@@ -630,12 +704,19 @@ def main():
     if args.complete:
         ff.completeOff()
         toFfield(ff)
+    if args.checkout:
+        atoms = args.checkout
+        ff2 = ff.checkout(atoms)
+        toFfield(ff2)
 
 def test():
     fname = "ffield"
     ntype = 0
     ff = Ffield(fname, ntype)
-    ff.checkRedudant()
+    ff2 = ff.checkout()
+    toFfield(ff2)
+    
     
 if __name__ == "__main__":
+    #test()
     main()
