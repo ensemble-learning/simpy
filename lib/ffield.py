@@ -189,7 +189,8 @@ class Ffield():
         b = Ffield()
         b.clearup()
         index = []
-
+        
+        b.lg = self.lg
         b.elements = atoms
 
         for i in self.atom:
