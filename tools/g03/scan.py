@@ -14,7 +14,7 @@ def angle_scan(fname, opt, min, max, n):
         if i.startswith("A"):
             tokens = i.strip().split()
             tokens[4] = "%angle%"
-            line = " ".join(tokens)
+            line = " ".join(tokens) + '\n'
         else:
             line = i.strip() + '\n'
         lines.append(line)
