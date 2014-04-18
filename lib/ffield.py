@@ -511,7 +511,7 @@ class Ffield():
         """
         Generate params file for training
         """
-        scale = 0.2
+        scale = 0.4
         o = open("params_total", "w")
         #@note: need to finish
               # 1        2         3         4      5
@@ -560,7 +560,7 @@ class Ffield():
             o.write(" ! %s\n"%("gl"))
             n += 1
 
-        ATOM = ["ro(sigma)", "Val", "mass", "Rvdw", "Dij", "gamma", "ro(pi)", "Val(e)",
+        ATOM = ["ro(sigma)", "Val", "mass", "Rvdw", "Dij", "gamma qeq", "ro(pi)", "Val(e)",
                 "alfa", "gamma(w)", "Val(angle)", "p(ovun5)", "Null", "ChiEEM", "etaEEM", "Null",
                 "ro(pipi)", "p(lp2)", "Heat", "p(boc4)", "p(boc3)", "p(boc5)", "Null", "Null",
                 "p(ovun2)", "p(val3)", "Null", "Val(boc)", "p(val5)", "r_inner", "D_inner", "alpha_inner",
