@@ -104,6 +104,7 @@ def plot_bo(atom1, atom2, r0):
     r$^{\pi}$ = %.4f\np$_{bo3}$ = %.4f\np$_{bo4}$ = %.4f\nr$^{\pi\pi}$ = %.4f\np$_{bo5}$ = %.4f\np$_{bo6}$ = %.4f\n\
     "%(ros, pbo1, pbo2, rop, pbo3, pbo4, ropp, pbo5, pbo6))
             
+    plt.savefig("%s_%s.png"%(atom1, atom2))
     plt.show()
 
 def main():

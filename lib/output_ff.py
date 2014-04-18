@@ -24,6 +24,7 @@ def toFfield(ff, outfile="out.ffield"):
             if counter == 0:
                 o.write(" %-2s"%j)
             elif counter > 0 and counter % 8 == 0:
+                o.write("%9.4f"%float(j))
                 o.write('\n')
             elif counter > 1 and counter % 8 == 1:
                 o.write("   ")
@@ -31,7 +32,7 @@ def toFfield(ff, outfile="out.ffield"):
             else:
                 o.write("%9.4f"%float(j))
             counter += 1
-        o.write("\n")
+        #o.write("\n")
 
     # Write bond parameters
     o.write(""" %d      ! Nr of bonds; Edis1;LPpen;n.u.;pbe1;pbo5;13corr;pbo6

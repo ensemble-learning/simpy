@@ -1,10 +1,12 @@
 import os
 import shutil
 from ffield import Ffield
+import argparse
 
 class Param():
     def __init__(self, filename="param", ntype=0):
         self.params = []
+        self.ffval = []
         self.comments = []
         self.ntype = ntype
         self.read(filename)
@@ -21,10 +23,29 @@ class Param():
             if len(data) == 6:
                 self.params.append(data)
                 self.comments.append(comment)
-    def update(self,):
-        ff = Ffield("ffield", self.ntype)
+    def checkout(self,):
+        flist = []
+        for i in os.listdir("."):
+            if i.startswith("params.ffield"):
+                flist.append(i)
+        n = 0
+        if len(flist) > 0:
+            flist.sort()
+            n = int(flist[-1].split(".")[-1]) + 1
+        o = open("params.ffield.%02d"%n, "w")
+        for i in range(len(self.ffval)):
+            o.write("%4s"%self.ffval[i][0])
+            o.write("%4s"%self.ffval[i][1])
+            o.write("%4s"%self.ffval[i][2])
+            o.write("%9.4f"%self.ffval[i][3])
+            o.write(" ! %s\n"%self.comments[i])
+        o.close()
+        
+    def update(self, ff="ffield"):
+        ff = Ffield(ff, self.ntype)
         scale = 0.2
         for i in self.params:
+            val = 0.0
             nsec = int(i[0]) 
             if nsec == 1:
                 pass
@@ -40,6 +61,8 @@ class Param():
                 np = int(i[1]) - 1
                 nval = int(i[2]) + 1
                 val = float(ff.off[np][nval])
+            item = [i[0], i[1], i[2], val]
+            self.ffval.append(item)
             step = val*0.05
             if val > 0:
                 start = val * (1-scale)
@@ -68,10 +91,25 @@ class Param():
         for i in self.comments:
             print i
           
-def test():
-    a = Param("params", 0)
-    a.update()
-    a.output_param()
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fname", default="params", nargs="?", help="param file name")
+    parser.add_argument("-ff", default="ffield", nargs=1, help="ffield name")
+    parser.add_argument("-checkout",action="store_true" , help="check out the force field parameters")
+    parser.add_argument("-update",action="store_true" , help="update the force field parameters")
+
+    args = parser.parse_args()
+    paramfile = args.fname
+    
+    ff = args.ff
+
+    a = Param(paramfile, 0)
+    if args.checkout:
+        a.update(ff)
+        a.checkout()
+    if args.update:
+        a.update(ff)
+        a.output_param()
 
 if __name__ == "__main__":
-    test()
+    main()

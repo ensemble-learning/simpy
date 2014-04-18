@@ -18,6 +18,8 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif "node" in socket.gethostname():
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
