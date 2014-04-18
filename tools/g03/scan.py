@@ -52,7 +52,7 @@ def bond_scan(fname, opt, min, max, n):
         if i.startswith("B"):
             tokens = i.strip().split()
             tokens[3] = "%bond%"
-            line = " ".join(tokens)
+            line = " ".join(tokens) + '\n'
         else:
             line = i.strip() + '\n'
         lines.append(line)
