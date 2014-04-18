@@ -9,6 +9,7 @@ import numpy as np
 def usage():
     print """scan.py inputfile min max n
     inputfile: model file
+    opt: the opt distance
     min: the min value
     max: the max value
     n: number of data points
@@ -21,7 +22,7 @@ def main(fname, opt, min, max, n):
         if i.startswith("B"):
             tokens = i.strip().split()
             tokens[3] = "%bond%"
-            line = " ".join(tokens)
+            line = " ".join(tokens) + "\n"
         else:
             line = i.strip() + '\n'
         lines.append(line)
