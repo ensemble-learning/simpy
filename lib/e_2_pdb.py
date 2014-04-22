@@ -27,6 +27,7 @@ def fortranOut(testfile = "output.pdb", args=''):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
+    b.assignEleTypes()
     b.pbc = [50.00, 50.00, 50.00, 90.0, 90.0, 90.0]
     b.geotag = "XTLGRF 200"
     toReaxLammps(b, "lammps.data")
@@ -42,6 +43,7 @@ def withPbc(testfile="supper.pdb", args=''):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
+    b.assignEleTypes()
     #b.translate(2.1, "x")
     if len(b.pbc) == 0:
         b.geotag = "BIOGRF 200"

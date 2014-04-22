@@ -78,13 +78,16 @@ class Param():
         if os.path.exists("params"):
             shutil.copy("params", "params.bak")
         o = open("params", "w")
+        n = 0
         for i in self.params:
             o.write("%6s"%i[0])
             o.write("%6s"%i[1])
             o.write("%6s"%i[2])
             o.write("%10.4f"%i[3])
             o.write("%10.4f"%i[4])
-            o.write("%10.4f\n"%i[5])
+            o.write("%10.4f"%i[5])
+            o.write(" !%s\n"%self.comments[n])
+            n += 1
         o.close()
     
     def filter(self, a1, a2, eq):
@@ -93,8 +96,8 @@ class Param():
           
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("fname", default="params", nargs="?", help="param file name")
-    parser.add_argument("-ff", default="ffield", nargs=1, help="ffield name")
+    parser.add_argument("fname", default="params", help="param file name")
+    parser.add_argument("-ff", default="ffield", help="ffield name")
     parser.add_argument("-checkout",action="store_true" , help="check out the force field parameters")
     parser.add_argument("-update",action="store_true" , help="update the force field parameters")
 
