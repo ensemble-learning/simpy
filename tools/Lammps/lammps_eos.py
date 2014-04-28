@@ -2,7 +2,7 @@ import shutil
 import numpy as np
 import os
 
-scale = np.linspace(0.7, 1.3, 11)
+scale = np.linspace(0.6, 1.4, 11)
 scale = np.power(scale, 1/3.0)
 
 line = "change_box all x scale %sc% y scale  %sc% z scale %sc% remap\n"

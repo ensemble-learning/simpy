@@ -60,7 +60,7 @@ def getData(logfile, key):
     ave = np.average(data[len(data)/10:])
     std = np.std(data[len(data)/10:])
 
-    print ave
+    print ave, std
 
     """
     data = np.array(data)
