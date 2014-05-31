@@ -53,8 +53,8 @@ dump_modify    100 sort id
 dump           101 all cfg 1 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
 dump_modify    101 element %elements%
 
-fix            200 all reax/c/bonds 1 bonds.reax
-fix            201 all reax/c/species 1 1 1 species.out
+#fix            200 all reax/c/bonds 1 bonds.reax
+#fix            201 all reax/c/species 1 1 1 species.out
 run            1
 """
 

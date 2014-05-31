@@ -9,6 +9,8 @@
 #  Affiliation: Department of Physics & Materials Science,
 #               Uppsala University, Sweden.
 #  Revision history:
+#      2014-05-30  Tao Cheng
+#        - output volume
 #      2012-12-15  Torbjorn Bjorkman
 #        - Extracts geometries also from OUTCAR files to a
 #          set of blocks in a single CIF file. Useful for
@@ -50,6 +52,7 @@ class Cell:
 		alpha = None
 		beta = None
 		gamma = None
+                volume = None
 		HMSymbol = "'P 1'"
 		sites = [] # list of (elementname, x, y, z) tuples
 
@@ -66,6 +69,7 @@ def ciffilestring(cell):
 	outstring += "_cell_angle_alpha    " + str(cell.alpha)+"\n"
 	outstring += "_cell_angle_beta    " + str(cell.beta)+"\n"
 	outstring += "_cell_angle_gamma    " + str(cell.gamma)+"\n"
+	outstring += "_cell_volume    " + str(cell.volume)+"\n"
 	outstring += "\n"
 	outstring += "_symmetry_space_group_name_H-M    "+cell.HMSymb+"\n"
 	outstring += "loop_\n"
@@ -242,6 +246,7 @@ for input_file,filename in input_files:
 		c.append(lattice_constant*float(poscar[4].split()[2].strip()))
 
 		unscaled_volume = a[0]*b[1]*c[2]-a[0]*b[2]*c[1]+a[1]*b[2]*c[0]-a[1]*b[0]*c[2]+a[2]*b[0]*c[1]-a[2]*b[1]*c[0]
+                cell.volume = unscaled_volume
 
 		if scale_volume:
 			lattice_constant = (final_volume/unscaled_volume)**(1.0/3.0)
@@ -249,6 +254,7 @@ for input_file,filename in input_files:
 			b = map(lambda x: lattice_constant*x,b)
 			c = map(lambda x: lattice_constant*x,c)
 			volume = a[0]*b[1]*c[2]-a[0]*b[2]*c[1]+a[1]*b[2]*c[0]-a[1]*b[0]*c[2]+a[2]*b[0]*c[1]-a[2]*b[1]*c[0]
+                        cell.volume = volume 
 
 		cell.a = math.sqrt(a[0]*a[0]+a[1]*a[1]+a[2]*a[2])
 		cell.b = math.sqrt(b[0]*b[0]+b[1]*b[1]+b[2]*b[2])

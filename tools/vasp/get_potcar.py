@@ -22,7 +22,7 @@ from poscar import Poscar
 from output_conf import toXyz, toGeo, toPdb
 
 POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P", 
-       "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl"}
+       "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl", "Cr":"Cr"}
 POT_DATA_BASE = "/project/source/VASP/vasp.5.2/potcar/potpaw_PBE"
 
 o = open("POTCAR", "w")

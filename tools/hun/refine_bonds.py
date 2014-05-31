@@ -173,11 +173,11 @@ def main():
     natom = get_nparticles()        
     nblock = get_nblock()
     
-    """
-    natom = 192
-    nblock = 1
-    """
-
+    log = open("refine.log", "w")
+    log.write("The number of atoms is %d\n"%natom)
+    log.write("Total number of snapshots is %d\n"%nblock)
+    log.flush()
+    
     f = open("reaxbonds.out", "r")
 
     prev = ''
@@ -221,6 +221,7 @@ def main():
         output_out(atoms, comments, o)
         
     # clear up
+    log.close()
     o.close()
     f.close()
 

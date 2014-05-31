@@ -5,7 +5,7 @@ import os
 scale = np.linspace(0.6, 1.4, 11)
 scale = np.power(scale, 1/3.0)
 
-line = "change_box all x scale %sc% y scale  %sc% z scale %sc% remap\n"
+line = "change_box all x scale %sc% y scale  %sc% z scale %sc% xy scale %sc% xz scale %sc% yz scale %sc% remap\n"
 
 lines = []
 f = open("lammps_input", "r")
@@ -18,7 +18,7 @@ for i in f:
         pass
     else:
         lines.append(i)
-        if "read_restart" in i:
+        if "read_restart" in i or "read_data" in i:
             lines.append(line)
             n = counter + 1
         counter += 1
