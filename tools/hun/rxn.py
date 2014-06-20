@@ -2,6 +2,8 @@
 parse the rxn.log file to Rxn class, and do analysis
 """
 
+import operator
+
 class Rxn():
     def __init__(self, line):
         self.nstep = 0
@@ -74,7 +76,10 @@ def main():
             dist[tag] += 1
         else:
             dist[tag] = 1
-    print dist
+    sorted_dist = sorted(dist.iteritems(), key=operator.itemgetter(1), reverse=True)
+    fp = open("dist.log", "w")
+    fp.write('\n'.join('%-80s %s' %i for i in sorted_dist))
+    fp.close()
     
 if __name__ == "__main__":
     main()

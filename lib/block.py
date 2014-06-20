@@ -2,6 +2,8 @@
 @bug : the first geo missing BIOGRF header
 """
 
+import argparse
+
 def dumpBlock(dumpfile, outfile="dump.sep", dt = 1):
     """parse the dump file into blocks
     @return: the number of frames in dump file.
@@ -133,5 +135,20 @@ def g03Block(g03file, ext="log"):
 
 
 if __name__ == "__main__":
-    #g03Block("/home/tao/h3_scan_4.log")
-    geoBlock("geo")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("fname", default="geo", nargs="?", help="file name")
+    parser.add_argument("-type", nargs=1, help="geo or xyz")
+    parser.add_argument("-params", nargs=1, type=int, help="geo or xyz")
+    args = parser.parse_args()
+    
+    fname = args.fname
+
+    if args.type:
+        type= args.type[0]
+    if type == "geo":
+        geoBlock(fname)
+    elif type == "xyz":
+        if args.params:
+            print " I am here!"
+            n = args.params[0]
+            xyzBlock(fname, n)

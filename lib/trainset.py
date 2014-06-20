@@ -7,8 +7,10 @@ class Trainset():
     def __init__(self,):
         self.energy = []
         self.energy_lines = []
-        self.parse_fort99()
+        #self.parse_fort99()
 
+    def parse_trainset():
+        pass
     def parse_fort99(self,):
         assert os.path.exists("fort.99")
         f = open("fort.99", 'r')

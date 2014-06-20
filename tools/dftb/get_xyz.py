@@ -7,11 +7,11 @@ def get_xyz():
     if not os.path.exists("geo_end.xyz"):
         print "Error: No geo_end.xyz file in current path!"
         sys.exit()
-    if os.path.exists("lammps.xyz"):
-        print "Warning: Overwrite lammps.xyz !"
+    if os.path.exists("movie.xyz"):
+        print "Warning: Overwrite movie.xyz !"
 
     f = open("geo_end.xyz", "r")
-    o = open("lammps.xyz", "w")
+    o = open("movie.xyz", "w")
 
     for i in f:
         tokens = i.strip().split()

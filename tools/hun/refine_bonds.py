@@ -5,6 +5,7 @@ Check the number of bonds for each atom. Delete the redundant bonds.
 @todo: read input
 @date: Mon Apr 28 10:19:03 PDT 2014
 """
+import shutil
 
 class bond():
     """
@@ -224,6 +225,9 @@ def main():
     log.close()
     o.close()
     f.close()
+    # copy the files
+    shutil.copy("reaxbonds.out", "reaxbonds.out.bak")
+    shutil.copy("tmp.out", "reaxbonds.out")
 
 if __name__ == "__main__":
     main()

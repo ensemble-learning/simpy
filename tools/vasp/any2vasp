@@ -1,0 +1,20 @@
+#!/usr/bin/env /exec/python/pythonEPD-6.3-2-rh3-x86/bin/python
+
+"""
+Convert any file format (with correct ext) to POSCAR.
+@Note: need ase.
+any2vasp infile
+"""
+
+import sys
+from ase.io import read, write
+
+if len(sys.argv) > 1:
+    infile = sys.argv[1]
+    atoms = read(infile)
+    outfile = "POSCAR"
+    write(outfile, atoms)
+else:
+    print __doc__
+
+

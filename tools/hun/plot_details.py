@@ -1,6 +1,7 @@
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 timestep = 0.10
 tops = 100/timestep
@@ -20,6 +21,12 @@ for i in f:
             fnames.append(i.strip().split())
 
 f.close()
+
+if os.path.exists("temperature"):
+    nplot += 1
+
+if os.path.exists("potential"):
+    nplot += 1
 
 fig = plt.figure()
 
@@ -44,5 +51,19 @@ for i in range(len(fnames)):
 ax.legend(loc=2)
 ax.set_xlabel("Simulation Time (ps)")
 #fig.subplots_adjust(wspace=0.4, hspace=0.8)
+#plot the temperature if any
+if os.path.exists("temperature"):
+    data = np.loadtxt("temperature")
+    ax = fig.add_subplot(nplot, 1, n + 1)
+    ax.plot(data)
+ax.set_xlabel("Temperature (K)")
+
+#plot the potential energy if any
+if os.path.exists("potential"):
+    data = np.loadtxt("potential")
+    ax = fig.add_subplot(nplot, 1, n + 2)
+    ax.plot(data)
+ax.set_xlabel("Potential Energy (ev/mol)")
+
 plt.show()
 

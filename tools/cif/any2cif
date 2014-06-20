@@ -1,0 +1,22 @@
+#!/usr/bin/env /exec/python/pythonEPD-6.3-2-rh3-x86/bin/python
+
+"""
+Convert any file format (with correct ext) to .cif.
+@Note: need ase.
+any2gen infile
+"""
+
+import sys
+from ase.io import read, write
+
+if len(sys.argv) > 1:
+    infile = sys.argv[1]
+    atoms = read(infile)
+    if "." in infile:
+        outfile = infile.split(".")[0] + ".cif"
+    else:
+        outfile = infile + ".cif"
+    write(outfile, atoms)
+else:
+    print __doc__
+
