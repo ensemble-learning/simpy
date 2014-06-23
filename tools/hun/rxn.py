@@ -46,9 +46,9 @@ class Rxn():
         self.reac.sort()
         self.pro.sort()
         
-        self.reactag = "_".join(self.reac)
-        self.reactag += "="
-        self.reactag += "_".join(self.pro)
+        self.reactag = "_" + "_".join(self.reac)
+        self.reactag += "_=_"
+        self.reactag += "_".join(self.pro) + "_"
         
 def parse_rxn():
     lines = []

@@ -1,12 +1,18 @@
 """parse the ndx (gromacs) file to groups
+@log: 
+Thu Jun 19 20:55:09 PDT 2014
+output the file to index.ndx
 """
 
 import re
+import os
+import shutil
 
 class Group():
     def __init__(self, filename="index.ndx" ):
         self.name = filename
         self.names = []
+        self.ngroups = 0
         self.groups = []
         self.subgroups = []
         self.grpnatoms = [] # number of atoms in each group
@@ -28,7 +34,9 @@ class Group():
             else:
                 tokens = i.strip().split()
                 if len(tokens) > 0:
-                    self.groups[counter] += [int(j) - 1 for j in tokens]
+                    self.groups[counter].extend([int(j) for j in tokens])
+        self.ngroups = counter + 1
+
 
     def tosubgroups(self,): 
         """Catlog the atoms into subgroups
@@ -47,11 +55,30 @@ class Group():
                 counter += 1
             self.subgroups[i].append(subgrp)
 
+def output(ndx):
+    """
+    output to index file
+    """
+    if os.path.exists("index.ndx"):
+        shutil.copy("index.ndx", "index.ndx.bak")
+    o = open("index2.ndx", "w")
+    for i in range(ndx.ngroups):
+        o.write("[ %s ]\n"%ndx.names[i])
+        counter = 0
+        for j in ndx.groups[i]:
+            if counter > 0 and counter % 15 == 0:
+                o.write("\n")
+            o.write("%5d"%j)
+            counter += 1
+        o.write("\n")
+            
+    o.close()
+
 def test():
     a = Group("index.ndx")
     print a.name
-    print a.names
-    print a.groups
+    print len(a.names), a.ngroups
+    output(a)
 
 if __name__ == "__main__":
     test()
