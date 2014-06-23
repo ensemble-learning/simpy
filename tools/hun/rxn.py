@@ -1,8 +1,10 @@
 """
 parse the rxn.log file to Rxn class, and do analysis
+@log: 
+2014-06-23: fix the bug of sorting name
 """
 
-import operator
+from operator import itemgetter
 
 class Rxn():
     def __init__(self, line):
@@ -43,8 +45,9 @@ class Rxn():
             self.pro.append(pro2[2*i])
             self.proid.append(int(pro2[2*i + 1].strip("()")))
         
-        self.reac.sort()
-        self.pro.sort()
+        # sor the name and id simutaniously
+        self.reac, self.reacid = [list(x) for x in zip(*sorted(zip(self.reac, self.reacid), key=itemgetter(0)))]
+        self.pro, self.proid = [list(x) for x in zip(*sorted(zip(self.pro, self.proid), key=itemgetter(0)))]
         
         self.reactag = "_" + "_".join(self.reac)
         self.reactag += "_=_"
@@ -62,24 +65,7 @@ def parse_rxn():
     return lines
 
 def main():
-    rxns = []
-    lines = parse_rxn()
-    for i in lines:
-        a = Rxn(i)
-        rxns.append(a)
-
-    #statics
-    dist = {}
-    for i in rxns:
-        tag = i.reactag
-        if tag in dist.keys():
-            dist[tag] += 1
-        else:
-            dist[tag] = 1
-    sorted_dist = sorted(dist.iteritems(), key=operator.itemgetter(1), reverse=True)
-    fp = open("dist.log", "w")
-    fp.write('\n'.join('%-80s %s' %i for i in sorted_dist))
-    fp.close()
+    pass
     
 if __name__ == "__main__":
     main()
