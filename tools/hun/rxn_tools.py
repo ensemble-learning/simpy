@@ -6,6 +6,7 @@ rxn tools
 2014-06-23: first version
 """
 
+import os
 import operator
 import pygraphviz as pgv
 from rxn import Rxn, parse_rxn 
@@ -55,7 +56,7 @@ def generate_dot():
     B.layout()
     B.draw('rxn_map.png') 
     # get better svg
-    #os.system("dot -Tsvg rxn_map.dot -o rxn_map.svg")
+    os.system("dot -Tsvg rxn_map.dot -o rxn_map.svg")
 
 def main():
     #get_statics()
