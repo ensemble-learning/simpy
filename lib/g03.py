@@ -10,7 +10,7 @@ class G03Gjf():
         """
         self.name = filename.split(".")[0]
         self.options = []
-        self.methods = []
+        self.methods = ''
         self.title = ''
         self.spin = 0
         self.charge = 0
@@ -30,7 +30,7 @@ class G03Gjf():
                 if i.startswith("%"):
                     self.options.append(i)
                 elif i.startswith("#"):
-                    self.methods.append(i)
+                    self.methods = i.strip()
                     if "connectivity" in i:
                         connect_flag = 1
             else:
@@ -124,12 +124,11 @@ class G03LogConf():
         f = open(filename, 'r')
         for i in f:
             if i.strip().startswith("#"):
-                self.methods.append(i)
+                self.methods = i.strip()
                 break
         for i in f:
             if i.strip().startswith("-----"):
                 break
-            self.methods.append(i)
         for i in f:
             if "Charge" in i and "Multiplicity" in i: 
                 tokens = i.strip().split()
@@ -151,10 +150,34 @@ class G03LogConf():
                 self.stat = 1
         f.close()
 
+    def __parse_keyword(self,):
+	keywords = []
+        tmp = ''
+        state = 0
+        for i in self.methods:
+            if i == "#":
+                pass
+            else:
+                if i == " ":
+                    if state:
+                        if len(tmp) > 0:
+                            keywords.append(tmp)
+                        tmp = ''
+                else:
+                    tmp += i
+                    if i == "(":
+                        state = 0
+                    if i == ")":
+                        state = 1
+        if len(tmp) > 0:
+            keywords.append(tmp)
+        
+        return keywords
+
     def parser(self,):
         s = System()
         s.name = self.name
-        s.methods = self.methods
+        s.methods = self.__parse_keyword()
         s.spin = self.spin
         s.charge = self.charge
         for i in self.redundant:
