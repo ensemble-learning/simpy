@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 import matplotlib.cm as cmx
 import itertools
 
-timestep = 5 # fs
+timestep = 0.5 # fs
 tops = 1000/timestep
 
 f = open("fragtable", "r")
@@ -92,7 +92,7 @@ if os.path.exists("temperature"):
 if os.path.exists("potential"):
     pot = np.loadtxt("potential")
     ax = fig.add_subplot(nsubx,nsuby, ndata+1)
-    ax.plot(np.linspace(0,80, len(pot)), pot, lw=3)
+    ax.plot(np.linspace(0,6.8, len(pot)), pot, lw=3)
     ax.set_title("Potential", color="red", size="small", weight="bold")
     for tick in ax.xaxis.get_major_ticks():
         tick.label.set_fontsize(6) 

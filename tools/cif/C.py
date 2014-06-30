@@ -36,7 +36,7 @@ def generate_vaspinput(ele1="Ti", ele2="O", a_ref=5.05):
 
     # C3 Cu2O
     a = a_ref * 0.917
-    atoms = crystal([ele2, ele1], 
+    atoms = crystal([ele1, ele2], 
                 [(0.0, 0.0, 0.0), (0.25, 0.25, 0.25)], 
                 spacegroup=224, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("C3"):

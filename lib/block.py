@@ -64,10 +64,23 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
-def xyzBlock(xyzfile, n, outfile="output", dt=1):
+def xyzBlock(xyzfile, args):
     """parse the xyz file into blocks
     @return: the number of frames in dump file.
     """
+    if args.natoms:
+        n = int(args.natoms[0])
+        n = n + 2
+    else:
+        system.exit(0)
+
+    # a little dangerous here.
+    outfile = args.o
+    if args.dt:
+        dt = args.dt[0]
+    else:
+        dt = 1
+
     counter = 0
     tag = 0
     f = open(xyzfile, 'r')
@@ -89,7 +102,6 @@ def xyzBlock(xyzfile, n, outfile="output", dt=1):
         o.write(j)
     o.close()
     f.close()
-    return tag
 
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks
@@ -139,6 +151,9 @@ if __name__ == "__main__":
     parser.add_argument("fname", default="geo", nargs="?", help="file name")
     parser.add_argument("-type", nargs=1, help="geo or xyz")
     parser.add_argument("-params", nargs=1, type=int, help="geo or xyz")
+    parser.add_argument("-dt", nargs=1, type=int, help="Only use frame when t MOD dt = first time")
+    parser.add_argument("-natoms", nargs=1, type=int, help="Number of atoms in system")
+    parser.add_argument("-o", default="output", nargs=1, help="output file")
     args = parser.parse_args()
     
     fname = args.fname
@@ -148,7 +163,4 @@ if __name__ == "__main__":
     if type == "geo":
         geoBlock(fname)
     elif type == "xyz":
-        if args.params:
-            print " I am here!"
-            n = args.params[0]
-            xyzBlock(fname, n)
+        xyzBlock(fname, args)

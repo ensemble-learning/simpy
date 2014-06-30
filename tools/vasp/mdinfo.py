@@ -12,7 +12,13 @@ for i in f:
 
 f.close()
 
+o = open("potential", "w")
+for i in pote:
+    o.write("%.4f\n"%i)
+o.close()
+
 import matplotlib.pyplot as plt
 
 plt.plot(pote)
 plt.show()
+

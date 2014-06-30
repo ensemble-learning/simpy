@@ -3,8 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
-timestep = 0.10
-tops = 100/timestep
+timestep = 0.25
+tops = 1/timestep
 
 nplot = 1
 
@@ -56,14 +56,14 @@ if os.path.exists("temperature"):
     data = np.loadtxt("temperature")
     ax = fig.add_subplot(nplot, 1, n + 1)
     ax.plot(data)
-ax.set_xlabel("Temperature (K)")
+    ax.set_xlabel("Temperature (K)")
 
 #plot the potential energy if any
 if os.path.exists("potential"):
     data = np.loadtxt("potential")
     ax = fig.add_subplot(nplot, 1, n + 2)
     ax.plot(data)
-ax.set_xlabel("Potential Energy (ev/mol)")
+    ax.set_xlabel("Potential Energy (ev/mol)")
 
 plt.show()
 
