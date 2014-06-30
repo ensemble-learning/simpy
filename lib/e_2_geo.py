@@ -31,8 +31,8 @@ def main():
     assert os.path.exists(fname)
     a = Geo(fname)
     b = a.parser()
-    b.assignAtomTypes()
     b.assignEleTypes()
+    b.assignAtomTypes2()
 
     if args.c:
         print "converting %s to geo, xyz, gjf and lammps..."%fname

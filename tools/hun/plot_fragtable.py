@@ -6,7 +6,7 @@ import matplotlib.colors as colors
 import matplotlib.cm as cmx
 import itertools
 
-timestep = 0.1 # fs
+timestep = 5 # fs
 tops = 1000/timestep
 
 f = open("fragtable", "r")
@@ -88,6 +88,20 @@ if os.path.exists("temperature"):
     for tick in ax.yaxis.get_major_ticks():
         tick.label.set_fontsize(6) 
     
+#plot the potential
+if os.path.exists("potential"):
+    pot = np.loadtxt("potential")
+    ax = fig.add_subplot(nsubx,nsuby, ndata+1)
+    ax.plot(np.linspace(0,80, len(pot)), pot, lw=3)
+    ax.set_title("Potential", color="red", size="small", weight="bold")
+    for tick in ax.xaxis.get_major_ticks():
+        tick.label.set_fontsize(6) 
+        # specify integer or one of preset strings, e.g.
+        #tick.label.set_fontsize('x-small') 
+        #tick.label.set_rotation('vertical')
+    for tick in ax.yaxis.get_major_ticks():
+        tick.label.set_fontsize(6) 
+
 fig.subplots_adjust(wspace=0.4, hspace=0.8)
 
 plt.show()

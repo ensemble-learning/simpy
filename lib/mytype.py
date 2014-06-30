@@ -183,6 +183,8 @@ class System():
             match = pattern.match(b)
             if match:
                 i.element= match.group(1)
+                if len(i.element) > 1:
+                    i.element = i.element[0].upper() + i.element[1].lower()
     
     def assignAtomTypes2(self,):
         """ assign atomtypes according to the element types

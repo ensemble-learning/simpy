@@ -13,8 +13,9 @@ def get_kpoints(fname="POSCAR"):
     k = []
     for i in range(3):
         a = np.linalg.norm(cell[i])
-        print a
+        print a,
         a = int(np.ceil(a * ACC))
+        print a
         if a%2 == 1:
             a = a + 1
         k.append(a)

@@ -53,8 +53,8 @@ dump_modify    100 sort id
 dump           101 all cfg 1 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
 dump_modify    101 element %elements%
 
-fix            200 all reax/c/bonds 1 bonds.reax
-fix            201 all reax/c/species 1 1 1 species.out
+#fix            200 all reax/c/bonds 1 bonds.reax
+#fix            201 all reax/c/species 1 1 1 species.out
 run            1
 """
 
@@ -184,7 +184,7 @@ energy_update_freq      0
 remove_CoM_vel          500 ! remove the trans. & rot. vel around the CoM every 'this many' steps
 
 nbrhood_cutoff          5.0  ! near neighbors cutoff for bond calculations in A
-hbond_cutoff            3.5  ! cutoff distance for hydrogen bond interactions
+hbond_cutoff            7.5  ! cutoff distance for hydrogen bond interactions
 bond_graph_cutoff       0.3  ! bond strength cutoff for bond graphs
 thb_cutoff              0.001 ! cutoff value for three body interactions
 q_err                   1e-6  ! average per atom error norm allowed in GMRES convergence

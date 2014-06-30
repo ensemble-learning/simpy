@@ -135,20 +135,6 @@ def g03Block(g03file, ext="log"):
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser()
-    parser.add_argument("fname", default="geo", nargs="?", help="file name")
-    parser.add_argument("-type", nargs=1, help="geo or xyz")
-    parser.add_argument("-params", nargs=1, type=int, help="geo or xyz")
-    args = parser.parse_args()
-    
-    fname = args.fname
 
-    if args.type:
-        type= args.type[0]
-    if type == "geo":
-        geoBlock(fname)
-    elif type == "xyz":
-        if args.params:
-            print " I am here!"
-            n = args.params[0]
-            xyzBlock(fname, n)
+    n = 210
+    xyzBlock("movie.xyz", n)
