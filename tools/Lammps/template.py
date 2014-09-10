@@ -44,8 +44,15 @@ thermo_modify   line multi
 
 #fix             201 all box/relax aniso 0.0 vmax 0.001
 
+min_style       sd
+minimize        0 1.0e-8 1000 1000
+
 min_style       cg
 minimize        0 1.0e-8 1000 1000
+
+min_style       quickmin
+minimize        0 1.0e-8 1000 1000
+
 write_restart   min.rst
 
 dump           100 all custom 1 dump.lammpstrj id type x y z vx vy vz

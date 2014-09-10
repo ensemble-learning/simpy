@@ -8,8 +8,9 @@ rxn tools
 
 import os
 import operator
-import pygraphviz as pgv
-from rxn import Rxn, parse_rxn 
+#import pygraphviz as pgv
+from rxn import Rxn, Mol, parse_rxn, parse_molid
+from rxn import output_molid_ext
 
 def get_statics():
     """
@@ -58,9 +59,40 @@ def generate_dot():
     # get better svg
     os.system("dot -Tsvg rxn_map.dot -o rxn_map.svg")
 
+def get_lifetime():
+    """
+    Calculate the lifetime of species.
+    """
+    rxns = []
+    lines = parse_rxn()
+    for i in lines:
+        a = Rxn(i)
+        rxns.append(a)
+    sim_time = rxns[-1].nstep
+    
+    mols = []
+    lines = parse_molid()
+    for i in lines:
+        a = Mol(i)
+        mols.append(a)
+
+    for i in range(len(mols)):
+        id = mols[i].id
+        start = 0
+        end = sim_time
+        for j in range(len(rxns)):
+            #print id, rxns[j].proid
+            if id in rxns[j].proid:
+                start = rxns[j].nstep
+            if id in rxns[j].reacid:
+                end = rxns[j].nstep
+        mols[i].lifetime = end - start
+    output_molid_ext(mols)
+            
 def main():
     #get_statics()
-    generate_dot()
+    #generate_dot()
+    get_lifetime()
     
 if __name__ == "__main__":
     main()

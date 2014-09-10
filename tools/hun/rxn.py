@@ -6,6 +6,23 @@ parse the rxn.log file to Rxn class, and do analysis
 
 from operator import itemgetter
 
+class Mol():
+    def __init__(self, line):
+        self.id = 0
+        self.natom = 0
+        self.name = ''
+        self.atoms = []
+        self.line = line
+        self.lifetime = 0
+        self.parser()
+
+    def parser(self,):
+        tokens = self.line.strip().split()
+        self.id = int(tokens[0])
+        self.natom = int(tokens[1])
+        self.name = tokens[2]
+        self.atoms = [int(i) for i in tokens[3:]]
+
 class Rxn():
     def __init__(self, line):
         self.nstep = 0
@@ -63,6 +80,28 @@ def parse_rxn():
             if len(i.strip()) > 0:
                 lines.append(i)
     return lines
+
+def parse_molid():
+    lines = []
+    f = open("molid.out", "r")
+    for i in f:
+        if i.startswith("#"):
+            pass
+        else:
+            if len(i.strip()) > 0:
+                lines.append(i)
+    return lines
+    
+def output_molid_ext(mols):
+    o = open("molid.ext", "w")
+    for i in mols:
+        o.write("%6d"%i.id)
+        o.write("%6d"%i.natom)
+        o.write("%20s"%i.name)
+        o.write("%8d"%i.lifetime)
+        o.write("\n")
+    o.close()
+        
 
 def main():
     pass

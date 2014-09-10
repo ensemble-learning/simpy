@@ -43,12 +43,12 @@ for i in range(len(fnames)):
     else:
         ax = fig.add_subplot(nplot, 1, n)
         data = np.loadtxt(fname)
-        ax.plot(data[0]/tops, data[1], lw=2, label=molname)
+        ax.plot(data[0]/4000, data[1], lw=2, label=molname)
         #ax.set_title(molname, color="red", size="small", weight="bold")
         #ymax = 5*(int(np.max(data[1])/5) + 1)
         #ax.set_ylim([0,ymax])
 
-ax.legend(loc=2)
+ax.legend(loc=1)
 ax.set_xlabel("Simulation Time (ps)")
 #fig.subplots_adjust(wspace=0.4, hspace=0.8)
 #plot the temperature if any

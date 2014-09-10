@@ -62,7 +62,6 @@ def getData(logfile, key):
 
     print ave, std
 
-    """
     data = np.array(data)
     textx = (np.average(x) + np.min(x))/2
     texty = (np.average(data) + np.max(data))/2
@@ -74,7 +73,6 @@ def getData(logfile, key):
     plt.ylabel(key)
     plt.savefig("%s.eps"%key)
     plt.show()
-    """
 
 def main():
     if len(sys.argv) < 2:

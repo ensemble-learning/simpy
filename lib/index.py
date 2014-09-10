@@ -36,7 +36,8 @@ class Group():
                 if len(tokens) > 0:
                     self.groups[counter].extend([int(j) for j in tokens])
         self.ngroups = counter + 1
-
+        for i in range(self.ngroups):
+            self.grpnatoms.append(self.groups[i])
 
     def tosubgroups(self,): 
         """Catlog the atoms into subgroups

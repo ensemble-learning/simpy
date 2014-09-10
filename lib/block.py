@@ -64,22 +64,12 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
-def xyzBlock(xyzfile, args):
+def xyzBlock(xyzfile, natoms, outfile="output", dt=1):
     """parse the xyz file into blocks
     @return: the number of frames in dump file.
     """
-    if args.natoms:
-        n = int(args.natoms[0])
-        n = n + 2
-    else:
-        system.exit(0)
 
     # a little dangerous here.
-    outfile = args.o
-    if args.dt:
-        dt = args.dt[0]
-    else:
-        dt = 1
 
     counter = 0
     tag = 0
@@ -87,7 +77,7 @@ def xyzBlock(xyzfile, args):
     lines = ''
     block = []
     for i in f:
-        if counter > 0 and counter%n == 0: 
+        if counter > 0 and counter%natoms == 0: 
             if tag % dt == 0:
                 o = open(outfile+"%05d"%tag+".xyz", 'w')
                 for j in block:
@@ -97,6 +87,7 @@ def xyzBlock(xyzfile, args):
             tag += 1
         block.append(i)
         counter += 1
+
     o = open(outfile+"%05d"%tag+".xyz", 'w')
     for j in block:
         o.write(j)
@@ -157,10 +148,23 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     fname = args.fname
+    if args.o:
+        outfile = args.o
+    else:
+        outfile = "output"
 
     if args.type:
         type= args.type[0]
     if type == "geo":
         geoBlock(fname)
     elif type == "xyz":
-        xyzBlock(fname, args)
+        if args.natoms:
+            natoms = int(args.natoms[0])
+            nlines = natoms + 2
+        else:
+            print "Need input number of atoms"
+            system.exit(0)
+        dt = 1
+        if args.dt:
+            dt = args.dt[0]
+        xyzBlock(fname, nlines, outfile, dt)

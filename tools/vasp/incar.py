@@ -12,7 +12,7 @@ INCAR = """
  PREC     = A
  ENCUT    = 500
  NELMIN   = 5
- EDIFF    = 1.0E-4
+ EDIFF    = 1.0E-6
 # IALGO = 48
 # ALGO = Very Fast
 
@@ -41,7 +41,7 @@ INCAR = """
 # Other parameters
 ##################################
  LVDW= .TRUE.      # PBE_ULG
- LREAL = Auto
+ NPAR = 2
 
 """
 
