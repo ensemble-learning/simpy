@@ -1,5 +1,5 @@
 """parse the integrated file into seperated single files
-@bug : the first geo missing BIOGRF header
+@bug: the first geo missing BIOGRF header
 """
 
 import argparse
