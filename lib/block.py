@@ -64,17 +64,20 @@ def geoBlock(geofile, ext="geo"):
         o.write(j)
     o.close()
 
-def xyzBlock(xyzfile, n, outfile="output", dt=1):
+def xyzBlock(xyzfile, natoms, outfile="output", dt=1):
     """parse the xyz file into blocks
     @return: the number of frames in dump file.
     """
+
+    # a little dangerous here.
+
     counter = 0
     tag = 0
     f = open(xyzfile, 'r')
     lines = ''
     block = []
     for i in f:
-        if counter > 0 and counter%n == 0: 
+        if counter > 0 and counter%natoms == 0: 
             if tag % dt == 0:
                 o = open(outfile+"%05d"%tag+".xyz", 'w')
                 for j in block:
@@ -84,12 +87,12 @@ def xyzBlock(xyzfile, n, outfile="output", dt=1):
             tag += 1
         block.append(i)
         counter += 1
+
     o = open(outfile+"%05d"%tag+".xyz", 'w')
     for j in block:
         o.write(j)
     o.close()
     f.close()
-    return tag
 
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks
@@ -139,16 +142,29 @@ if __name__ == "__main__":
     parser.add_argument("fname", default="geo", nargs="?", help="file name")
     parser.add_argument("-type", nargs=1, help="geo or xyz")
     parser.add_argument("-params", nargs=1, type=int, help="geo or xyz")
+    parser.add_argument("-dt", nargs=1, type=int, help="Only use frame when t MOD dt = first time")
+    parser.add_argument("-natoms", nargs=1, type=int, help="Number of atoms in system")
+    parser.add_argument("-o", default="output", nargs=1, help="output file")
     args = parser.parse_args()
     
     fname = args.fname
+    if args.o:
+        outfile = args.o
+    else:
+        outfile = "output"
 
     if args.type:
         type= args.type[0]
     if type == "geo":
         geoBlock(fname)
     elif type == "xyz":
-        if args.params:
-            print " I am here!"
-            n = args.params[0]
-            xyzBlock(fname, n)
+        if args.natoms:
+            natoms = int(args.natoms[0])
+            nlines = natoms + 2
+        else:
+            print "Need input number of atoms"
+            system.exit(0)
+        dt = 1
+        if args.dt:
+            dt = args.dt[0]
+        xyzBlock(fname, nlines, outfile, dt)

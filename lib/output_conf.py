@@ -174,7 +174,7 @@ def toGjf(system, outfile="g03out.gjf"):
             o.write(i.strip() + '\n')
     if len(system.methods) > 0:
         for i in system.methods:
-            o.write(i.strip() + '\n')
+            o.write("# " + i.strip() + '\n')
     o.write('\n')
     o.write(system.name + "\n")
     o.write('\n')

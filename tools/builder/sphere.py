@@ -17,7 +17,7 @@ elif socket.gethostname() == "atom.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
-elif socket.gethostname() == "giant12.wag.caltech.edu":
+elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
     LIB = "/home/tao/Nutstore/code/simupy/lib"
@@ -52,7 +52,7 @@ class SphereCut():
 def read_inp(control):
     """Read the input file
     """
-    print "Reading the control file ...."
+    print "    Reading the control file ...."
     cf = ConfigParser.ConfigParser()
     cf.read("inp")
 
@@ -103,22 +103,15 @@ def read_pdb(control):
     return b
 
 def read_grp(control):
+    print "    Reading group file ..."
     grp = Group(control.grpfile)
     #print grp.names
     #print grp.groups
     # check the
-    print "    Reading group file ..."
-    if len(grp.groups) == len(control.natoms):
-        print "        import %d groups"%len(grp.groups)
-    else:
+    print "        import %d groups"%len(grp.groups)
+    if len(grp.groups) != len(control.natoms):
         print "    Warning: inconsistent defination in index file"
-    for i in range(len(grp.groups)):
-        print "        %s atom(s) in group %d"%(control.grpnatoms[i], i+1)
-        grp.grpnatoms.append(int(control.grpnatoms[i]))
-    if len(grp.grpnatoms) > 0:
-        print "        prococessing atoms into sub groups"
-        grp.tosubgroups()
-    
+
     return grp
 
 def sphere_cut(control, b, grp):
@@ -139,6 +132,8 @@ def sphere_cut(control, b, grp):
         ndx2.append([])
         ndx3.append([])
 
+    # should be useful for Li3PS4 case
+    """
     for i in range(len(grp.subgroups)):
         nc = int(control.grpatomscenter[i]) - 1
         counter = 0
@@ -149,10 +144,8 @@ def sphere_cut(control, b, grp):
                 natoms[i] += 1
                 ndx1[i].append("%09d_%08d"%(dist*1000, counter))
             counter += 1
-    #print ndx1[0]
-    #print ndx1[1]
-
     """
+    counter = 0
     for i in b.atoms:
         dist = get_dist(i.x, control.center)
         if dist < control.radius:
@@ -160,7 +153,6 @@ def sphere_cut(control, b, grp):
             natoms[n] += 1
             ndx1[n].append("%09d_%08d"%(dist*1000, counter))
         counter += 1
-    """
 
     # print information of coarse cut 
     print "        After Coarse cut we get:"
@@ -186,11 +178,7 @@ def sphere_cut(control, b, grp):
     for i in range(len(control.atoms)):
         print "            %-6s = %8d"%(control.atoms[i], len(ndx2[i]))
     
-    for i in range(len(ndx2)):
-        for j in ndx2[i]:
-            for k in grp.subgroups[i][j]:
-                ndx3[i].append(k)
-    return ndx3
+    return ndx2
     
 def output_pdb(control, b, ndx):
     """Output the atoms in ndx to pdb file

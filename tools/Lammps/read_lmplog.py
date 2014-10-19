@@ -73,6 +73,13 @@ def getData(logfile, key):
     plt.ylabel(key)
     plt.savefig("%s.eps"%key)
     plt.show()
+<<<<<<< HEAD
+=======
+    o = open("%s_lammps.csv"%key, "w")
+    for i in range(len(x)):
+        o.write("%.4f\t,%.4f\n"%(x[i], data[i]))
+    o.close()
+>>>>>>> 0c952870e5e3aa242df0ea17902548f162936325
 
 def main():
     if len(sys.argv) < 2:
