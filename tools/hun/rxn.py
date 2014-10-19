@@ -34,6 +34,7 @@ class Rxn():
         self.reacid = []
         self.proid = []
         self.reactag = ""
+        self.reacidtag = ""
         self.line = line
         self.parser()
 
@@ -70,6 +71,10 @@ class Rxn():
         self.reactag += "_=_"
         self.reactag += "_".join(self.pro) + "_"
         
+        self.reacidtag = "_" + "_".join([str(i) for i in self.reacid])
+        self.reacidtag += "_=_"
+        self.reacidtag += "_".join([str(i) for i in self.proid]) + "_"
+
 def parse_rxn():
     lines = []
     f = open("rxn.log", "r")

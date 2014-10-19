@@ -62,6 +62,7 @@ def parse_reaction(rxn, tokens):
         rxn.molid_pro.append(pro2[2*i + 1].strip("()"))
     
 def get_atomlist(rxn):
+    # hard code here: need molid.out
     f = open("molid.out", "r")
     for i in f:
         tokens = i.strip().split()
@@ -91,12 +92,14 @@ def get_snapshot(rxn, folder, nframe):
         o.write(i)
     o.close()
     
-def convert2pdb(t0, dt):
-    for i in range(t0 - dt, t0 + dt):
+def convert2pdb(t0, t1, dt, pbc):
+    for i in range(t0, t1, dt):
         fname = "rxn_%05d"%i
-        os.popen("babel -ixyz %s.xyz -opdb %s.pdb"%(fname, fname))
-    pbc = "CRYST1   11.027   16.042   10.430  71.16  88.34  87.51 P 1\n"
-    for i in range(t0 - dt, t0 + dt):
+        #os.popen("babel -ixyz %s.xyz -opdb %s.pdb"%(fname, fname))
+        p = subprocess.Popen(['babel', '-ixyz', fname + '.xyz', '-opdb', fname + '.pdb'],\
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate()
+    for i in range(t0, t1, dt):
         fname = "rxn_%05d"%i
         f = open(fname +".pdb", "r")
         lines = f.readlines()
@@ -106,43 +109,62 @@ def convert2pdb(t0, dt):
         for j in lines:
             o.write(j)
         o.close()
-        #subprocess.Popen("genconf -f %s.pdb -o %s.pdb -nbox 2 2 2"%(fname, fname), \
-        #                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        os.system("genconf -f %s.pdb -o %s.pdb -nbox 2 2 2"%(fname, fname))
+        #os.system("genconf -f %s.pdb -o %s.pdb -nbox 2 2 2"%(fname, fname))
         f.close()
+        p = subprocess.Popen(['genconf', '-f', fname+'.pdb', '-o', fname+'.pdb',
+                            '-nbox', '2 2 2'],\
+                        stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        stdout, stderr = p.communicate()
         
-def find_rxn(rxn_tag):
+def find_rxn(rxn_tag, next, dt, pbc):
     rxn = Rxn()
     rxn.tag = rxn_tag
     rxn.timestep = int(rxn.tag.split("_")[0])
+    t0 = min(0, rxn.timestep - next)
+    t1 = rxn.timestep + next
     tokens = get_reactions(rxn)
     parse_reaction(rxn, tokens)
     get_atomlist(rxn)
-    next = 10
-    folder = "rxn_%s"%rxn.tag
+    folder = "snap_%s"%rxn.tag
     if not os.path.exists(folder):
-        os.mkdir("rxn_%s"%rxn.tag)
-    for i in range( rxn.timestep - next,  rxn.timestep + next):
+        os.mkdir("snap_%s"%rxn.tag)
+    for i in range( t0, t1, dt):
         #print "---------------------------working %d--------------------------"%i
         get_snapshot(rxn, folder, i)
     os.chdir(folder)
-    convert2pdb(rxn.timestep, next)
-    #os.system("cat rxn*.pdb > total.pdb")
+    convert2pdb(t0, t1, dt, pbc)
+    os.system("cat rxn*.pdb > total.pdb")
     for i in rxn.atomlist_reac:
         print i-1,
     os.chdir("..")
 
-def main():
-    print "Reading the xyz file ..."
-    shutil.copy("movie.xyz", "conf")
-    if not os.path.exists("conf"):
-        os.mkdir("conf")
-    os.chdir("conf")
-    n = 192
-    xyzBlock("movie.xyz", n, )
-    os.remove("movie.xyz")
+def find_rxn_all(dt, pbc):
+    t0 = 0
+    t1 = 20000
+    dt = 1
+    folder = "ALL"
+    if not os.path.exists(folder):
+        os.mkdir(folder)
+    for i in range(t0, t1, dt):
+        conf = os.path.join(os.getcwd(), "conf")
+        conf = os.path.join(conf, "output%05d.xyz"%i)
+        target = os.path.join(folder, "rxn_%05d.xyz"%i)
+        shutil.copy(conf, target )
+    os.chdir(folder)
+    convert2pdb(t0, t1, dt, pbc)
+    os.system("cat rxn*.pdb > total.pdb")
     os.chdir("..")
 
+def sep_xyz(n):
+    if not os.path.exists("conf"):
+        os.mkdir("conf")
+        shutil.copy("movie.xyz", "conf")
+        os.chdir("conf")
+        xyzBlock("movie.xyz", n+2, )
+        os.remove("movie.xyz")
+        os.chdir("..")
+
+def get_rxnlist():
     rlist = []
     f = open("rxn.log", "r")
     for i in f:
@@ -154,8 +176,37 @@ def main():
                 rxn = tokens[0]
                 rlist.append(rxn)
     f.close()
-    for i in rlist:
-        find_rxn(i)
+    return rlist
+
+def main():
+    """
     
+    """
+
+    datafiles = ["rxn.log", "molid.out", "movie.xyz"]
+    nxyz = 192
+    pbc = "CRYST1   10.826   11.586   13.250  89.99  95.40  90.00 P 1\n"
+    next = 100
+    dt = 10
+
+    # check the files
+    for i in datafiles:
+        if not os.path.exists(i):
+            sys.stderr.write("Error: Need %s!\n"%i)
+            exit(1)
+
+    # seperate the xyz file into single frame
+    sep_xyz(nxyz)
+    rlist = get_rxnlist()
+
+    counter = 0
+    # processing rxn analysis
+    sys.stdout.write("Processing snapshot extraction ...\n")
+    #find_rxn("2352_1", next, dt, pbc)
+    find_rxn_all(dt, pbc)
+    #for i in rlist:
+    #    find_rxn(i, next, dt, pbc)
+    #    counter += 1 
+
 if __name__ == "__main__":
     main()

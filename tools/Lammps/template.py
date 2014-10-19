@@ -113,6 +113,8 @@ thermo_modify   line multi
 
 dump            100 all custom 400 dump.lammpstrj id type x y z vx vy vz
 dump_modify     100 sort id
+dump            101 all cfg 400 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
+dump_modify     101 element %elements%
 
 #--------Analysis-----------
 

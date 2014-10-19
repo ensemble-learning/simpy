@@ -44,7 +44,8 @@ def withPbc(testfile="supper.pdb", args=''):
     b = a.parser()
     b.assignAtomTypes()
     b.assignEleTypes()
-    #b.translate(2.1, "x")
+    #b.translate(12.0, "z")
+    toXyz(b, "out.xyz")
     if len(b.pbc) == 0:
         b.geotag = "BIOGRF 200"
     else:
@@ -57,7 +58,6 @@ def withPbc(testfile="supper.pdb", args=''):
             toPdb(b, "out.pdb", 1)
     else:
         toPdb(b, "out.pdb")
-    toXyz(b, "out.xyz")
 
 def sortXYZ(testfile="input.pdb", axis="z"):
     a = Pdb(testfile)
