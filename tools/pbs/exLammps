@@ -1,0 +1,85 @@
+#!/usr/bin/env python
+
+"""
+Generate pbs script for LAMMPS calculation on HPC.
+exLAMMPS ncpu
+"""
+
+import sys
+import os
+import shutil
+
+INP = """#!/bin/bash
+
+#PBS -A ONRDC33663C5T
+#PBS -V
+#PBS -j oe
+#PBS -N LAMMPS
+#PBS -q challenge
+#PBS -l select=%nnode%:ncpus=32:mpiprocs=32
+#PBS -l walltime=168:00:00
+
+export LAMMPSLOC=/u/taocheng/SOFT/lammps-1Feb14/src
+export exe=$LAMMPSLOC/lmp_pgi
+echo "The LAMMPS executable is: " $exe
+
+export DATADIR=$PBS_O_WORKDIR
+
+export NPROCS=`wc -l $PBS_NODEFILE | cut -f1 -d " "`
+export JOBID=`echo $PBS_JOBID | awk -F'.' '{print $1}'`
+export OUTPUTDIR=$WORKDIR/LAMMPS/$JOBID
+echo "The LAMMPS output will temporarily be written to :" $OUTPUTDIR
+echo "LAMMPS Job: " $JOBID "is starting with " $NPROCS "cores on:"
+cat $PBS_NODEFILE
+echo
+
+# Create Directories
+#
+mkdir -p $OUTPUTDIR
+
+# export job info
+#
+echo $PBS_JOBID >  $DATADIR/jobinfo
+cat $PBS_NODEFILE >>  $DATADIR/jobinfo
+echo $OUTPUTDIR >>  $DATADIR/jobinfo
+
+# Copy executable and any required input files to your work directory
+#
+cp $DATADIR/* $OUTPUTDIR
+cd $OUTPUTDIR
+
+#
+# Run LAMMPS
+#
+date
+aprun -n %ncpu% $exe -in lammps_input > log
+echo
+date
+echo "LAMMPS has finished."
+echo "The LAMMPS output is being copied back to: " $PBS_O_WORKDIR
+cd ..
+tar -cvzf $JOBID.tar.gz $JOBID
+cp -r $JOBID.tar.gz $PBS_O_WORKDIR
+rm $JOBID.tar.gz
+
+exit 0
+
+"""
+
+def main():
+    if len(sys.argv) == 1:
+        ncpu = 32
+    else:
+        ncpu = int(sys.argv[1])
+    nnode = ncpu/32
+        
+    o = open("runLAMMPS.in", "w")
+    lines = INP
+    lines = lines.replace("%nnode%", "%d"%nnode)
+    lines = lines.replace("%ncpu%", "%d"%ncpu)
+    o.write(lines)
+    o.close()
+    os.system("chmod +x runLAMMPS.in")
+
+if __name__ == "__main__":
+    main()

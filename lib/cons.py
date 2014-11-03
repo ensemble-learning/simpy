@@ -3,7 +3,7 @@
 
 # Atom number - Atom name map
 ELEMENT = {1:"H", 3:"Li", 6:"C", 7:"N",  8:"O", 9:"F", 12: "Mg", 13: "Al", 14:"Si", 
-            15:"P", 16:"S", 17:"Cl", 20:"Ca", 22:"Ti", 31:"Ga", 32:"Ge"}
+            15:"P", 16:"S", 17:"Cl", 20:"Ca", 22:"Ti", 28:"Ni", 31:"Ga", 32:"Ge"}
 # Atom name - Atom number map
 ELEMENT2ATN = {"H":1, "Li":3, "C":6, "N":7,  "O":8, 9:"F", "Na":11, 12: "Mg", "Al":13, "Si":14, 
             "P":15, "S":16, "Cl":17, "Ca":20, "Ti":22, "V":23,"Ni":28, "Pt":78, 32:"Ge", "MO":42, "Mo":42,
