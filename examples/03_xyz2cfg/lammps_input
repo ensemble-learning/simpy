@@ -1,0 +1,17 @@
+
+units          real
+atom_style     charge
+boundary       p p p
+
+read_data      lammps.data
+
+dump                    1 all custom 1 dump.lammpstrj id type x y z vx vy vz
+dump_modify             1 sort id
+dump                    101 all cfg 1 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
+dump_modify             101 element Li Cl S O P
+
+log             rerun.log
+
+#--------Simulation--------
+rerun           movie.xyz dump x y z box no format xyz
+

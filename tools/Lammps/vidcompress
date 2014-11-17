@@ -1,0 +1,24 @@
+#!/bin/sh
+# see http://www.cscs.ch/~mvalle/mencoder/mencoder.html
+
+# touch ~/.mplayer/mencoder #
+
+JPEG_DIR=Jpg
+MPG_FILE=AtomEye.mpg
+
+jpgfile=`ls $JPEG_DIR/ | grep --max-count=1 -i .jpg`
+
+geometry=`identify -verbose $JPEG_DIR/$jpgfile | grep Geometry | cut -d: -f2`
+
+height=`echo $geometry | cut -dx -f1`
+width=`echo $geometry | cut -dx -f2`
+
+optimal_bitrate=`echo "scale=0; 50 * 25 * $width * $height / 256" | bc -l`
+
+rm -f $MPG_FILE
+
+opt="vbitrate=$optimal_bitrate:mbd=2:keyint=132:vqblur=1.0:cmp=2:subcmp=2:dia=2:last_pred=3"
+
+mencoder -ovc lavc -lavcopts vcodec=msmpeg4v2:vpass=1:$opt -mf type=jpg:fps=8 -nosound -o /dev/null mf://$JPEG_DIR/\*.jpg
+
+mencoder -ovc lavc -lavcopts vcodec=msmpeg4v2:vpass=2:$opt -mf type=jpg:fps=8 -nosound -o $MPG_FILE mf://$JPEG_DIR/\*.jpg
