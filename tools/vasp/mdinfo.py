@@ -1,24 +1,44 @@
+"""
+get MD information from VASP QMD calculation
+"""
+
+import sys
+
+if len(sys.argv) < 2:
+    fname = "OSZICAR"
+else:
+    fname = sys.argv[1]
 steps = []
 pote = []
 potf = []
+T = []
 
-f = open("OSZICAR", "r")
+f = open(fname, "r")
 
 for i in f:
     if "=" in i:
         tokens = i.strip().split()
         steps.append(int(tokens[0]))
-        pote.append(float(tokens[8]))
+        T.append(float(tokens[2]))
+        potf.append(float(tokens[6]))
 
 f.close()
 
 o = open("potential", "w")
-for i in pote:
+for i in potf:
     o.write("%.4f\n"%i)
 o.close()
 
-import matplotlib.pyplot as plt
+o = open("temperature", "w")
+for i in T:
+    o.write("%.4f\n"%i)
+o.close()
+    
 
-plt.plot(pote)
-plt.show()
+flag_plot = 0
+if flag_plot:
+    import matplotlib.pyplot as plt
+
+    plt.plot(pote)
+    plt.show()
 

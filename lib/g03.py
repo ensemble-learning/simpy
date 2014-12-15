@@ -12,7 +12,7 @@ class G03Gjf():
         self.options = []
         self.methods = ''
         self.title = ''
-        self.spin = 0
+        self.spin = 1
         self.charge = 0
         self.atoms = []
         self.connect = []

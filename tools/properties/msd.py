@@ -45,8 +45,8 @@ print "%.4e"%(fit[0]/6*toCM)
 print "%.4e 10^-5cm^2/s"%(fit[0]/6*toCM5)
 
 plt.plot(x, y)
-plt.plot(fx, fit_fn(fx), '--k')
+plt.plot(fx, fit_fn(fx), '--k', lw=2)
 plt.xlabel("Simulation Time (fs)")
-plt.ylabel("MSD ($\AA^2$)"
+plt.ylabel("MSD ($\AA^2$)")
 plt.show()
 

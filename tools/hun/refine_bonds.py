@@ -4,8 +4,11 @@ Check the number of bonds for each atom. Delete the redundant bonds.
 @note: Only hard coded for H.
 @todo: read input
 @date: Mon Apr 28 10:19:03 PDT 2014
+@log:
+2014-11-22: introduce ingore list
 """
 import shutil
+import os, sys
 
 class bond():
     """
@@ -96,7 +99,7 @@ def check_nbonds(atoms):
         counter += 1
     return atomindex
 
-def build_index(atoms, index):
+def build_index(atoms, index, ignore=[]):
     """
     build the bond index to delete.
     """
@@ -106,8 +109,12 @@ def build_index(atoms, index):
     for i in index:
         bo = []
         counter = 0
-        for j in atoms[i].bond_orders:
-            bo.append("%08d_%04d"%(j*100000, counter))
+        for j in range(len(atoms[i].bond_orders)):
+            tmp = atoms[i].bond_orders[j]*100000
+            if ignore:
+                if atoms[i].bonded_atoms[j] in ignore:
+                    tmp = tmp * 0.0001
+            bo.append("%08d_%04d"%(tmp, counter))
             bo.sort()
             counter += 1
 
@@ -168,6 +175,16 @@ def output_out(atoms, comments, outfile):
         outfile.write("%8.4f"%i.nlp)
         outfile.write("%8.4f"%i.q)
         outfile.write("\n")
+
+def read_index(fname):
+    ndx = []
+    f = open(fname, "r")
+    for i in f:
+        tokens = i.strip()
+        if len(tokens) > 0:
+            ndx.append(int(tokens))
+    f.close()
+    return ndx
                 
 def main():
     o = open("tmp.out", "w")
@@ -183,6 +200,12 @@ def main():
 
     prev = ''
     flag = 1
+    
+    ignore = []
+    if os.path.exists("ignore.ndx"):
+        sys.stdout.write("Reading ignore list.\n")
+        sys.stdout.flush()
+        ignore = read_index("ignore.ndx")
 
     # Parse the block
     for n in range(nblock):
@@ -217,7 +240,10 @@ def main():
                 atoms.append(atom)
         # Do the analysis
         index1 = check_nbonds(atoms)
-        index2 = build_index(atoms, index1)
+        if ignore:
+            index2 = build_index(atoms, index1, ignore)
+        else:
+            index2 = build_index(atoms, index1)
         refine_bonds(atoms, index2)
         output_out(atoms, comments, o)
         
@@ -226,8 +252,9 @@ def main():
     o.close()
     f.close()
     # copy the files
-    shutil.copy("reaxbonds.out", "reaxbonds.out.bak")
-    shutil.copy("tmp.out", "reaxbonds.out")
+    #shutil.copy("reaxbonds.out", "reaxbonds.out.bak")
+    #shutil.copy("tmp.out", "reaxbonds.out")
+    #os.remove("tmp.out")
 
 if __name__ == "__main__":
     main()

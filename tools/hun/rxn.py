@@ -107,7 +107,6 @@ def output_molid_ext(mols):
         o.write("\n")
     o.close()
         
-
 def main():
     pass
     

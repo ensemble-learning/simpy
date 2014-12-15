@@ -4,7 +4,7 @@ import numpy as np
 import sys
 from ase.io import read
 
-ACC = 30
+ACC = 20
 
 def get_kpoints(fname="POSCAR"):
     atoms = read(fname)

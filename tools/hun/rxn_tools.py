@@ -92,7 +92,7 @@ class RxnAnalysis():
                     if stats[j[0]] == 0:
                         for ii in i[1]:
                             for jj in j[1]:
-                                print ii, jj
+                                print i[0], ii, jj
                                 if ii == jj:
                                     #stats[i[0]] = 1
                                     #stats[j[0]] = 1
@@ -159,12 +159,39 @@ class RxnAnalysis():
                     end = self.rxns[j].nstep
             mols[i].lifetime = end - start
         output_molid_ext(mols)
-            
+
+    def proton_rxn(self,):
+        """
+        Trace H3O+ during the simulation.
+        This function is specialized for Pt-water interface.
+        In this case, we would like to calculate the diffusion coefficient of H3O+.
+        To achieve this, we need first check out all the H3O+ and H (Pt-H). Then,
+        align each atoms according to previous step.
+        @output: an exchange table of reaction H3O (or H) and producted H3O (or H)
+        """
+        m1 = 0 # reacted H3O+
+        m2 = 0 # producted H3O+
+        o = open("exchange.table", "w")
+        for i in self.rxns:
+            for j in range(len(i.reac)):
+                if i.reac[j] == "OH3":
+                    m1 = i.reacid[j]
+                elif i.reac[j] == "H":
+                    m1 = i.reacid[j]
+            for j in range(len(i.pro)):
+                if i.pro[j] == "OH3":
+                    m2 = i.proid[j]
+                elif i.pro[j] == "H":
+                    m2 = i.proid[j]
+            o.write("%d\t%d\t%d\n"%(i.nstep, m1, m2))
+        o.close()
+        
 def main():
     rxns = RxnAnalysis()
+    #rxns.proton_rxn()
     #rxns.get_statics()
-    #rxns.get_single_rxn("O6C4N8", 16)
-    rxns.get_single_rxn_filter("O6C4N8", 16)
+    rxns.get_single_rxn("ON2", 0)
+    #rxns.get_single_rxn_filter("OH3", 16)
     #generate_dot()
     #get_lifetime()
     

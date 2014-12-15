@@ -100,13 +100,18 @@ def main():
     parser.add_argument("-ff", default="ffield", help="ffield name")
     parser.add_argument("-checkout",action="store_true" , help="check out the force field parameters")
     parser.add_argument("-update",action="store_true" , help="update the force field parameters")
+    parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
 
     args = parser.parse_args()
     paramfile = args.fname
     
     ff = args.ff
 
-    a = Param(paramfile, 0)
+    if args.type:
+        ff_type = args.type[0]
+    else:
+        ff_type = 0
+    a = Param(paramfile, ff_type)
     if args.checkout:
         a.update(ff)
         a.checkout()

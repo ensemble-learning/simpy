@@ -119,7 +119,7 @@ dump_modify     101 element %elements% sort id
 #--------Analysis-----------
 
 #fix             200 all reax/c/bonds 400 bonds.reax
-#fix             201 all reax/c/species 1 1 400 species.out
+fix             201 all reax/c/species 1 1 400 species.out element %elements%
 
 #--------Simulation--------
 
