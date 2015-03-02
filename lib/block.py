@@ -93,6 +93,7 @@ def xyzBlock(xyzfile, natoms, outfile="output", dt=1):
         o.write(j)
     o.close()
     f.close()
+    return tag
 
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks

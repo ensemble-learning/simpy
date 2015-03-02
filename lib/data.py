@@ -94,7 +94,7 @@ class ReaxData():
                 atom.x[1] = float(i[5]) 
                 atom.x[2] = float(i[6]) 
                 s.atoms.append(atom)
-            elif n == 5 or n == 8:
+            elif n == 6 or n == 9:
                 # n = 5 is a charge type, n = 8 is a charge type generated
                 # by restart2data
                 atom.name = self.atomtypes[int(i[1]) - 1]

@@ -23,17 +23,17 @@ elif "node" in socket.gethostname():
 
 sys.path.insert(0 , LIB)
 
-from template import *
 from ffield import Ffield
 
 #C H O N
 #FF = {"C": 1, "H": 2, "O": 3, "N": 4, "Ca":4, "Al":6}
 FF = {}
-MASS = {12.011:"C", 14.007: "N", 15.994:"O", 1.0079:"H", 40.078:"Ca",\
+MASS = {12.011:"C", 14.007: "N", 15.999:"O", 1.0079:"H", 40.078:"Ca",\
         26.982:"Al", 28.086:"Si", 35.453:"Cl", 47.867:"Ti",  6.941:"Li",
         30.974:"P", 32.065:"S", 72.64:"Ge", 10.811:"B", 63.546:"Cu", 
         58.693:"Ni", 195.08:"Pt", 50.942:"V", 95.94:"Mo", 92.906:"Nb",
-       127.6:"Te", 22.990:"Na", 69.723:"Ga", 58.933:"Co", 39.948:"Ar", }
+       127.6:"Te", 22.990:"Na", 69.723:"Ga", 58.933:"Co", 39.948:"Ar", 
+        137.327: "Ba", 88.906:"Y", 91.224:"Zr"}
 
 """
   "Cl":35.453, "P":30.974, "S":32.065, "Ge":72.64, "GE":72.64, "B": 10.811, "ZR":91.224, "V": 50.942, "Mo":95.94,
@@ -95,7 +95,6 @@ def main(args):
     lg = 0
     if args.lg:
         lg = 1
-
     if rtype == "NVT":
         lines = NVT
     elif rtype == "MIN":
@@ -106,6 +105,7 @@ def main(args):
         lines = MIN_CELL
 
     print "processing %s simulation......"%rtype
+
     
     if lg:
         lines = lines.replace("%reax_potential%", "reax/c control.reaxc lgvdw yes")
@@ -132,11 +132,19 @@ if __name__ == "__main__":
     parser.add_argument("type", default="MIN", nargs="?", help="simulation type")
     parser.add_argument("-lg", action="store_true", help="using lg type ffield")
     parser.add_argument("-lammps2012", action="store_true", help="using lg type ffield")
+    parser.add_argument("-template", nargs=1, help="assign lammps input template")
     #parser.add_argument("-pbc", action="store_true", help="using default pbc 5nm * 5nm * 5nm")
     #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
     #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
     #parser.add_argument("-vol", action="store_true", help="get the volume of the simulation box")
     args = parser.parse_args()
+
+    if args.template:
+        template_path = args.template[0]
+        template_path = os.path.join(template_path, "template")
+        sys.path.insert(0 , template_path)
+    from template import *
+
     main(args)
 
 

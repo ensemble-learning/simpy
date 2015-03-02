@@ -182,8 +182,14 @@ class Ffield():
         self.off = self.off + off_ext
 
     def checkRedudant(self,):
+        terms = {}
         for i in self.angle:
-            print i
+            ang_term = "%02d_%02d_%02d"%(int(i[0]), int(i[1]), int(i[2]))
+            if ang_term in terms.keys():
+                print "Now:", i
+                print "Pre:", terms[ang_term]
+            else:
+                terms[ang_term] = i
     
     def checkout(self, atoms):
         b = Ffield()
@@ -703,6 +709,7 @@ def main():
     parser.add_argument("-complete", action="store_true", help="complete the off table")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
     parser.add_argument("-checkout", nargs='+', help="check out the force field")
+    parser.add_argument("-check", action="store_true", help="check the force field")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
     
@@ -731,14 +738,21 @@ def main():
         atoms = args.checkout
         ff2 = ff.checkout(atoms)
         toFfield(ff2)
+    if args.check:
+        ff.checkRedudant()
 
-def test():
+def test1():
     fname = "ffield"
     ntype = 0
     ff = Ffield(fname, ntype)
     ff2 = ff.checkout()
     toFfield(ff2)
-    
+
+def test():
+    fname = "ffield"
+    ntype = 0
+    ff = Ffield(fname, ntype)
+    ff.checkRedudant()
     
 if __name__ == "__main__":
     #test()

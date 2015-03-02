@@ -40,7 +40,7 @@ cols=plt.cm.Spectral( np.linspace( 0,1,ndata))
 cols=itertools.cycle(cols)
 
 fig = plt.figure()
-jet = plt.get_cmap('lines')
+#jet = plt.get_cmap('lines')
 #cNorm  = colors.Normalize(vmin=0, vmax=(len(head) - 1))
 #scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
 

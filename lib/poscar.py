@@ -26,7 +26,10 @@ class Poscar():
         for i in f:
             if i.strip().startswith("Direct"):
                 break
-            tmp.append(i)
+            elif i.strip().startswith("Selective"):
+                pass
+            else:
+                tmp.append(i)
         for i in f:
             self.coords.append(i.strip().split())
 

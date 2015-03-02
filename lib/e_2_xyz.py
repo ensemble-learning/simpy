@@ -2,18 +2,23 @@
 """
 from mytype import System, Molecule, Atom
 from xyz import Xyz
-from output_conf import toDump
+from output_conf import toDump, toPdb
 from block import xyzBlock
 
-nframe = xyzBlock("movie.xyz", 194)
+def movie():
+    nframe = xyzBlock("movie.xyz", 242)
 
-if nframe > 1:
-    for i in range(nframe):
-        a = Xyz("output%05d.xyz"%i)
-        b = a.parser()
-        b.pbc = [10.739, 11.747, 13.083, 90.00, 95.77, 90.00] 
-        b.step = i
-        toDump(b, "output%05d.dump"%i)
+    print nframe
+
+    if nframe > 1:
+        for i in range(nframe+1):
+            a = Xyz("output%05d.xyz"%i)
+            b = a.parser()
+            b.pbc = [14.547, 10.663, 14.384, 90.00, 91.06, 90.00] 
+            b.step = i
+            #toDump(b, "output%05d.dump"%i)
+            toPdb(b, "output%05d.pdb"%i)
+    """
     o = open("total.dump", "w")
     for i in range(nframe):
         f = open("output%05d.dump"%i, "r")
@@ -21,10 +26,6 @@ if nframe > 1:
             o.write(j)
         f.close()
     o.close()
+    """
         
-"""
-testfile = "out.pdb"
-a = Pdb(testfile)
-b = a.parser()
-toDump(b)
-"""
+

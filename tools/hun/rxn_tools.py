@@ -185,15 +185,99 @@ class RxnAnalysis():
                     m2 = i.proid[j]
             o.write("%d\t%d\t%d\n"%(i.nstep, m1, m2))
         o.close()
+    
+    def get_initial_reactants(self, tag):
+        """
+        Get all the possible initial reactants for any specified
+        reaction (tag)
+        """
+
+        # get reaction mol id
+        nstep = int(tag.split("_")[0])
+        id = int(tag.split("_")[1])
+        for i in self.rxns:
+            if i.nstep == nstep and i.id == id:
+                reac = i.reacid
+
+        # reaction species
+        print "-"*72
+        print "reaction species are: "
+        for i in reac:
+            print i
+        print "-"*72
+
+        # read molid file
+        mols = []
+        lines = parse_molid()
+        for i in lines:
+            a = Mol(i)
+            mols.append(a)
         
+        # get atoms
+        atoms = []
+        reac_atoms = []
+        for i in reac:
+            for j in mols[i-1].atoms:
+                atoms.append(j)
+                reac_atoms.append(j)
+        
+        max_mol = max(reac)
+
+        # @note: need to be a parameter
+        n_inital = 24
+
+        print "reactions species from begining are: "
+        for i in range(n_inital):
+            n_match = 0
+            for j in reac_atoms:
+                if j in mols[i].atoms:
+                    n_match += 1
+            m = n_match * 1.0 / mols[i].natom
+            if m > 0:
+                print mols[i].id, m
+        print "-"*72
+    
+        print "intermidate mol id involved are: "
+        for i in range(max_mol, n_inital, -1):
+            flag = 0
+            for j in reac_atoms:
+                if j in mols[i].atoms:
+                    print i
+                    break
+        print "-"*72
+
+        for i in range(max_mol, n_inital, -1):
+            flag = 0
+            for j in atoms:
+                if j in mols[i].atoms:
+                    flag = 1
+                    break
+            if flag:
+                for k in mols[i].atoms:
+                    if k not in atoms:
+                        atoms.append(k)
+        
+        print "All possible species involved from begining are: "
+        initial_mols = []
+        for i in range(n_inital):
+            n_match = 0
+            for j in atoms:
+                if j in mols[i].atoms:
+                    n_match += 1
+            m = n_match * 1.0 / mols[i].natom
+            if m > 0:
+                print mols[i].id, m
+
 def main():
     rxns = RxnAnalysis()
-    #rxns.proton_rxn()
+    rxns.proton_rxn()
     #rxns.get_statics()
-    rxns.get_single_rxn("ON2", 0)
+    #rxns.get_single_rxn("ON2", 0)
     #rxns.get_single_rxn_filter("OH3", 16)
     #generate_dot()
     #get_lifetime()
+    #tag = "5370_1" 
+    #rxns.get_initial_reactants(tag)
     
 if __name__ == "__main__":
     main()

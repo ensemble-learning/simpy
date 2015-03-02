@@ -155,6 +155,8 @@ Frequency                       1
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("-atoms", nargs="+", help="atom types")
+    parser.add_argument("-d", nargs="+", help="dump file")
+    parser.add_argument("-t", nargs="+", help="traj file")
     args = parser.parse_args()
     
     atoms = []

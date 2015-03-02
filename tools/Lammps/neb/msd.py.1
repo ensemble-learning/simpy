@@ -1,0 +1,51 @@
+import sys
+import os
+import socket
+
+LIB = ''
+
+if socket.gethostname() == "cluster.hpc.org":
+    LIB = "/home/chengtao/packages/simpy/simpy/lib"
+elif socket.gethostname() == "tao-laptop":
+    LIB = "/home/tao/Nutstore/code/simupy/lib"
+elif socket.gethostname() == "atom.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "ion.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "giant12":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+
+sys.path.insert(0 , LIB)
+
+from dump import Dump
+from output_conf import toXyz, toPdb
+
+a0 = Dump("t0.lammpstrj")
+b0 = a0.parser()
+
+a1 = Dump("t1.lammpstrj")
+b1 = a1.parser()
+
+n0 = len(b0.atoms)
+n1 = len(b1.atoms)
+
+print n0, n1
+
+if n0 != n1:
+    sys.stdout.write("Atom numbers are different!")
+    sys.stdout.flush()
+    sys.exit()
+else:
+    natom = n0
+
+for i in range(natom):
+    r2 = 0
+    for j in range(3):
+        d = (b0.atoms[i].x[j] - b1.atoms[i].x[j])
+        r2 += d * d
+    if r2 > 0.09:
+        print i+1, 
+        print b1.atoms[i].x[0], b1.atoms[i].x[1], b1.atoms[i].x[2],
+        #print r2
+        print 
+    
