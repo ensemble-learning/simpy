@@ -116,6 +116,8 @@ dump            100 all custom 400 dump.lammpstrj id type x y z vx vy vz
 dump_modify     100 sort id
 dump            101 all cfg 40000 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
 dump_modify     101 element %elements% sort id
+#dump            102 all xtc 1 movie.xtc
+#dump_modify     102 sort id
 
 #--------Analysis-----------
 
