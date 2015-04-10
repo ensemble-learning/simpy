@@ -68,7 +68,12 @@ def read_info(xyz_info, config):
     for i in range(len(tmp)):
         xyz_info.pbc[i] = tmp[i]
     xyz_info.natoms = int(ConfigSectionMap(config, "XYZ")['natoms'])
-    xyz_info.restart = int(ConfigSectionMap(config, "XYZ"['restart'])
+    flag = ConfigSectionMap(config, "XYZ")['restart']
+    flag = flag.capitalize()
+    if flag == "YES":
+        xyz_info.restart = 1
+    else:
+        xyz_info.restart = 0
 
 def write_config():
     """ Write an example ini file.
@@ -111,5 +116,5 @@ if __name__ == "__main__":
     parser.add_argument("-nbox", nargs=3, type=int, help="replicate the box in a, b and c")
     args = parser.parse_args()
 
-    main()
+    main(args)
     
