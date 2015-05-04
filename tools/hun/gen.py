@@ -15,6 +15,8 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "giant1":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -179,10 +181,11 @@ def main():
     gen_control()
     os.chdir("..")
     
-    os.system("dump2config.py dump.lammpstrj ./anal/config.out")
-    os.system("trj2reaxbonds.py lammps.trj ./anal/reaxbonds.out")
-    os.chdir("anal")
-    os.system("./molfrag.sh control.file")
+    if 0:
+        os.system("dump2config.py dump.lammpstrj ./anal/config.out")
+        os.system("trj2reaxbonds.py lammps.trj ./anal/reaxbonds.out")
+        os.chdir("anal")
+        os.system("./molfrag.sh control.file")
 
 if __name__ == "__main__":
     main()
