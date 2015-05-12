@@ -164,7 +164,7 @@ if __name__ == "__main__":
             nlines = natoms + 2
         else:
             print "Need input number of atoms"
-            system.exit(0)
+            sys.exit(0)
         dt = 1
         if args.dt:
             dt = args.dt[0]

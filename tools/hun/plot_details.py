@@ -42,7 +42,9 @@ for i in range(len(fnames)):
         n += 1
     else:
         ax = fig.add_subplot(nplot, 1, n)
-        data = np.loadtxt(fname)
+        data = np.loadtxt(fname, delimiter=',')
+        data = data.transpose()
+        print data[0][0], data[0][-1], data[1][0], data[1][-1]
         ax.plot(data[0]/4000, data[1], lw=2, label=molname)
         #ax.set_title(molname, color="red", size="small", weight="bold")
         #ymax = 5*(int(np.max(data[1])/5) + 1)

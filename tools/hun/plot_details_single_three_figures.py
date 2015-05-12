@@ -24,6 +24,8 @@ nc = 0 # label for color map
 # simulation details
 timestep = 0.25
 tops = 1/timestep
+T0 = 300 # K
+T1 = 3000 # K
 
 # Read the file names from flist
 frames = []
@@ -64,20 +66,24 @@ gs = gridspec.GridSpec(ns*3, 1)
 # plot the first figure
 ax = fig.add_subplot(gs[0:ns,0])
 for i in range(len(frames[0].data)):
-    ax.plot(frames[0].data[i][0], frames[0].data[i][1], label=frames[0].fnames[i][1], color=COLOR[nc])
+    x = np.linspace(T0, T1, len(frames[0].data[i][0]))
+    ax.plot(x, frames[0].data[i][1], label=frames[0].fnames[i][1], color=COLOR[nc])
     nc += 1
 ax.xaxis.set_ticklabels([])
 ax.set_ylim([0,18])
+ax.set_xlim([T0, T1])
 ax.set_ylabel("N$_{rectants}$")
 ax.legend()
 
 # plot the second figure
 ax = fig.add_subplot(gs[ns:2*ns,0])
 for i in range(len(frames[1].data)):
-    ax.plot(frames[1].data[i][0], frames[1].data[i][1], label=frames[1].fnames[i][1], color=COLOR[nc])
+    x = np.linspace(T0, T1, len(frames[1].data[i][0]))
+    ax.plot(x, frames[1].data[i][1], label=frames[1].fnames[i][1], color=COLOR[nc])
     nc += 1
 ax.xaxis.set_ticklabels([])
 ax.set_ylim([0,17])
+ax.set_xlim([T0, T1])
 ax.set_ylabel("N$_{products}$")
 ax.legend(loc=2, ncol=3)
 
@@ -86,8 +92,10 @@ counter = 0
 for i in range(len(frames[2].data)):
     ax = fig.add_subplot(gs[2*ns + counter, 0])
     for j in frames[2].data:
-        ax.plot(np.linspace(1200, 3000, len(j[0])), j[1], lw=2, color="gray", alpha=0.25)
-    ax.plot(np.linspace(1200, 3000, len(frames[2].data[i][0])), frames[2].data[i][1], lw=2, color="black")
+        x = np.linspace(T0, T1, len(j[0]))
+        ax.plot(x, j[1], lw=2, color="gray", alpha=0.25)
+    x = np.linspace(T0, T1, len(frames[2].data[i][0]))
+    ax.plot(x, frames[2].data[i][1], lw=2, color="black")
     ax.set_frame_on(False)
     ax.get_xaxis().tick_bottom()
     #ax.axes.get_yaxis().set_visible(False)
@@ -95,6 +103,7 @@ for i in range(len(frames[2].data)):
     ax.axes.get_xaxis().set_visible(False)
     molname = frames[2].fnames[i][1]
     #ax.set_ylabel(molname, rotation=0, size=14)
+    ax.set_xlim([T0, T1])
     ax.text(0.05, 0.5, molname, 
             horizontalalignment='center',
              verticalalignment='center',
@@ -102,6 +111,7 @@ for i in range(len(frames[2].data)):
     counter += 1
 ax.axes.get_yaxis().set_ticks([])
 ax.axes.get_xaxis().set_visible(True)
+ax.set_xlim([T0, T1])
 ax.set_xlabel("Temperature (K)")
 
 #fig.subplots_adjust(hspace=0.2)

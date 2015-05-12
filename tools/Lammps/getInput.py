@@ -18,6 +18,8 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "giant3":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
@@ -33,7 +35,7 @@ MASS = {12.011:"C", 14.007: "N", 15.999:"O", 1.0079:"H", 40.078:"Ca",\
         30.974:"P", 32.065:"S", 72.64:"Ge", 10.811:"B", 63.546:"Cu", 
         58.693:"Ni", 195.08:"Pt", 50.942:"V", 95.94:"Mo", 92.906:"Nb",
        127.6:"Te", 22.990:"Na", 69.723:"Ga", 58.933:"Co", 39.948:"Ar", 
-        137.327: "Ba", 88.906:"Y", 91.224:"Zr"}
+        137.327: "Ba", 88.906:"Y", 91.224:"Zr", 126.90:"I"}
 
 """
   "Cl":35.453, "P":30.974, "S":32.065, "Ge":72.64, "GE":72.64, "B": 10.811, "ZR":91.224, "V": 50.942, "Mo":95.94,
