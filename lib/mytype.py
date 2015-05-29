@@ -45,6 +45,10 @@ class Atom():
         """@ivar: atom coordination
         @type: list
         """
+        self.xr = [0, 0, 0]
+        """@ivar: restraint in x, y and z direction
+        @type: list
+        """
         self.element = ''
         """@ivar: element
         @type: char 

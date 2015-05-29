@@ -15,6 +15,7 @@ class Poscar():
         self.c = []
         self.atoms = []
         self.atomtypes = []
+        self.sd = 0
         self.coords = []
         self.read(filename)
     def read(self, filename):
@@ -27,7 +28,7 @@ class Poscar():
             if i.strip().startswith("Direct"):
                 break
             elif i.strip().startswith("Selective"):
-                pass
+                self.sd = 1
             else:
                 tmp.append(i)
         for i in f:
@@ -85,6 +86,16 @@ class Poscar():
                 atom.x[0] = a[0]*x + b[0]*y + c[0]*z
                 atom.x[1] = a[1]*x + b[1]*y + c[1]*z
                 atom.x[2] = a[2]*x + b[2]*y + c[2]*z
+                if len(self.coords[j]) == 6 and self.sd == 1:
+                    xr = self.coords[j][3]
+                    yr = self.coords[j][4]
+                    zr = self.coords[j][5]
+                    if xr == "F":
+                        atom.xr[0] = 1
+                    if yr == "F":
+                        atom.xr[1] = 1
+                    if zr == "F":
+                        atom.xr[2] = 1
                 s.atoms.append(atom)
         return s
             

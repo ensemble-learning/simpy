@@ -183,8 +183,8 @@ def main():
     gen_control()
     os.chdir("..")
     
-    if 0:
-        os.system("dump2config.py dump.lammpstrj ./anal/config.out")
+    if 1:
+        os.system("dump2config.py rerun.lmp ./anal/config.out")
         os.system("trj2reaxbonds.py lammps.trj ./anal/reaxbonds.out")
         os.chdir("anal")
         os.system("./molfrag.sh control.file")
