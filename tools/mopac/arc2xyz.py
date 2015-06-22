@@ -30,8 +30,8 @@ o = open("geo_end.xyz", "w")
 o.write("%d\n\n"%len(lines))
 for i in lines:
     ele = i[0]
-    x = float(i[1]) * math.pow(10, int(i[2]))
-    y = float(i[3]) * math.pow(10, int(i[4]))
-    z = float(i[5]) * math.pow(10, int(i[6]))
+    x = float(i[1]) 
+    y = float(i[3]) 
+    z = float(i[5])
     o.write("%s\t%.6f\t%.6f\t%.6f\n"%(ele, x, y, z))
 o.close()

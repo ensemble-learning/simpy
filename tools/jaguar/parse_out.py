@@ -2,6 +2,7 @@
 Parse the Jaguar out file
 """
 import sys
+import re
 
 class OneStep():
     def __init__(self,):
@@ -50,13 +51,23 @@ def parse_out(fname):
     return frames
 
 def toXYZ(frames):
+    pattern = re.compile(r'(\D+)(\d*)')
     counter = 0
     for i in frames:
         o = open("config_%03d.xyz"%counter, "w")
         o.write("%d\n"%len(i.coords))
         o.write("%.6f\n"%i.energy)
         for j in i.coords:
-            o.write(j)
+            tokens = j.strip().split()
+            match = pattern.match(tokens[0])
+            if match:
+                ele = match.group(1)
+                if len(ele) > 1:
+                    ele = ele[0].upper() + ele[1].lower()
+            x = float(tokens[1])
+            y = float(tokens[2])
+            z = float(tokens[3])
+            o.write("%s\t%.6f\t%.6f\t%.6f\n"%(ele, x, y, z))
         o.close()
         counter += 1
 
