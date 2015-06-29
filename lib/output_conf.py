@@ -5,7 +5,7 @@
 """
 import numpy as np
 from cons import ELEMENT2MASS, ELEMENT2ATN
-from utilities import lattice2v, cart_to_frac
+from utilities import lattice2v
 
 def toReaxLammps(system, outfile="lammps.data"):
     """ output to lammps data file
@@ -317,14 +317,18 @@ def toPoscar(system, outfile="POSCAR"):
     o = open(outfile, "w")
     o.write("%s\n"%s.name) 
     o.write("%20.15f\n"%s.scaleFactor)
+
     xx, xy, xz, yy, yz, zz = lattice2v(s.pbc)
     a = [xx, 0.0, 0.0]
     b = [xy, yy, 0.0]
     c = [xz, yz, zz]
+
+    """
     latvecs = np.array([a, b, c], dtype=float)
     invlatvecs = np.linalg.inv(latvecs)
-    print latvecs 
-    print invlatvecs
+    [xf, yf, zf] = np.dot(coords[i], invlatvecs)
+    """
+
     for i in a:
         o.write("%20.15f"%i)
     o.write("\n")
@@ -346,12 +350,14 @@ def toPoscar(system, outfile="POSCAR"):
     coordsXr = []
     natom = 0
     for i in s.atoms:
-        coords.append(np.array(i.x))
+        coords.append(np.array(i.xFrac))
         coordsXr.append(i.xr)
         natom += 1
 
     for i in range(natom):
-        [xf, yf, zf] = np.dot(coords[i], invlatvecs)
+        xf = coords[i][0]
+        yf = coords[i][1]
+        zf = coords[i][2]
         o.write("%20.15f%20.15f%20.15f"%(xf, yf, zf))
         xr = "T"
         yr = "T"
