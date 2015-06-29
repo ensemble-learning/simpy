@@ -3,8 +3,9 @@
 01-04-2013: debug toPdb
 @todo: finish to Top
 """
+import numpy as np
 from cons import ELEMENT2MASS, ELEMENT2ATN
-from utilities import lattice2v
+from utilities import lattice2v, cart_to_frac
 
 def toReaxLammps(system, outfile="lammps.data"):
     """ output to lammps data file
@@ -221,6 +222,7 @@ def toTop(system, outfile="topol.top"):
     WAT_1  1024
     HEP_2     1
     """
+
 def toDump(system, outfile="output.dump"):
     """Output the dump file
     """
@@ -306,4 +308,60 @@ def toMsd(system, outfile="dff.msd"):
     o.close()
         
     o.write
+    o.close()
+
+def toPoscar(system, outfile="POSCAR"):
+    """Output the msd file
+    """
+    s = system
+    o = open(outfile, "w")
+    o.write("%s\n"%s.name) 
+    o.write("%20.15f\n"%s.scaleFactor)
+    xx, xy, xz, yy, yz, zz = lattice2v(s.pbc)
+    a = [xx, 0.0, 0.0]
+    b = [xy, yy, 0.0]
+    c = [xz, yz, zz]
+    latvecs = np.array([a, b, c], dtype=float)
+    invlatvecs = np.linalg.inv(latvecs)
+    print latvecs 
+    print invlatvecs
+    for i in a:
+        o.write("%20.15f"%i)
+    o.write("\n")
+    for i in b:
+        o.write("%20.15f"%i)
+    o.write("\n")
+    for i in c:
+        o.write("%20.15f"%i)
+    o.write("\n")
+    for i in s.atomtypes:
+        o.write("%6s"%i)
+    o.write("\n")
+    for i in s.natoms:
+        o.write("%6d"%i)
+    o.write("\n")
+    o.write("Selective dynamics\n")
+    o.write("Direct\n")
+    coords = []
+    coordsXr = []
+    natom = 0
+    for i in s.atoms:
+        coords.append(np.array(i.x))
+        coordsXr.append(i.xr)
+        natom += 1
+
+    for i in range(natom):
+        [xf, yf, zf] = np.dot(coords[i], invlatvecs)
+        o.write("%20.15f%20.15f%20.15f"%(xf, yf, zf))
+        xr = "T"
+        yr = "T"
+        zr = "T"
+        if coordsXr[i][0] == 1:
+            xr = "F"
+        if coordsXr[i][1] == 1:
+            yr = "F"
+        if coordsXr[i][2] == 1:
+            zr = "F"
+        o.write("%4s%4s%4s\n"%(xr, yr, zr))
+    o.write("\n")
     o.close()
