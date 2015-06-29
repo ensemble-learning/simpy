@@ -7,7 +7,7 @@ import shutil
 def get_last_vels():
     vels = []
     natom = 0
-    f = open("geo_end.xyz", "r")
+    f = open("geo_final.xyz", "r")
 
     n = 0
     for i in f:
@@ -26,7 +26,7 @@ def get_last_vels():
 
     o = open("vels", "w")
     for i in vels[-natom:]:
-        o.write("%14.9f%14.9f%14.9f\n"%(i[0], i[1], i[2]))
+        o.write("%16.9f%16.9f%16.9f\n"%(i[0], i[1], i[2]))
     o.close()
 
 def gen_restart():
