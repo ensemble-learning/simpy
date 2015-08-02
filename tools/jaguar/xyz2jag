@@ -1,0 +1,52 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+infile = sys.argv[1]
+fname, ext = os.path.splitext(infile)
+
+assert(ext == ".xyz")
+
+f = open(infile, "r")
+
+lines = f.readlines()
+
+natom = int(lines[0])
+coords = lines[2:2+natom]
+
+f.close()
+
+o = open(fname+".in", "w")
+
+o.write("""&gen
+isolv=2
+solvent=acetonitrile
+gconv1=4.5e-3
+gconv2=3.0e-3
+gconv7=5.0e-4
+iuhf=1
+basis=6-31g**
+molchg=5
+multip=2
+dftname=b3lyp-d3
+nogas=2
+igeopt=1
+intopt=0
+esolv0=       0.00000000000
+&
+entry_name: %s
+&zmat
+"""%(fname))
+
+n = 1
+for i in coords:
+    tokens = i.strip().split()
+    atn = tokens[0] + "%d"%n
+    x = float(tokens[1])
+    y = float(tokens[2])
+    z = float(tokens[3])
+    o.write("%-6s%12.6f%12.6f%12.6f\n"%(atn, x, y, z))
+    n += 1
+    
+o.write("&\n")
