@@ -38,7 +38,7 @@ def replicate(xyz_info, args):
     nframe = xyzBlock(fname, nlines)
 
     na, nb, nc = args.nbox
-    if nframe > 1:
+    if nframe >= 0:
         for i in range(nframe+1):
             if not xyz_info.restart:
                 a = Xyz("output%05d.xyz"%i)
