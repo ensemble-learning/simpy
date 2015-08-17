@@ -19,6 +19,18 @@ def read_report():
         if i.strip().startswith("cc> R"):
             fv1 = float(tokens[2])
             cvs.append(fv1)
+        elif i.strip().startswith("cc> C"):
+            fv1 = float(tokens[2])
+            cvs.append(fv1)
+        elif i.strip().startswith("cc> X"):
+            fv1 = float(tokens[2])
+            cvs.append(fv1)
+        elif i.strip().startswith("cc> S"):
+            fv1 = float(tokens[2])
+            cvs.append(fv1)
+        elif i.strip().startswith("cc> Z"):
+            fv1 = float(tokens[2])
+            cvs.append(fv1)
         elif i.strip().startswith("b_m>"):
             fv1 = float(tokens[1]) # lambda
             fv2 = float(tokens[2]) # |z|^(-1/2)
@@ -28,21 +40,26 @@ def read_report():
             val = fv4/fv2
             dA.append(val)
     
-    p1 = 0.0
-    p2 = 0.0
-    x = 0.0
-    n = 0
+    x, p1, p2 = [], [], []
+    o = open("fe_data.dat", "w")
     for i in range(len(cvs)):
-        x += cvs[i]
-        p1 += fvall[i][1]
-        p2 += fvall[i][3]
-        n += 1
-    x = x/n
-    p1 = p1/n
-    p2 = p2/n
-    y = p2/p1
+        x.append(cvs[i])
+        p1.append(fvall[i][1])
+        p2.append(fvall[i][3])
+        o.write("%12.4f%12.4f%12.4f\n"%(cvs[i], fvall[i][1], fvall[i][3]))
+    o.close()
+
+    x = np.array(x)
+    if len(x) >= 10:
+        nstart = 10
+        p1 = np.array(p1[nstart:])
+        p2 = np.array(p2[nstart:])
+        x = np.average(x[nstart:])
+        y = np.average(p2)/np.average(p1)
+        std = np.std(p2)/np.average(p1)
+    
     o = open("ave.dat", "w")
-    o.write("%12.4f%12.4f\n"%(x, y))
+    o.write("%12.4f%12.4f%12.4f\n"%(x, y, std))
     o.close()
     
     return cvs, dA

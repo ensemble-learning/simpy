@@ -29,6 +29,7 @@ f.close()
 o = open("geo_end.xyz", "w")
 o.write("%d\n\n"%len(lines))
 for i in lines:
+    print i
     ele = i[0]
     x = float(i[1]) 
     y = float(i[3]) 
