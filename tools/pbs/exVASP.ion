@@ -28,7 +28,7 @@ setenv LD_LIBRARY_PATH ${OPAL_PREFIX}/lib:$LD_LIBRARY_PATH
 
 set MPI=mpirun
 set VASPLOC=%VASPLOC%
-set exe=$VASPLOC/vasp
+set exe=$VASPLOC/%VASPEXE%
 
 echo "The VASP executable is: " $exe
 
@@ -81,6 +81,7 @@ class Vaspjob():
         self.nnode = 0
         self.ncpu = 0
         self.vasploc = ""
+        self.vaspexe = ""
 
 def update_npar(vaspjob):
     ncpu = vaspjob.ncpu
@@ -113,6 +114,7 @@ def write_input(vaspjob):
     lines = lines.replace("%nnode%", "%d"%vaspjob.nnode)
     lines = lines.replace("%ncpu%", "%d"%vaspjob.ncpu)
     lines = lines.replace("%VASPLOC%", "%s"%vaspjob.vasploc)
+    lines = lines.replace("%VASPEXE%", "%s"%vaspjob.vaspexe)
     o.write(lines)
     o.close()
     os.system("chmod +x runVASP.in")
@@ -126,23 +128,22 @@ def main(args):
     vaspjob.nnode = vaspjob.ncpu/N_CPU_PER_NODE
 
     vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
-    #vasploc = "/project/source/VASP/vasp.5.3.5/bin"
+    vaspexe = "vasp"
 
     if args.vasp:
         n = args.vasp[0]
-        if   n == 1:
-            vasploc = "/u/taocheng/SOFT/vasp/vasp.5.2.11_mod_hj/"
+        if n == 1:
+            vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
+            vaspexe = "vasp.full"
         elif n == 2:
-            vasploc = "/u/taocheng/SOFT/vasp.5.3.5/src/vasp.5.3/"
-        elif n == 3:
-            vasploc = "/u/taocheng/SOFT/vasp.5.3.5/src/vasp.5.3.2.solv/"
-        elif n == 4:
-            vasploc = "/u/taocheng/SOFT/vasp.5.3.5/src/vasp.5.3.2.solv.neb/"
-        else:
-            sys.stdout.write("Using default version of VASP: %s\n"%vasploc)
-            sys.stdout.flush()
+            vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
+            vaspexe = "vasp.gamma"
+    sys.stdout.write("Using version of VASP: %s"%vasploc)
+    sys.stdout.write("%s\n"%vaspexe)
+    sys.stdout.flush()
 
     vaspjob.vasploc = vasploc
+    vaspjob.vaspexe = vaspexe
         
     # write the INCAR file
     write_input(vaspjob)
@@ -152,6 +153,6 @@ def main(args):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-ncpu", nargs=1, type=int, help="number of cpus")
-    parser.add_argument("-vasp", nargs=1, type=int, help="vasp version: 1: v52, 2: v53, 3: v53_sol, 4: v53_sol_tst")
+    parser.add_argument("-vasp", nargs=1, type=int, help="vasp version: 1: v53 full, 2: v53 gamma only")
     args = parser.parse_args()
     main(args)
