@@ -4,7 +4,7 @@
 @todo: finish to Top
 """
 import numpy as np
-from cons import ELEMENT2MASS, ELEMENT2ATN
+from cons import ELEMENT2MASS, ELEMENT2ATN, A2Bohr
 from utilities import lattice2v
 
 def toReaxLammps(system, outfile="lammps.data"):
@@ -371,3 +371,55 @@ def toPoscar(system, outfile="POSCAR"):
         o.write("%4s%4s%4s\n"%(xr, yr, zr))
     o.write("\n")
     o.close()
+
+def toJdft(system, outfile="coords"):
+    """Output the msd file
+    """
+    s = system
+    o = open(outfile, "w")
+
+    xx, xy, xz, yy, yz, zz = lattice2v(s.pbc)
+    xx = xx * A2Bohr
+    xy = xy * A2Bohr
+    xz = xz * A2Bohr
+    yy = yy * A2Bohr
+    yz = yz * A2Bohr
+    zz = zz * A2Bohr
+    
+    a = [xx, xy, xz]
+    b = [0., yy, 0.]
+    c = [0., 0., zz]
+
+    o.write("lattice \\")
+    o.write("\n")
+    for i in a:
+        o.write("%20.15f"%i)
+    o.write("\\")
+    o.write("\n")
+    for i in b:
+        o.write("%20.15f"%i)
+    o.write("\\")
+    o.write("\n")
+    for i in c:
+        o.write("%20.15f"%i)
+    o.write("\n")
+    o.write("\n")
+    o.write("coords-type lattice\n")
+
+    coords = []
+    coordsXr = []
+    natom = 0
+    for i in s.atoms:
+        coords.append(np.array(i.xFrac))
+        coordsXr.append(i.xr)
+        natom += 1
+
+    for i in range(natom):
+        xf = coords[i][0]
+        yf = coords[i][1]
+        zf = coords[i][2]
+        o.write("ion %2s %20.15f%20.15f%20.15f 0\n"%(
+                s.atoms[i].element, xf, yf, zf))
+    o.write("\n")
+    o.close()
+
