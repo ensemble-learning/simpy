@@ -24,7 +24,7 @@ from output_conf import toXyz, toGeo, toPdb
 POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P", 
        "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl", "Cr":"Cr", "Ga":"Ga",
         "Br":"Br", "D": "H", "Si": "Si", "Ni": "Ni", "Pt":"Pt", "Co":"Co", "Cr":"Cr", 
-       "I":"I", "K":"K_pv", "F":"F"}
+       "I":"I", "K":"K_pv", "F":"F", "W":"W", "Au":"Au"}
 POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 
 o = open("POTCAR", "w")
