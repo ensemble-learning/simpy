@@ -15,7 +15,7 @@ def main():
     b = a.parser()
     b.assignAtomTypes()
     b.assignEleTypes()
-    #print b.getVol()
+    print b.getVol()
     #print b.pbc
     
     toXyz(b)
