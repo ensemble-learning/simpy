@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+tfile = sys.argv[1]
+
+cmd = "scp -r tcheng@zwicky.cacr.caltech.edu:%s ."%tfile
+os.system(cmd)
+print cmd
+
