@@ -14,6 +14,8 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "zwicky":
+    LIB = "/home/tcheng/Soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -25,7 +27,19 @@ POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P
        "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl", "Cr":"Cr", "Ga":"Ga",
         "Br":"Br", "D": "H", "Si": "Si", "Ni": "Ni", "Pt":"Pt", "Co":"Co", "Cr":"Cr", 
        "I":"I", "K":"K_pv", "F":"F", "W":"W", "Au":"Au"}
-POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+
+if socket.gethostname() == "cluster.hpc.org":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "tao-laptop":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "atom.wag.caltech.edu":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "ion.wag.caltech.edu":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "giant12":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "zwicky":
+    POT_DATA_BASE = "/home/tcheng/Soft/potpaw_PBE"
 
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
