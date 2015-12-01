@@ -95,6 +95,12 @@ def main(args):
         fname = "movie.xyz"
         sys.stderr.write("Using default xyz file: movie.xyz\n")
 
+    if args.c:
+	a = Xyz(fname)
+        b = a.parser()
+        b.pbc = [100, 100, 100, 90, 90, 90]
+        toPdb(b)
+
     if args.s:
         config = ConfigParser.ConfigParser() 
         config.read(args.s[0])
@@ -113,6 +119,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("-f", nargs=1, help="xyz file name")
     parser.add_argument("-s", nargs=1, help="configure file")
+    parser.add_argument("-c", action='store_true', help="change format")
     parser.add_argument("-nbox", nargs=3, type=int, help="replicate the box in a, b and c")
     args = parser.parse_args()
 
