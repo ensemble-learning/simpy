@@ -111,7 +111,6 @@ def output_ndx(cn, p, log):
     log.write("Hist:\n")
 
     for i in range(max):
-        print i
         log.write("%8d%8d\n"%(i+1, hist[i]))
 
 def read_inp(p):

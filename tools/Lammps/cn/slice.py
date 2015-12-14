@@ -3,6 +3,7 @@
 import sys, socket
 import copy
 import os
+import math
 
 LIB = ''
 
@@ -27,7 +28,7 @@ sys.path.insert(0 , LIB)
 
 from mytype import System, Molecule, Atom
 from data import ReaxData
-from output_conf import toPdb
+from output_conf import toPdb, toReaxLammps
 
 DELTA_Z1 = 15.0
 DELTA_Z2 = 5.0
@@ -40,73 +41,97 @@ def get_slice(b, id0):
     id0 = a0.an
     x0, y0, z0 = a0.x
 
+    o.write("Reference atoms is %d.\n"%id0)
+    o.write("The coordination of reference atom is %.4f %.4f %.4f.\n"%
+            (x0, y0, z0))
+    o.write("Cut from z direction.\n")
+
+    zl = b.pbc[2]
+
+    z0 = z0 - int(z0/zl)*zl
     dz1 = DELTA_Z1
     dz2 = DELTA_Z2
     z1 = z0 - dz1
-    z2 = z1 + dz2
-    z3 = z0 + (dz1 -dz2)
-    z4 = z0 + dz1
-    
-    o.write("Reference atoms is %d.\n"%id0)
-    o.write("Th coordination of reference atom is %.4f %.4f %.4f.\n"%
-            (x0, y0, z0))
-    o.write("Cut from z direction.\n")
-    o.write("Starting from %.4f.\n"%z0)
+    z2 = z0 + dz1
+    z1 = z1 - math.floor(z1/zl)*zl
+    z2 = z2 - math.floor(z2/zl)*zl
+
+    b1 = copy.deepcopy(b)
+
+    o.write("Starting from %.4f to %.4f.\n"%(z1, z2))
     o.write("Cut radius is %.4f.\n"%dz1)
-    o.write("Buffer distance is %.4f.\n"%dz2)
-    o.write("Fixed L1 from %.4f to %.4f\n"%(z1, z2))
-    o.write("Fixed L2 from %.4f to %.4f\n"%(z3, z4))
+    #o.write("Buffer distance is %.4f.\n"%dz2)
+    #o.write("Fixed L1 from %.4f to %.4f\n"%(z1, z2))
+    #o.write("Fixed L2 from %.4f to %.4f\n"%(z3, z4))
     
+    ca = []
+    a_ref = []
+    
+    for i in range(len(b.atoms)):
+        id = b.atoms[i].an
+        z = b.atoms[i].x[2]
+        z = z - math.floor(z/zl)*zl #pbc
+        b1.atoms[i].x[2] = z
+        if id == id0:
+            a_ref.append(b1.atoms[i])
+        else:
+            if z1 < z2:
+                if z >= z1 and z < z2:
+                    ca.append(b1.atoms[i])
+            else:
+                if z >= 0 and z < z2:
+                    ca.append(b1.atoms[i])
+                elif z >= z1 and z < zl:
+                    ca.append(b1.atoms[i])
+
+    # Shift the atoms according to reference atom
+    for i in range(len(ca)):
+        z = ca[i].x[2] 
+        z = z - z1
+        z = z - math.floor(z/zl)*zl
+        ca[i].x[2] = z
+
+    z = a_ref[0].x[2] 
+    z = z - z1
+    z = z - math.floor(z/zl)*zl
+    a_ref[0].x[2] = z
+    o.write("Sort the atom index according to z.\n")
+    ca.sort(key=lambda x: x.x[2])
+
     c1 = []
     c2 = []
-    c3 = []
-    c4 = []
-    
-    for i in b.atoms:
-        id = i.an
-        if id == id0:
-            i.x[2] = i.x[2] - z1
-            c4.append(i)
+    for i in ca:
+        z = i.x[2]
+        if z <= dz2:
+            c1.append(i)
+        elif z > 2*dz1 - dz2:
+            c1.append(i)
         else:
-            z = i.x[2]
-            if z >= z1 and z < z2:
-                i.x[2] = i.x[2] - z1
-                c1.append(i)
-            elif z >= z2 and z < z3:
-                i.x[2] = i.x[2] - z1
-                c3.append(i)
-            elif z >= z3 and z < z4:
-                i.x[2] = i.x[2] - z1
-                c2.append(i)
-    
-    # sort 
-    o.write("Sort the atoms according to z.\n")
-    c1.sort(key=lambda x: x.x[2])
-    c2.sort(key=lambda x: x.x[2])
-    c3.sort(key=lambda x: x.x[2])
-    
-    c = c1 + c2 + c3 + c4
-    o.write("Total number of atoms is %d.\n"%(len(c)))
-    o.write("Fixed atoms is %d.\n"%(len(c1+c2)))
+            c2.append(i)
+            
+    o.write("Fixed atoms is %d.\n"%(len(c1)))
+
+    ca = ca + a_ref
+    o.write("Total number of atoms is %d.\n"%(len(ca) + 1))
+
     o.write("Index is as following:\n")
-    
     counter = 0
-    for i in c:
+    for i in ca:
         if counter % 10 == 0:
             o.write("\n")
         o.write("%8d"%i.an)
         counter += 1
     o.write("\n")
     
-    b1 = copy.deepcopy(b)
-    b1.atoms = c
+    b1.atoms = c1 + c2 + a_ref
     b1.pbc[2] = 2*dz1
     
     o.write("Output to pdb.\n")
     toPdb(b1, "input.pdb")
+    toReaxLammps(b1)
     o.close()
 
-    return c1, c2, c3, c4
+    return ca, c1, c2, a_ref
 
 def read_data():
     datafile = "lammps.data"
@@ -149,7 +174,7 @@ def read_ndx_coords(log):
             log.write("\n")
         log.write("%8d"%ndx[i])
     log.write("\n")
-    log.write("Leaving the overlapped atoms:\n")
+    log.write("Leaving the overlapped atoms to nex round:\n")
     for i in range(len(res)):
         if i%10 == 0:
             log.write("\n")
@@ -157,9 +182,9 @@ def read_ndx_coords(log):
     
     return ndx
 
-def write_lammps(c1,c2,c3,c4):
-    n1 = len(c1+c2)
-    n2 = len(c1+c2+c3+c4)
+def write_lammps(ca,c1,c2,a_ref):
+    n1 = len(c1)
+    n2 = len(ca)
     o = open("constaint.inc", "w") 
     o.write("""group          freeze id <= %d
 group          sim1 id %d
@@ -202,8 +227,8 @@ def main(log):
             os.mkdir(folder)
         os.chdir(folder)
         id0 = ndx[i]
-        c1,c2, c3, c4 = get_slice(data, id0)
-        write_lammps(c1,c2,c3,c4)
+        ca, c1, c2, a_ref = get_slice(data, id0)
+        write_lammps(ca,c1,c2,a_ref)
         os.chdir("..")
 
 if __name__ == "__main__":
