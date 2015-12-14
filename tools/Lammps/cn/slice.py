@@ -33,6 +33,71 @@ from output_conf import toPdb, toReaxLammps
 DELTA_Z1 = 15.0
 DELTA_Z2 = 5.0
 
+def write_lammps(ca,c1,c2,a_ref):
+    """
+    Write lammps constraint file (constaint.inc).
+    @param ca: all atoms
+    @param c1: fixed atoms
+    @param c2: relaxed atoms
+    @param a_ref: reference atom
+    """
+    n1 = len(c1)
+    n2 = len(ca)
+    o = open("constaint.inc", "w") 
+    o.write("""group          freeze id <= %d
+group          sim1 id %d
+group          sim subtract all freeze
+fix            901 freeze setforce 0.0 0.0 0.0
+"""%(n1, n2))
+    o.close()
+    o = open("colvar.inp", "w")
+    o.write("""colvar {
+  name cn
+  lowerWallConstant 1000
+  lowerWall 2.7
+  coordNum {
+    group1 { atomNumbers %d}
+    group2 { atomNumbersRange 1-%d}
+    cutoff 3.288
+    expNumer 16
+    expDenom 32
+  }
+}
+
+metadynamics {
+  name meta
+  colvars cn
+  useGrids off
+  hillWeight 2.00
+  hillWidth 0.2
+  newHillFrequency 80
+}
+"""%(n2, n2-1))
+    o.close()
+
+def write_cn_inp(ca, c1, c2, a_ref):
+    """
+    Write coordination input file (cn.inp).
+    @param ca: all atoms
+    @param c1: fixed atoms
+    @param c2: relaxed atoms
+    @param a_ref: reference atom
+    """
+    o = open("cn.inp", "w")
+    o.write("""[GLOBAL]
+r_ref_0 = 2.788
+r_ref_1 = 3.944
+r_ref_2 = 4.830
+
+n_atoms = %d
+# cut_off_func = 1(cut-off) 2(cn function)
+cut_off_func = 1
+r_cut_range = 1.2
+n_cut_off = 4
+ignore_atoms = %d
+"""%(len(ca), len(c1)))
+    o.close()
+
 def get_slice(b, id0):
     logfile = "build.log"
     o = open(logfile, "w")
@@ -112,7 +177,7 @@ def get_slice(b, id0):
     o.write("Fixed atoms is %d.\n"%(len(c1)))
 
     ca = ca + a_ref
-    o.write("Total number of atoms is %d.\n"%(len(ca) + 1))
+    o.write("Total number of atoms is %d.\n"%len(ca))
 
     o.write("Index is as following:\n")
     counter = 0
@@ -142,6 +207,10 @@ def read_data():
     
 def read_ndx_coords(log):
     """
+    Read index and coordiantions from ndx coords file (coords.dat),
+    and check overlap.
+    @param log: log file
+    @return: ndx list
     """
 
     ndx = []
@@ -163,12 +232,13 @@ def read_ndx_coords(log):
                 ndx.append(id)
                 n += 1
             else:
-                if z_now - z_prev > DELTA_Z1:
+                if z_now - z_prev > 2*DELTA_Z1:
                     ndx.append(id)
                     z_prev = z
                 else:
                     res.append(id)
     log.write("Dealing with the following atoms:\n")
+
     for i in range(len(ndx)):
         if i%10 == 0:
             log.write("\n")
@@ -182,42 +252,10 @@ def read_ndx_coords(log):
     
     return ndx
 
-def write_lammps(ca,c1,c2,a_ref):
-    n1 = len(c1)
-    n2 = len(ca)
-    o = open("constaint.inc", "w") 
-    o.write("""group          freeze id <= %d
-group          sim1 id %d
-group          sim subtract all freeze
-fix            901 freeze setforce 0.0 0.0 0.0
-"""%(n1, n2))
-    o.close()
-    o = open("colvar.inp", "w")
-    o.write("""colvar {
-  name cn
-  lowerWallConstant 1000
-  lowerWall 2.7
-  coordNum {
-    group1 { atomNumbers %d}
-    group2 { atomNumbersRange 1-%d}
-    cutoff 3.288
-    expNumer 16
-    expDenom 32
-  }
-}
-
-metadynamics {
-  name meta
-  colvars cn
-  useGrids off
-  hillWeight 2.00
-  hillWidth 0.2
-  newHillFrequency 80
-}
-"""%(n2, n2-1))
-    o.close()
-
 def main(log):
+    """
+    Slice driver
+    """
     ndx = read_ndx_coords(log)
     data = read_data()
 
@@ -229,6 +267,7 @@ def main(log):
         id0 = ndx[i]
         ca, c1, c2, a_ref = get_slice(data, id0)
         write_lammps(ca,c1,c2,a_ref)
+        write_cn_inp(ca,c1,c2,a_ref)
         os.chdir("..")
 
 if __name__ == "__main__":

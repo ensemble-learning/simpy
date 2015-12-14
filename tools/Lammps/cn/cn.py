@@ -6,6 +6,9 @@ import math
 import sys
 import ConfigParser
 
+MAX_NEIBOUR = 24
+DEBUG = 0
+
 class Params():
     """
     Parameters for coordination calculation.
@@ -15,8 +18,11 @@ class Params():
         self.r_ref_1 = 0.0
         self.r_ref_2 = 0.0
         self.n_atoms = 0
+        self.r_cut_flag = 0
+        self.r_cut = 0.0
         self.cut_off_func = 1
         self.r_cut_range = 1.0
+        self.ignore_atoms = 0
 
 INP = """[GLOBAL]
 r_ref_0 = 2.788
@@ -49,23 +55,25 @@ def cal_cn(tokens):
     s = (1-p1)/(1-p2)
     return s
 
-def cal_cn_cutoff(tokens, p):
+def cal_cn_cutoff(tokens, p, log):
     """
     Calculate coordination number using cutoff.
+    @params tokens: atom1 atom2 distance
+    @params p: params
+    @params log: log file
     """
-    rcut = p.r_ref_0 * p.r_cut_range
-    #print rcut, p.r_ref_0, p.r_cut_range
-    if rcut >= p.r_ref_1:
-        rcut = p.r_ref_1
-    a1 = int(tokens[0])
-    a2 = int(tokens[1])
-    r12 = float(tokens[2])
+    rcut = p.r_cut
+    a1 = int(tokens[0])    # atom 1
+    a2 = int(tokens[1])    # atom 2
+    r12 = float(tokens[2]) # r12
+
     s = 0
     if r12 < rcut:
         s = 1
+
     return a1, a2, s
 
-def read_evdw(p):
+def read_evdw(p, log):
     """
     Read the vdw file.
     """
@@ -76,7 +84,9 @@ def read_evdw(p):
     for i in f:
         if counter >= 2:
             tokens = i.strip().split()
-            a1, a2, s = cal_cn_cutoff(tokens, p)
+            a1, a2, s = cal_cn_cutoff(tokens, p, log)
+            if DEBUG == 1:
+                print a1, a2, s, tokens[0], tokens[1], tokens[2]
             cn[a1-1] += s
             cn[a2-1] += s
         counter +=1
@@ -89,19 +99,22 @@ def output_ndx(cn, p, log):
     """
     max = 0
     n = 0
-    hist = [0]*24
+    hist = [0]*MAX_NEIBOUR
     o = open("low.dat", "w")
     ndx = open("ndx.dat", "w")
     for i in range(len(cn)):
-        if cn[i] <= p.n_cut_off:
-            n += 1
-            o.write("%10d%10.2f\n"%(i+1, cn[i]))
-            ndx.write("%8d"%(i+1))
-            if n%10 == 0:
-                ndx.write(" &\n")
-        if cn[i] > max:
-            max = cn[i]
-        hist[cn[i]-1] += 1
+        if i < p.ignore_atoms:
+            pass
+        else:
+            if cn[i] <= p.n_cut_off:
+                n += 1
+                o.write("%10d%10.2f\n"%(i+1, cn[i]))
+                ndx.write("%8d"%(i+1))
+                if n%10 == 0:
+                    ndx.write(" &\n")
+            if cn[i] > max:
+                max = cn[i]
+            hist[cn[i]-1] += 1
     o.close()
     ndx.close()
     
@@ -143,6 +156,18 @@ def read_inp(p):
         if "n_cut_off" in o:
             tokens = cf.get("GLOBAL", "n_cut_off").strip()
             p.n_cut_off = float(tokens)
+        if "ignore_atoms" in o:
+            tokens = cf.get("GLOBAL", "ignore_atoms").strip()
+            p.ignore_atoms = int(tokens)
+        
+
+def set_params(p):
+    p.r_cut = p.r_ref_0 * p.r_cut_range
+    if p.r_cut >= p.r_ref_1:
+        p.r_cut = p.r_ref_1
+        p.r_cut_flag = 1
+    else:
+        p.r_cut_flag = 0
 
 def write_inp(p, log):
     log.write("r_ref_0 = %8.4f\n"%params.r_ref_0)
@@ -153,19 +178,33 @@ def write_inp(p, log):
     if params.cut_off_func == 1:
         log.write("Using simple cut-off function.\n")
     log.write("cut range = %.4f\n"%(params.r_cut_range))
-    log.write("    cut-off = %.4f\n"%(params.r_ref_0 * params.r_cut_range))
+    if p.r_cut_flag == 1:
+        log.write("Cut-off (%.4f) is larger than r_ref_1 (%.4f).\n"
+                  %(p.r_cut, p.r_ref_1))
+        log.write("Using r_ref_1 (%.4f) as cut-off.\n"
+                  %p.r_ref_1)
+    else:
+        log.write("Cut-off = %.4f\n"%p.r_cut)
+
+def output_aux(cn, p, log):
+    o = open("cn.aux", "w")
+    for i in cn:
+        o.write("%d\n"%i)
+    o.close()
 
 def main(p, log):
     # read vdw input
-    cn = read_evdw(p)
+    cn = read_evdw(p, log)
     # output ndx 
     output_ndx(cn, p, log)
+    output_aux(cn, p, log)
 
 if __name__ == "__main__":
     log = open("cn.log", "w")
 
     params = Params()
     read_inp(params)
+    set_params(params)
     write_inp(params, log)
     main(params, log)
 
