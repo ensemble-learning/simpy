@@ -30,8 +30,8 @@ from mytype import System, Molecule, Atom
 from data import ReaxData
 from output_conf import toPdb, toReaxLammps
 
-DELTA_Z1 = 15.0
-DELTA_Z2 = 5.0
+DELTA_Z1 = 5.0
+DELTA_Z2 = 2.0
 
 def write_lammps(ca,c1,c2,a_ref):
     """
@@ -224,19 +224,20 @@ def read_ndx_coords(log):
             pass
         else:
             tokens = i.strip().split()
-            id = int(tokens[0])
-            z = float(tokens[-1])
-            z_now = z
-            if n == 0:
-                z_prev = z_now
-                ndx.append(id)
-                n += 1
-            else:
-                if z_now - z_prev > 2*DELTA_Z1:
+            if len(tokens) > 3:
+                id = int(tokens[0])
+                z = float(tokens[-1])
+                z_now = z
+                if n == 0:
+                    z_prev = z_now
                     ndx.append(id)
-                    z_prev = z
+                    n += 1
                 else:
-                    res.append(id)
+                    if z_now - z_prev > 2*DELTA_Z1:
+                        ndx.append(id)
+                        z_prev = z
+                    else:
+                        res.append(id)
     log.write("Dealing with the following atoms:\n")
 
     for i in range(len(ndx)):
@@ -244,7 +245,7 @@ def read_ndx_coords(log):
             log.write("\n")
         log.write("%8d"%ndx[i])
     log.write("\n")
-    log.write("Leaving the overlapped atoms to nex round:\n")
+    log.write("Leaving the overlapped atoms to next round:\n")
     for i in range(len(res)):
         if i%10 == 0:
             log.write("\n")

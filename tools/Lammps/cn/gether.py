@@ -62,16 +62,16 @@ def update_coords(d1, d2, z0, ndx):
         d1.atoms[id].x[2] = d2.atoms[i].x[2] + z0
     
 def main(log):
-    d1_file = "lammps.data"
-    d2_file = "./slice_00/conf2/lammps.data"
+    d1_file = "lammps.data.3"
+    d2_file = "./slice_03/conf2/lammps.data"
     d1 = read_data(d1_file)
     d2 = read_data(d2_file)
-    logfile = "./slice_00/conf2/build.log"
+    logfile = "./slice_03/conf2/build.log"
     z0, ndx = read_build_log(logfile)
     toPdb(d1, "t0.pdb")
     update_coords(d1, d2, z0, ndx)
     toPdb(d1, "t1.pdb")
-    toReaxLammps(d1, "lammps.data.1")
+    toReaxLammps(d1, "lammps.data.4")
 
 if __name__ == "__main__":
     log = open("gether.log", "w")
