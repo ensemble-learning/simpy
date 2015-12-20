@@ -15,7 +15,7 @@ for i in range(0, nframe, dt):
 #for i in range(10):
     a = Dump("%s%05d.dump"%(sepfile,i))
     b = a.parser()
-    #toXyz(b, "xyz%05d.xyz"%i)
+    toXyz(b, "xyz%05d.xyz"%i)
     #b.sortXYZ("z")
     toPdb(b, "pdb%05d.pdb"%i)
 

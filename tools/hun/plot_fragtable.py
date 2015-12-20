@@ -40,7 +40,7 @@ cols=plt.cm.Spectral( np.linspace( 0,1,ndata))
 cols=itertools.cycle(cols)
 
 fig = plt.figure()
-jet = plt.get_cmap('lines')
+#jet = plt.get_cmap('lines')
 #cNorm  = colors.Normalize(vmin=0, vmax=(len(head) - 1))
 #scalarMap = cmx.ScalarMappable(norm=cNorm, cmap=jet)
 
@@ -70,8 +70,15 @@ for i in range(1,ndata+1):
     if not os.path.exists("frag_details"):
         os.mkdir("frag_details")
     os.chdir("frag_details")
-    tmp = np.array([data[0], data[i]])
-    np.savetxt(head[i] + ".dat", tmp)
+    if (0):
+        tmp = np.array([data[0], data[i]])
+        np.savetxt(head[i] + ".dat", tmp)
+    if (1):
+        o = open(head[i] + ".csv", "w")
+        for j in range(len(data[0])):
+            if j%1 == 0:
+                o.write("%.4f, %.4f\n"%(data[0][j], data[i][j]))
+        o.close()
     os.chdir("..")
 
 #plot the temperature

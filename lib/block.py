@@ -93,6 +93,7 @@ def xyzBlock(xyzfile, natoms, outfile="output", dt=1):
         o.write(j)
     o.close()
     f.close()
+    return tag
 
 def g03Block(g03file, ext="log"):
     """parse the g03 log file into blocks
@@ -163,7 +164,7 @@ if __name__ == "__main__":
             nlines = natoms + 2
         else:
             print "Need input number of atoms"
-            system.exit(0)
+            sys.exit(0)
         dt = 1
         if args.dt:
             dt = args.dt[0]

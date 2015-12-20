@@ -1,6 +1,9 @@
 """
 Calculate the diffusion coefficient from msd.
+@log:
+20141120: add time step
 """
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
 from pylab import poly1d, polyfit
@@ -10,6 +13,13 @@ from pylab import poly1d, polyfit
 # msd in A^2 and t in fs (1e-15s)
 #
 ##########################
+
+print "python msd.py [time step (in fs)]"
+
+ts = 1.0
+
+if len(sys.argv) > 1:
+    ts = float(sys.argv[1])
 
 toM = 1e-5
 toCM = 1e-1
@@ -21,16 +31,22 @@ data = data.transpose()
 start = int(0.2*len(data[0]))
 end = int(0.8*len(data[0]))
 
-x = data[0][start:end]
-y = data[1][start:end]
+x = data[0] * ts
+y = data[1]
 
-fit = polyfit(x, y, 1)
+fx = x[start:end]
+fy = y[start:end]
+
+fit = polyfit(fx, fy, 1)
 fit_fn = poly1d(fit)
 
-print fit[0]/6*toM
-print fit[0]/6*toCM
-print fit[0]/6*toCM5
+print "%.4e"%(fit[0]/6*toM)
+print "%.4e"%(fit[0]/6*toCM)
+print "%.4e 10^-5cm^2/s"%(fit[0]/6*toCM5)
 
-plt.plot(data[0], data[1], data[0],fit_fn(data[0]), '--k')
+plt.plot(x, y)
+plt.plot(fx, fit_fn(fx), '--k', lw=2)
+plt.xlabel("Simulation Time (fs)")
+plt.ylabel("MSD ($\AA^2$)")
 plt.show()
 

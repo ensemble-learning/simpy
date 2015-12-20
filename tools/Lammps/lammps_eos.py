@@ -35,6 +35,7 @@ for i in range(len(scale)):
     for j in lines:
         o.write(j)
     o.close()
-    shutil.copy("../min.rst", ".")
+    if os.path.exists("../min.rst"):
+        shutil.copy("../min.rst", ".")
     shutil.copy("../ffield", ".")
     os.chdir("..")

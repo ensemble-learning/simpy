@@ -1,0 +1,15 @@
+#!/usr/bin/env python
+
+"""
+convert linux path to windows format
+"""
+
+import os
+
+cmd = os.getcwd()
+wcmd = cmd
+if "/temp1/jobs/" in cmd:
+    wcmd = wcmd.replace("/temp1/jobs/", "/home/tao/Disks/giant12/")
+#wcmd = wcmd.replace("/", "\\")
+print wcmd
+

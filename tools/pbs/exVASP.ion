@@ -1,0 +1,158 @@
+#!/usr/bin/env python
+
+"""
+Generate pbs script for VASP calculation on HPC.
+exVASP ncpu
+
+@log:    1/18/2015: argparse
+"""
+
+import sys
+import os
+import shutil
+import argparse
+
+N_CPU_PER_NODE = 16
+
+INP = """#PBS -V
+#PBS -j oe
+#PBS -N VASP
+#PBS -q workq
+#PBS -l nodes=1:ppn=%ncpu%,walltime=24:00:00
+#PBS -S /bin/tcsh
+
+source /share/apps/intel/composer_xe_2013_sp1.3.174/composer_xe_2013_sp1.3.174/bin/compilervars.csh intel64
+setenv OPAL_PREFIX /project/source/openmpi/build-1.8.3-ion
+setenv PATH ${OPAL_PREFIX}/bin:${PATH}
+setenv LD_LIBRARY_PATH ${OPAL_PREFIX}/lib:$LD_LIBRARY_PATH
+
+set MPI=mpirun
+set VASPLOC=%VASPLOC%
+set exe=$VASPLOC/%VASPEXE%
+
+echo "The VASP executable is: " $exe
+
+set DATADIR=$PBS_O_WORKDIR
+set NPROCS=`wc -l $PBS_NODEFILE | cut -f1 -d " "`
+set JOBID=`echo $PBS_JOBID | awk -F'.' '{print $1}'`
+set OUTPUTDIR=/temp1/VASP/$JOBID
+
+echo "The VASP output will temporarily be written to :" $OUTPUTDIR
+echo "VASP Job: " $JOBID "is starting with " $NPROCS "cores on:"
+cat $PBS_NODEFILE
+echo
+
+# Create Directories
+#
+mkdir -p $OUTPUTDIR
+
+#
+# export job info
+#
+echo $PBS_JOBID >  $DATADIR/jobinfo
+cat $PBS_NODEFILE >>  $DATADIR/jobinfo
+echo $OUTPUTDIR >>  $DATADIR/jobinfo
+
+#
+# Copy executable and any required input files to your work directory
+#
+cp $DATADIR/* $OUTPUTDIR
+cd $OUTPUTDIR
+
+#
+# Run VASP
+#
+date
+$MPI -np $NPROCS -machinefile $PBS_NODEFILE $exe > LOG
+echo
+date
+echo "VASP has finished."
+echo "The VASP output is being copied back to: " $PBS_O_WORKDIR
+cd ..
+tar -cvzf $JOBID.tar.gz $JOBID
+cp -r $JOBID.tar.gz $PBS_O_WORKDIR
+rm $JOBID.tar.gz
+
+exit 0
+"""
+
+class Vaspjob():
+    def __init__(self,):
+        self.nnode = 0
+        self.ncpu = 0
+        self.vasploc = ""
+        self.vaspexe = ""
+
+def update_npar(vaspjob):
+    ncpu = vaspjob.ncpu
+
+    if ncpu < 512 and ncpu > 16 :
+        npar = ncpu/16
+    elif ncpu <= 16:
+        npar = 2
+    else:
+        npar = 16
+
+    lines = []
+    f = open("INCAR", "r")
+    for i in f:
+        line = i
+        if "NPAR" in i:
+            line = " NPAR = %d\n"%npar
+        lines.append(line)
+    f.close()
+    shutil.copy("INCAR", "INCAR.bak")
+    o = open("INCAR", "w")
+    for i in lines:
+        o.write(i)
+    o.close()
+
+def write_input(vaspjob):
+
+    o = open("runVASP.in", "w")
+    lines = INP
+    lines = lines.replace("%nnode%", "%d"%vaspjob.nnode)
+    lines = lines.replace("%ncpu%", "%d"%vaspjob.ncpu)
+    lines = lines.replace("%VASPLOC%", "%s"%vaspjob.vasploc)
+    lines = lines.replace("%VASPEXE%", "%s"%vaspjob.vaspexe)
+    o.write(lines)
+    o.close()
+    os.system("chmod +x runVASP.in")
+
+def main(args):
+    vaspjob = Vaspjob()
+
+    vaspjob.ncpu = N_CPU_PER_NODE
+    if args.ncpu:
+        vaspjob.ncpu = int(args.ncpu[0])
+    vaspjob.nnode = vaspjob.ncpu/N_CPU_PER_NODE
+
+    vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
+    vaspexe = "vasp"
+
+    if args.vasp:
+        n = args.vasp[0]
+        if n == 1:
+            vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
+            vaspexe = "vasp.full"
+        elif n == 2:
+            vasploc = "/net/hulk/home6/chengtao/soft/vasp.5.3/vasp.5.3/"
+            vaspexe = "vasp.gamma"
+    sys.stdout.write("Using version of VASP: %s"%vasploc)
+    sys.stdout.write("%s\n"%vaspexe)
+    sys.stdout.flush()
+
+    vaspjob.vasploc = vasploc
+    vaspjob.vaspexe = vaspexe
+        
+    # write the INCAR file
+    write_input(vaspjob)
+    # calculate NPAR for parallel calculation
+    update_npar(vaspjob)
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-ncpu", nargs=1, type=int, help="number of cpus")
+    parser.add_argument("-vasp", nargs=1, type=int, help="vasp version: 1: v53 full, 2: v53 gamma only")
+    args = parser.parse_args()
+    main(args)

@@ -45,6 +45,14 @@ class Atom():
         """@ivar: atom coordination
         @type: list
         """
+        self.xFrac = [0, 0, 0]
+        """@ivar: atom fraction coordination
+        @type: list
+        """
+        self.xr = [0, 0, 0]
+        """@ivar: restraint in x, y and z direction
+        @type: list
+        """
         self.element = ''
         """@ivar: element
         @type: char 
@@ -91,6 +99,14 @@ class System():
         """@ivar: atoms in system
         @type: list
         """
+        self.natoms = []
+        """@ivar: number of atoms in system
+        @type: list
+        """
+        self.atomtypes = []
+        """@ivar: atom types in system
+        @type: list
+        """
         self.mols = []
         """@ivar: molecules in system
         @type: list
@@ -110,6 +126,10 @@ class System():
         self.pbc = []
         """@ivar: pbc 
         @type: list 
+        @note: """
+        self.scaleFactor = 1.0
+        """@ivar: scale factor
+        @type: float
         @note: """
         self.map = []
         """@ivar: the element-atom type map

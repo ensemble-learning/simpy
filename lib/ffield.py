@@ -182,8 +182,14 @@ class Ffield():
         self.off = self.off + off_ext
 
     def checkRedudant(self,):
+        terms = {}
         for i in self.angle:
-            print i
+            ang_term = "%02d_%02d_%02d"%(int(i[0]), int(i[1]), int(i[2]))
+            if ang_term in terms.keys():
+                print "Now:", i
+                print "Pre:", terms[ang_term]
+            else:
+                terms[ang_term] = i
     
     def checkout(self, atoms):
         b = Ffield()
@@ -630,34 +636,55 @@ class Ffield():
                 n2 += 1
             n1 += 1
 
+        ANG = ["Theta", "p_val1", "p_val2", "p_coa1", "p_val7", "p_pen1", "p_val4"]
+        ANGE = ["13g", "13a", "13a", "15", "13c", "14a", "13b"]
         n1 = 1
         for i in self.angle:
             n2 = 1
             for j in i[3:]:
+                a1 = self.elements[int(i[0]) -1]
+                a2 = self.elements[int(i[1]) -1]
+                a3 = self.elements[int(i[2]) -1]
                 val = float(j)
                 start = val * (1-scale)
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(5, n1, n2, interval, start, end))
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end))
+                o.write(" ! %s %4s %4s %4s %s in %s\n"%("ang", "@"+a1, "@"+a2, "@"+a3, ANG[n2-1], ANGE[n2-1]))
                 n2 += 1
             n1 += 1
 
+        TOR = ["V1", "V2", "V3", "p_tor1", "p_cot1", "Null", "Null"]
+        TORE = ["16a", "16a", "16a", "16a", "17a", "", ""]
         n1 = 1
         for i in self.torsion:
             n2 = 1
             for j in i[4:]:
+                a1 = self.elements[int(i[0]) -1]
+                a2 = self.elements[int(i[1]) -1]
+                a3 = self.elements[int(i[2]) -1]
+                a4 = self.elements[int(i[3]) -1]
                 val = float(j)
                 start = val * (1-scale)
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(6, n1, n2, interval, start, end))
+                if n2 in [5, 6]:
+                    pass
+                else:
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(6, n1, n2, interval, start, end))
+                    o.write(" ! %s %4s %4s %4s %4s %s in %s\n"%("tor", "@"+a1, "@"+a2, "@"+a3, "@"+a4, TOR[n2-1], TORE[n2-1]))
                 n2 += 1
             n1 += 1
 
+        HBO = ["r_hb", "p_hb1", "p_hb2", "p_hb3"]
+        HBOE = ["18", "18", "18", "18"]
         n1 = 1
         for i in self.hbond:
             n2 = 1
             for j in i[3:]:
+                a1 = self.elements[int(i[0]) -1]
+                a2 = self.elements[int(i[1]) -1]
+                a3 = self.elements[int(i[2]) -1]
                 val = float(j)
                 if val > 0:
                     start = val * (1-scale)
@@ -666,7 +693,8 @@ class Ffield():
                     end = val * (1-scale)
                     start = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f\n"%(7, n1, n2, interval, start, end))
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end))
+                o.write(" ! %s %4s %4s %4s %s in %s\n"%("hbo", "@"+a1, "@"+a2, "@"+a3, HBO[n2-1], HBOE[n2-1]))
                 n2 += 1
             n1 += 1
 
@@ -681,6 +709,7 @@ def main():
     parser.add_argument("-complete", action="store_true", help="complete the off table")
     parser.add_argument("-type", nargs=1, type=int, help="Force field type: 0 for vdw; 1 for lg_inner wall")
     parser.add_argument("-checkout", nargs='+', help="check out the force field")
+    parser.add_argument("-check", action="store_true", help="check the force field")
     args = parser.parse_args()
     #print b.getBondDist(3,2)
     
@@ -709,14 +738,21 @@ def main():
         atoms = args.checkout
         ff2 = ff.checkout(atoms)
         toFfield(ff2)
+    if args.check:
+        ff.checkRedudant()
 
-def test():
+def test1():
     fname = "ffield"
     ntype = 0
     ff = Ffield(fname, ntype)
     ff2 = ff.checkout()
     toFfield(ff2)
-    
+
+def test():
+    fname = "ffield"
+    ntype = 0
+    ff = Ffield(fname, ntype)
+    ff.checkRedudant()
     
 if __name__ == "__main__":
     #test()

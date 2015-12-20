@@ -10,6 +10,7 @@ atom_style     charge
 boundary       p p p
 
 read_data      lammps.data
+#read_restart   nvt.rst
 
 pair_style      %reax_potential%
 pair_coeff      * * ffield %ffield_atoms%
@@ -44,14 +45,14 @@ thermo_modify   line multi
 
 #fix             201 all box/relax aniso 0.0 vmax 0.001
 
-min_style       sd
-minimize        0 1.0e-8 1000 1000
+#min_style       sd
+#minimize        0 1.0e-8 1000 1000
 
 min_style       cg
 minimize        0 1.0e-8 1000 1000
 
-min_style       quickmin
-minimize        0 1.0e-8 1000 1000
+#min_style       quickmin
+#minimize        0 1.0e-8 1000 1000
 
 write_restart   min.rst
 
@@ -62,7 +63,7 @@ dump_modify    101 element %elements%
 
 #fix            200 all reax/c/bonds 1 bonds.reax
 #fix            201 all reax/c/species 1 1 1 species.out
-run            1
+run            0
 """
 
 NVT = """
@@ -77,7 +78,7 @@ reset_timestep   0
 
 #pair_style      reax/c control
 #pair_style      reax/c NULL lgvdw yes
-pair_style       %reax_potential%
+pair_style       %reax_potential% safezone 1.8 mincap 180
 
 #----Neighbor Section----#
 
@@ -108,25 +109,28 @@ variable eqeq   equal c_reax[14]
 #--------Output info--------
 
 thermo         400
-thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma
+thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma pxx pyy pzz
 thermo_modify   line multi
 
 dump            100 all custom 400 dump.lammpstrj id type x y z vx vy vz
 dump_modify     100 sort id
-dump            101 all cfg 400 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
-dump_modify     101 element %elements%
+dump            101 all cfg 40000 dump.*.cfg mass type xs ys zs vx vy vz fx fy fz
+dump_modify     101 element %elements% sort id
+#dump            102 all xtc 1 movie.xtc
+#dump_modify     102 sort id
 
 #--------Analysis-----------
 
-fix             200 all reax/c/bonds 400 bonds.reax
-#fix             201 all reax/c/species 1 1 400 species.out
+#fix             200 all reax/c/bonds 400 bonds.reax
+#fix             201 all reax/c/species 1 1 400 species.out element %elements%
 
 #--------Simulation--------
 
 velocity        all create 300.0 4928459 rot yes dist gaussian
+restart         40000 restart_*.rst
 fix             401 all nvt temp 300 300 50       
 timestep        0.25
-run             80000
+run             40000
 write_restart   nvt.rst
 
 """

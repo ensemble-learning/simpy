@@ -89,6 +89,7 @@ class Dump():
         if os.path.exists("inp"):
             flag = 1
             n2a = self.parseInp()
+        counter = 0
         for i in self.coords:
             atom = Atom()
             if flag:
@@ -100,9 +101,11 @@ class Dump():
             atom.x[1] = float(i[4])
             atom.x[2] = float(i[5])
             """
+            atom.an = counter + 1
             atom.x[0] = float(i[2])
             atom.x[1] = float(i[3])
             atom.x[2] = float(i[4])
             s.atoms.append(atom)
+            counter += 1
         return s
 
