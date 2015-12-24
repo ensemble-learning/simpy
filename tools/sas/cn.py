@@ -77,7 +77,12 @@ def read_evdw(p, log):
     """
     Read the vdw file.
     """
+    # cn: coordination number
+    # neighbour_list: neighbour list
     cn = [0] * p.n_atoms
+    neighbour_list = []
+    for i in range(p.n_atoms):
+        neighbour_list.append([])
     f = open("lammps.evdw.0", "r")
 
     counter = 0
@@ -89,9 +94,13 @@ def read_evdw(p, log):
                 print a1, a2, s, tokens[0], tokens[1], tokens[2]
             cn[a1-1] += s
             cn[a2-1] += s
+            if s >= 1:
+                neighbour_list[a1-1].append(a2-1)
+                neighbour_list[a2-1].append(a1-1)
+                
         counter +=1
     f.close()
-    return cn
+    return cn, neighbour_list
 
 def output_ndx(cn, p, log):
     """
@@ -186,18 +195,27 @@ def write_inp(p, log):
     else:
         log.write("Cut-off = %.4f\n"%p.r_cut)
 
-def output_aux(cn, p, log):
-    o = open("cn.aux", "w")
+def output_cn(cn, p, log):
+    o = open("cn.dat", "w")
     for i in cn:
         o.write("%d\n"%i)
     o.close()
 
+def output_neighbour_list(neighbour_list, p, log):
+    o = open("nlist.dat", "w")
+    for i in range(len(neighbour_list)):
+        for j in neighbour_list[i]:
+            o.write("%8d"%(j+1))
+        o.write("\n")
+    o.close()
+
 def main(p, log):
     # read vdw input
-    cn = read_evdw(p, log)
+    cn, neighbour_list = read_evdw(p, log)
     # output ndx 
     output_ndx(cn, p, log)
-    output_aux(cn, p, log)
+    output_cn(cn, p, log)
+    output_neighbour_list(neighbour_list, p, log)
 
 if __name__ == "__main__":
     log = open("cn.log", "w")
