@@ -8,6 +8,8 @@ import argparse
 
 LIB = ''
 
+print socket.gethostname() 
+
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
@@ -24,6 +26,8 @@ elif socket.gethostname() == "giant1":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "tao-ThinkCentre-M79":
+    LIB = "/home/tao/Soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
