@@ -65,7 +65,7 @@ Character(len = 50)   :: atom_file, coord_file
 Character(len = 50)   :: cn_file, nlist_file
 
 Real(kind = realkind) :: sigmatype(1:max_no), atomsigma(1:max_no)
-Real(kind = realkind) :: sfrac_cut_off 
+Real(kind = realkind) :: sfrac_cut_off, sur_cut_off
 Real(kind = realkind) :: nlist(1:max_no, 1:max_cn)
 Real(kind = realkind) :: x(1:max_no), y(1:Max_no), z(1:max_no)
 Real(kind = realkind) :: xl, yl, zl, rho_crys
@@ -79,6 +79,7 @@ Real(kind = realkind) :: ran0
 
 Logical               :: deny, match
 
+open(unit=98, file="sur_sas.dat")
 open(unit=99, file="frac_atom.dat")
 
 !
@@ -103,6 +104,7 @@ Read(*,*) Nsample ! Number of samples per sphere
 Read(*,*) XL, YL, ZL ! Cell parameters in A
 Read(*,*) rho_crys   ! chrystal density in g / cm3 
 Read(*,*) sfrac_cut_off ! sfrac cut off
+Read(*,*) sur_cut_off ! surface atom cut off
 read(*,*) cn_file ! coordination file
 read(*,*) nlist_file ! neighbour list file
 Open(11, file=cn_file, status='old')
@@ -275,7 +277,12 @@ DO i = 1, N ! Loop over all framework atoms
 
    sfrac = real(ncount) / real(Nsample)
    Write(99, FMT="(F10.6)") sfrac 
-
+   IF (sfrac > sur_cut_off) THEN
+       Write(98, *) 1
+   ELSE
+       Write(98, *) 0
+   ENDIF
+       
 ! Surface area for sphere i in real units (A^2)
 
    IF (sfrac > sfrac_cut_off) THEN
@@ -299,6 +306,7 @@ Write(*,'(A,F12.2)') 'Accessible surface area per mass in m^2/g: ', &
             stotalreduced / rho_crys
 Write(*,*)
 
+close(98)
 close(99)
 
 END PROGRAM accessible_surface_area

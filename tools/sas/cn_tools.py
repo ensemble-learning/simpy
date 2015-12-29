@@ -76,6 +76,8 @@ def surface_atoms_al(atoms, pbc):
     return sur, r_coord_vector
 
 def surface_atoms_cut_off(b):
+    """
+    """
     cn = np.loadtxt("cn.dat")
     o = open("sur.dat", "w")
     n_cut = 10
@@ -93,14 +95,27 @@ def surface_atoms_cut_off(b):
     b1.atoms = atoms
     toPdb(b1, "surface_atoms.pdb")
     toXyz(b1, "surface_atoms.xyz")
+
+def surface_atoms_read(b):
+    sur = np.loadtxt("sur_sas.dat")
+    b1 = copy.deepcopy(b)
+    atoms = []
+    for i in range(len(sur)):
+        if int(sur[i]) == 1:
+            atoms.append(b.atoms[i])
+    b1.atoms = atoms
+    toPdb(b1, "surface_atoms.pdb")
+    toXyz(b1, "surface_atoms.xyz")
         
 def main():
     b = read_data() 
-    surface_atoms_method = 2
+    surface_atoms_method = 3
     if surface_atoms_method == 1:
         surface_atoms_al(atoms, pbc)
     elif surface_atoms_method == 2:
         sur = surface_atoms_cut_off(b)
+    elif surface_atoms_method == 3:
+        sur = surface_atoms_read(b)
 
 if __name__ == "__main__":
     main()

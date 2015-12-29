@@ -1,0 +1,7 @@
+test_surface_atom.xyz
+.TRUE.
+0.6
+
+! coordination file (xyz file format)
+! pbc_flag 
+! vector cut off
