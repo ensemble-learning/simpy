@@ -1,0 +1,107 @@
+LAMMPS (1 Feb 2014)
+
+#Lammps 2009 input file generate by DFF
+
+units          real
+atom_style     charge
+boundary       p p p
+
+read_data      lammps.data
+  orthogonal box = (0 0 0) to (26 26 26)
+  1 by 1 by 1 MPI processor grid
+  reading atoms ...
+  201 atoms
+#read_restart   nvt.rst
+
+pair_style      reax/c control.reaxc
+pair_coeff      * * ffield Pt
+
+#----Neighbor Section----#
+neighbor                1.0 bin
+neigh_modify    delay 0 every 10 check no
+
+
+#----ReaxFF Energy Terms----#
+compute         reax all pair reax/c
+variable eb     equal c_reax[1]
+variable ea     equal c_reax[2]
+variable elp    equal c_reax[3]
+variable emol   equal c_reax[4]
+variable ev     equal c_reax[5]
+variable epen   equal c_reax[6]
+variable ecoa   equal c_reax[7]
+variable ehb    equal c_reax[8]
+variable et     equal c_reax[9]
+variable eco    equal c_reax[10]
+variable ew     equal c_reax[11]
+variable ep     equal c_reax[12]
+variable efi    equal c_reax[13]
+variable eqeq   equal c_reax[14]
+
+fix             QEQ all qeq/reax 1 0.0 5.0 1.0e-6 reax/c
+
+thermo          1
+thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma
+thermo_modify   line multi
+
+#fix             201 all box/relax aniso 0.0 vmax 0.001
+
+#min_style       sd
+#minimize        0 1.0e-8 1000 1000
+
+dump            100 all custom 1 equil.lammpstrj id type x y z vx vy vz
+dump_modify     100 sort id
+dump            101 all cfg 1 equil.*.cfg mass type xs ys zs vx vy vz fx fy fz
+dump_modify     101 element Pt
+
+min_style       cg
+minimize        0 1.0e-8 0 0
+WARNING: Resetting reneighboring criteria during minimization (../min.cpp:173)
+Memory usage per processor = 23.0701 Mbytes
+---------------- Step        0 ----- CPU =      0.0000 (sec) ----------------
+Step     =              0 TotEng   =    -29164.2631 KinEng   =         0.0000 
+PotEng   =    -29164.2631 Temp     =         0.0000 Press    =    -57321.5782 
+Volume   =     17576.0000 eb       =    -57776.3225 ea       =     24666.6635 
+elp      =         0.0000 emol     =         0.0000 ev       =         0.0000 
+epen     =         0.0000 ecoa     =         0.0000 ehb      =         0.0000 
+et       =         0.0000 eco      =         0.0000 ew       =      3945.3959 
+ep       =         0.0000 efi      =         0.0000 eqeq     =        -0.0000 
+Cella    =        26.0000 Cellb    =        26.0000 Cellc    =        26.0000 
+CellAlpha =        90.0000 CellBeta =        90.0000 CellGamma =        90.0000 
+Loop time of 4.05312e-06 on 1 procs for 0 steps with 201 atoms
+
+Minimization stats:
+  Stopping criterion = max iterations
+  Energy initial, next-to-last, final = 
+        -29164.2631096                  0     -29164.2631096
+  Force two-norm initial, final = 510.124 510.124
+  Force max component initial, final = 45.7281 45.7281
+  Final line search alpha, max atom move = 0 0
+  Iterations, force evaluations = 0 0
+
+Pair  time (%) = 0 (0)
+Neigh time (%) = 0 (0)
+Comm  time (%) = 0 (0)
+Outpt time (%) = 0 (0)
+Other time (%) = 4.05312e-06 (100)
+
+Nlocal:    201 ave 201 max 201 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    683 ave 683 max 683 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    13901 ave 13901 max 13901 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 13901
+Ave neighs/atom = 69.1592
+Neighbor list builds = 0
+Dangerous builds = 0
+
+#min_style       quickmin
+#minimize        0 1.0e-8 1000 1000
+
+write_restart   min.rst
+
+
+Please see the log.cite file for references relevant to this simulation
+

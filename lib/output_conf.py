@@ -130,6 +130,26 @@ def toXyz(system, outfile="test.xyz"):
         o.write(line)
     o.close()
 
+def toMusic(system, outfile="test.music"):
+    """ output to music file format
+    """
+    o = open(outfile, 'w')
+    o.write("%d\n"%len(system.atoms))
+    n = 1
+    for i in system.atoms:
+        line = ''
+        line += "%-8d"%n
+        line += "%10.4f"%i.x[0]
+        line += "%10.4f"%i.x[1]
+        line += "%10.4f"%i.x[2]
+        line += "%6s"%i.name
+        line += " 0.0 0 0"
+        line += "\n"
+        o.write(line)
+        n += 1
+    o.close()
+
+
 def toPdb(system, outfile="test.pdb", element=0):
     """ output to pdb file format
     """

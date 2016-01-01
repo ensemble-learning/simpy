@@ -1,0 +1,23 @@
+UFF.atoms
+out.music
+1.400
+5000     
+80.00000       80.00000       47.40000 
+0.59
+0.0
+0.04
+cn.dat
+nlist.dat
+
+
+
+! file containing the atom types + diameters
+! file containing the coordinates
+! probe size in A
+! number of insertions
+! length of unitcell
+! crystal density in g / cm3
+! scale factor cut off
+! surface atom cut off
+! coordinatin files
+! neighbor list files

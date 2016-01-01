@@ -1,0 +1,10 @@
+[GLOBAL]
+r_ref_0 = 2.788
+r_ref_1 = 3.944
+r_ref_2 = 4.830
+
+n_atoms = 201
+# cut_off_func = 1(cut-off) 2(cn function)
+cut_off_func = 1
+r_cut_range = 1.8
+n_cut_off = 4

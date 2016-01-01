@@ -1,0 +1,42 @@
+How to do the surface analysis?
+
+1. Build the strucutre.
+    We use a Platinum nanoparticle as an example.
+    This Pt nanoparticle consists of 201 atoms.
+    The example file is pt_201.pdb.
+
+2. Derive neighbour list using LAMMPS
+    a) Convert the pdb file to data file (LAMMPS format) using
+       e_2_pdb
+    b) Generate vdw interaction tables using LAMMPS.
+       lammps_debug -in lammps_input_debug
+       The necessary input files are: lammps_input_debug, 
+       ffield, control.reaxc
+       Note: the cut-off distance should be consistent in these 
+       input files.
+    c) Generate the neighbour list using cn.py
+      python cn.py
+      The configuration file is cn.inp.
+      cut_off range is set to 1.8
+3. Surface area calculation using sas
+   sas < input.dat
+   Input files are:
+   input.dat and UFF.atoms
+4. Visualization
+    Convert to cfg file (Atomeye file format)
+    p2c pt_201.pdb out.cfg
+5. Fraction of surface areas:
+   Using Probe = 2.8 Pt = 3.0
+   Surface area: 1633.02
+   Pt(111): 0.07
+   Pt(100): 0.08
+   vertex: 0.22
+   edge: 0.16
+   Using Probe = 1.4 Pt = 3.0
+   Surface area: 1633.02
+   Pt(111): 0.07
+   Pt(100): 0.08
+   vertex: 0.22
+   edge: 0.16
+      
+    

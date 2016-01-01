@@ -1,0 +1,37 @@
+#! /usr/bin/env python
+
+import sys, os
+import time, datetime
+
+ts = time.time()
+td = ts = datetime.datetime.fromtimestamp(ts).strftime('%Y-%m-%d')
+
+lines = []
+d = []
+f = os.popen("du --max-depth=1 --block-size=50M")
+
+for i in f:
+    lines.append(i)
+f.close()
+
+for i in range(len(lines) - 1):
+    tokens = lines[i].strip().split()
+    if len(tokens) > 1:
+        fname = tokens[1]
+        if fname.startswith("./."):
+            pass
+        else:
+            s = int(tokens[0])
+            fname = fname[2:]
+            d.append([s, fname]), 
+
+d.sort(key=lambda x: x[0], reverse=True)
+
+o = open("disk-%s.log"%td, "w")
+
+for (i, j) in d:
+    o.write("%8d%20s\n"%(i, j))
+o.close()
+
+os.system("chmod g-r disk.log")
+os.system("chmod g-x disk.log")

@@ -5,7 +5,7 @@ import sys
 import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz
+from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -46,6 +46,7 @@ def withPbc(testfile="supper.pdb", args=''):
     b.assignEleTypes()
     #b.translate(12.0, "z")
     toXyz(b, "out.xyz")
+    toMusic(b, "out.music")
     if len(b.pbc) == 0:
         b.geotag = "BIOGRF 200"
     else:
