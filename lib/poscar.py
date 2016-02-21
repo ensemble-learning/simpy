@@ -32,6 +32,8 @@ class Poscar():
                 break
             elif i.strip().startswith("Cartesian"):
                 break
+            elif i.strip().startswith("cart"):
+                break
             elif i.strip().startswith("Selective"):
                 self.sd = 1
             else:
