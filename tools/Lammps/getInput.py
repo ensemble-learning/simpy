@@ -111,6 +111,8 @@ def main(args):
         lines = NPT
     elif rtype == "MIN_CELL":
         lines = MIN_CELL
+    elif rtype == "RERUN":
+        lines = RERUN 
 
     print "processing %s simulation......"%rtype
 
@@ -133,6 +135,10 @@ def main(args):
     
     o = open("control.reaxc", "w")
     o.write(CONTROL)
+    o.close()   
+    
+    o = open("plumed.dat", "w")
+    o.write(PLUMED)
     o.close()   
 
 if __name__ == "__main__":

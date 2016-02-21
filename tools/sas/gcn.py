@@ -35,7 +35,7 @@ def cal_general_coordination(sur, nlist):
     o1.close()
     return gcn
     
-sur = np.loadtxt('sur.dat')
+sur = np.loadtxt('sur_sas.dat')
 cn = np.loadtxt('cn.dat') 
 nlist = read_neighbour_list()
 gcn = cal_general_coordination(sur, nlist)

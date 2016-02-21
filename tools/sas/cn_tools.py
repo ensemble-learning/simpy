@@ -106,10 +106,10 @@ def surface_atoms_read(b):
     b1.atoms = atoms
     toPdb(b1, "surface_atoms.pdb")
     toXyz(b1, "surface_atoms.xyz")
-        
+
 def main():
     b = read_data() 
-    surface_atoms_method = 3
+    surface_atoms_method = 4
     if surface_atoms_method == 1:
         surface_atoms_al(atoms, pbc)
     elif surface_atoms_method == 2:

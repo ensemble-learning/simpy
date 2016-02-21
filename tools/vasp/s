@@ -1,0 +1,35 @@
+#! /usr/bin/env python
+
+import os
+import numpy as np
+import shutil
+import sys
+
+def usage():
+    sys.stderr.write("s t0 t1 ns\n")
+    sys.stderr.close()
+
+def get_poscar(t0, t1, ns):
+    data = np.linspace(t0, t1, ns)
+
+    for i in range(ns):
+        folder = "r_%02d"%i
+        if not os.path.exists(folder):
+            os.mkdir(folder)
+        p0 = "POSCAR_%06d"%(int(data[i]))
+        p1 = os.path.join(folder, "POSCAR")
+        shutil.copy(p0, folder)
+        shutil.copy(p0, p1)
+
+def main():
+    if len(sys.argv) < 4:
+        usage()
+    else:
+        t0 = int(sys.argv[1])
+        t1 = int(sys.argv[2])
+        ns = int(sys.argv[3])
+        get_poscar(t0, t1, ns)
+        
+if __name__ == "__main__":
+    main()
+

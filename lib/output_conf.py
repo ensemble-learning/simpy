@@ -122,7 +122,10 @@ def toXyz(system, outfile="test.xyz"):
     o.write("%s\n"%system.name)
     for i in system.atoms:
         line = ''
-        line += "%-6s"%i.name
+        if len(i.element) > 0:
+            line += "%-6s"%i.element
+        else:
+            line += "%-6s"%i.name
         line += "%10.4f"%i.x[0]
         line += "%10.4f"%i.x[1]
         line += "%10.4f"%i.x[2]

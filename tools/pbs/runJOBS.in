@@ -1,0 +1,61 @@
+#PBS -V
+#PBS -j oe
+#PBS -N JOBS
+#PBS -q workq
+#PBS -l nodes=1:ppn=16,walltime=24:00:00
+#PBS -S /bin/tcsh
+
+# preload lib
+source /share/apps/intel/composer_xe_2013_sp1.3.174/composer_xe_2013_sp1.3.174/bin/compilervars.csh intel64
+setenv OPAL_PREFIX /project/source/openmpi/build-1.8.3-ion
+setenv PATH ${OPAL_PREFIX}/bin:${PATH}
+setenv LD_LIBRARY_PATH ${OPAL_PREFIX}/lib:$LD_LIBRARY_PATH
+
+set MPI=mpirun
+set JOBSLOC=%JOBSLOC%
+set exe=$JOBSLOC/%JOBSEXE%
+
+echo "The JOBS executable is: " $exe
+
+set DATADIR=$PBS_O_WORKDIR
+set NPROCS=`wc -l $PBS_NODEFILE | cut -f1 -d " "`
+set JOBID=`echo $PBS_JOBID | awk -F'.' '{print $1}'`
+set OUTPUTDIR=/temp1/JOBS/$JOBID
+
+echo "The JOBS output will temporarily be written to :" $OUTPUTDIR
+echo "JOBS Job: " $JOBID "is starting with " $NPROCS "cores on:"
+cat $PBS_NODEFILE
+echo
+
+# Create Directories
+#
+mkdir -p $OUTPUTDIR
+
+#
+# export job info
+#
+echo $PBS_JOBID >  $DATADIR/jobinfo
+cat $PBS_NODEFILE >>  $DATADIR/jobinfo
+echo $OUTPUTDIR >>  $DATADIR/jobinfo
+
+#
+# Copy executable and any required input files to your work directory
+#
+cp $DATADIR/* $OUTPUTDIR
+cd $OUTPUTDIR
+
+#
+# Run JOBS
+#
+date
+$MPI -np $NPROCS -machinefile $PBS_NODEFILE $exe > LOG
+echo
+date
+echo "JOBS has finished."
+echo "The JOBS output is being copied back to: " $PBS_O_WORKDIR
+cd ..
+tar -cvzf $JOBID.tar.gz $JOBID
+cp -r $JOBID.tar.gz $PBS_O_WORKDIR
+rm $JOBID.tar.gz
+
+exit 0
