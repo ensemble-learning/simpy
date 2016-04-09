@@ -8,8 +8,11 @@ import os
 
 cmd = os.getcwd()
 wcmd = cmd
-if "/temp1/jobs/" in cmd:
-    wcmd = wcmd.replace("/temp1/jobs/", "/home/tao/Disks/giant12/")
+if "PMD" in cmd:
+    wcmd = wcmd.replace("/net/hulk/PMD/tcheng/", "/home/tao/Disk/pmd/")
+elif "temp1" in cmd:
+    wcmd = wcmd.replace("/temp1/jobs/", "/home/tao/Disk/giant12/")
+    
 #wcmd = wcmd.replace("/", "\\")
 print wcmd
 

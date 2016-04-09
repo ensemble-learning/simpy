@@ -109,7 +109,7 @@ def surface_atoms_read(b):
 
 def main():
     b = read_data() 
-    surface_atoms_method = 4
+    surface_atoms_method = 3
     if surface_atoms_method == 1:
         surface_atoms_al(atoms, pbc)
     elif surface_atoms_method == 2:

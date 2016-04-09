@@ -352,6 +352,7 @@ def toPoscar(system, outfile="POSCAR"):
     [xf, yf, zf] = np.dot(coords[i], invlatvecs)
     """
 
+    # write the cells
     for i in a:
         o.write("%20.15f"%i)
     o.write("\n")
@@ -361,6 +362,7 @@ def toPoscar(system, outfile="POSCAR"):
     for i in c:
         o.write("%20.15f"%i)
     o.write("\n")
+
     for i in s.atomtypes:
         o.write("%6s"%i)
     o.write("\n")

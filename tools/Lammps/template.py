@@ -129,6 +129,8 @@ dump_modify     101 element %elements% sort id
 velocity        all create 300.0 4928459 rot yes dist gaussian
 restart         40000 restart_*.rst
 fix             401 all nvt temp 300 300 50       
+#fix             402 all temp/rescale 1 50.0 50.0 0.0 1.0
+#fix             403 all nve
 timestep        0.25
 run             40000
 write_restart   nvt.rst
