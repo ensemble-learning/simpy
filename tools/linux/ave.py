@@ -5,16 +5,20 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def main():
-    fname = sys.argv[1]
+    if len(sys.argv) > 2:
+        fname = sys.argv[1]
+        nr = sys.argv[2]
 
-    data = np.loadtxt(fname)
-    f = 0.1
-    nstart = int(f*len(data))
+        data = np.loadtxt(fname)
+        data = data.transpose()
+ 
+    	f = 0.1
+    	nstart = int(f*len(data))
 
-    plt.plot(data)
-    ave = np.average(data[nstart:])
-    print ave
-    plt.show()
+    	plt.plot(data[0], data[1])
+    	ave = np.average(data[1][nstart:])
+    	print ave
+    	plt.show()
     
 
 if __name__ == "__main__":

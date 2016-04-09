@@ -396,7 +396,7 @@ def toPoscar(system, outfile="POSCAR"):
     o.close()
 
 def toJdft(system, outfile="coords"):
-    """Output the msd file
+    """Output the Jdft file
     """
     s = system
     o = open(outfile, "w")
@@ -445,4 +445,40 @@ def toJdft(system, outfile="coords"):
                 s.atoms[i].element, xf, yf, zf))
     o.write("\n")
     o.close()
+
+    o = open(outfile + "_cartesian", "w")
+    o.write("lattice \\")
+    o.write("\n")
+    for i in a:
+        o.write("%20.15f"%i)
+    o.write("\\")
+    o.write("\n")
+    for i in b:
+        o.write("%20.15f"%i)
+    o.write("\\")
+    o.write("\n")
+    for i in c:
+        o.write("%20.15f"%i)
+    o.write("\n")
+    o.write("\n")
+    o.write("coords-type cartesian\n")
+
+    coords = []
+    coordsXr = []
+    natom = 0
+    for i in s.atoms:
+        coords.append(np.array(i.x))
+        coordsXr.append(i.xr)
+        natom += 1
+
+    for i in range(natom):
+        x = coords[i][0] * A2Bohr
+        y = coords[i][1] * A2Bohr
+        z = coords[i][2] * A2Bohr
+        o.write("ion %2s %20.15f%20.15f%20.15f 0\n"%(
+                s.atoms[i].element, x, y, z))
+    o.write("\n")
+    o.close()
+
+    
 
