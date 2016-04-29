@@ -58,17 +58,17 @@ def read_report(p):
             nx += 1
         elif i.strip().startswith("cc> C"):
             fv1 = float(tokens[2])
-            n = nx%n_const
+            n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
         elif i.strip().startswith("cc> A"):
             fv1 = float(tokens[2])
-            n = nx%n_const
+            n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
         elif i.strip().startswith("cc> T"):
             fv1 = float(tokens[2])
-            n = nx%n_const
+            n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
         elif i.strip().startswith("b_m>"):
@@ -121,10 +121,11 @@ def read_report(p):
     
     return cvs, dA
 
-def plot_data(cvs, dA, nxy):
+def plot_data(cvs, dA, p):
     """
     Plot the data
     """
+    nxy = p.nxy -1 
     x, y = cvs[nxy], dA[nxy]
     y_int = integrate.cumtrapz(y, x, initial=0)
 
@@ -155,7 +156,7 @@ def plot_data(cvs, dA, nxy):
 
 def main():
     """
-    main code
+    Extract the information from VASP calculation to free energy
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("-plot", action="store_true", help="plot the data")
@@ -168,7 +169,6 @@ def main():
     p = Params()
     if args.nconst:
         p.nconst = args.nconst[0]
-
     if args.nxy:
         p.nxy = args.nxy[0]
     if args.begin:
@@ -181,7 +181,7 @@ def main():
     cvs, dA = read_report(p)
 
     if args.plot:
-        plot_data(cvs, dA, nxy)
+        plot_data(cvs, dA, p)
 
 if __name__ == "__main__":
     main()
