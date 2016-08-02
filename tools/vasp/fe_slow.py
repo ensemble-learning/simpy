@@ -79,6 +79,7 @@ def read_report(p):
             n = ny%p.nconst
             fvall[n].append([fv1, fv2, fv3, fv4])
             val = fv4/fv2
+            #print val, fv1, fv2, fv3, fv4
             dA[n].append(val)
             ny += 1
     
