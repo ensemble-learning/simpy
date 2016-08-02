@@ -92,18 +92,24 @@ class System():
         @type: char
         """
         self.step = 0
-        """@ivar: time step
-        @type: int
-        """
+
         self.atoms = []
-        """@ivar: atoms in system
-        @type: list
-        """
         self.natoms = []
-        """@ivar: number of atoms in system
-        @type: list
-        """
+        self.n_atoms = 0
         self.atomtypes = []
+        self.n_atomtypes = 0
+        self.bonds = []
+        self.n_bonds = 0
+        self.n_bondtypes = 0
+        self.angles = []
+        self.n_angles = 0
+        self.n_angletypes = 0
+        self.dihedrals = []
+        self.n_dihedrals = 0
+        self.n_dihedraltypes= 0
+        self.impropers= []
+        self.n_impropers= 0
+        self.n_impropertypes= 0
         """@ivar: atom types in system
         @type: list
         """
@@ -119,10 +125,7 @@ class System():
         """@ivar: molecule list (format {resname: [ 1, 2, ....]})
         @type: dict 
         @note: """
-        self.bonds = []
-        """@ivar: bonds list 
-        @type: list 
-        @note: """
+
         self.pbc = []
         """@ivar: pbc 
         @type: list 
@@ -166,6 +169,10 @@ class System():
         """@ivar: charge
         @type: int
         @note: """
+        self.ffparams = []
+        """@ivar: force field parameters
+        @type: list
+        """
 
     def parseToMol(self,):
         """Catalog atoms in system to molecules according to resname. 
@@ -339,17 +346,17 @@ class Molecule():
     """
     def __init__(self, ):
         self.name = ''
-        """@ivar: molecule name from input file
-        @type: char
-        """
+        self.n_atoms = 0
+        self.n_bonds = 0
+        self.n_angles = 0
+        self.n_dihedrals = 0
         self.atoms = []
-        """@ivar: atoms in molecule
-        @type: list 
-        """
         self.bonds = []
-        """@ivar: bonds in molecule
-        @type: list 
-        """
+        self.angles = []
+        self.dihedrals = []
+        self.a0 = 0
+        self.a1 = 0
+
         self.nb = {}
         """@ivar: neighbour list
         @type: dict
