@@ -89,6 +89,7 @@ class Poscar():
                 now += int(self.natoms[i])
             for j in range(prev, now):
                 atom = Atom()
+                #print self.atomtypes, i
                 atom.name = self.atomtypes[i]
                 x = float(self.coords[j][0])
                 y = float(self.coords[j][1])

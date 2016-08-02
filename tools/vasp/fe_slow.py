@@ -15,6 +15,7 @@ class Params():
     def __init__(self,):
 	self.nconst = 1
 	self.nxy = 1
+	self.nco = 1
 	self.nstart_flag = 0
 	self.nstart = 0
 	self.nend_flag = 0
@@ -24,6 +25,7 @@ def read_report(p):
     cvs = []
     dA = []
     fvall = []
+    mc = []
 
     for i in range(p.nconst):
         cvs.append([])
@@ -71,6 +73,9 @@ def read_report(p):
             n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
+        elif i.strip().startswith("mc> S"):
+            fv1 = float(tokens[2])
+            mc.append(fv1)
         elif i.strip().startswith("b_m>"):
             fv1 = float(tokens[1]) # lambda
             fv2 = float(tokens[2]) # |z|^(-1/2)
@@ -120,9 +125,9 @@ def read_report(p):
         o.write("%12.4f%12.4f%12.4f\n"%(x_ave, y_ave, std))
         o.close()
     
-    return cvs, dA
+    return cvs, dA, mc
 
-def plot_data(cvs, dA, p):
+def plot_data(cvs, dA, mc, p):
     """
     Plot the data
     """
@@ -163,6 +168,7 @@ def main():
     parser.add_argument("-plot", action="store_true", help="plot the data")
     parser.add_argument("-nconst", type=int, nargs=1, help="number of constraints")
     parser.add_argument("-nxy", type=int, nargs=1, help="constraint id to plot")
+    parser.add_argument("-nco", type=int, nargs=1, help="variable to observe")
     parser.add_argument("-begin", type=int, nargs=1, help="step to begin with")
     parser.add_argument("-end", type=int, nargs=1, help="step to end up with")
     args = parser.parse_args()
@@ -178,11 +184,22 @@ def main():
     if args.end:
         p.nend_flag = 1
         p.nend = int(args.end[0])
+    if args.nco:
+        p.nco = int(args.nco[0])
 
-    cvs, dA = read_report(p)
+    cvs, dA, mc = read_report(p)
+
+    if args.nco:
+        o = open("co.dat", "w")
+        for i in range(len(mc)):
+            if i%p.nco == 0:
+                o.write("\n")
+                o.write("%12d"%(int(i/p.nco)))
+            o.write("%12.4f"%(mc[i]))
+        o.close()
 
     if args.plot:
-        plot_data(cvs, dA, p)
+        plot_data(cvs, dA, mc, p)
 
 if __name__ == "__main__":
     main()

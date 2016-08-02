@@ -482,5 +482,113 @@ def toJdft(system, outfile="coords"):
     o.write("\n")
     o.close()
 
-    
+def toFullLammps(system, outfile="output.data"):
+    """ output to lammps data file in full format
+    """
+
+    s = system
+    o = open(outfile, 'w')
+    o.write("# \n")
+    o.write("\n")
+    o.write("%d atoms\n"%s.n_atoms)
+    o.write("%d bonds\n"%s.n_bonds)
+    o.write("%d angles\n"%s.n_angles)
+    o.write("%d dihedrals\n"%s.n_dihedrals)
+    o.write("%d impropers\n\n"%s.n_impropers)
+
+    o.write("%d atom types\n"%s.n_atomtypes)
+    o.write("%d bond types\n"%s.n_bondtypes)
+    o.write("%d angle types\n"%s.n_angletypes)
+    o.write("%d dihedral types\n"%s.n_dihedraltypes)
+    o.write("%d improper types\n\n"%s.n_impropertypes)
+
+    pbc = s.pbc
+    if len(pbc) >= 6:
+        if pbc[3] == 90.0 and pbc[4] == 90 and pbc[5] == 90:
+            o.write(" %12.4f %12.4f xlo xhi\n"%(0.0, pbc[0]))
+            o.write(" %12.4f %12.4f ylo yhi\n"%(0.0, pbc[1]))
+            o.write(" %12.4f %12.4f zlo zhi\n"%(0.0, pbc[2]))
+        else:
+            xx, xy, xz, yy, yz, zz = lattice2v(pbc)
+            o.write(" %12.4 %12.4f xlo xhi\n"%(0.0, xx))
+            o.write(" %12.4 %12.4f ylo yhi\n"%(0.0, yy))
+            o.write(" %12.4 %12.4f zlo zhi\n"%(0.0, zz))
+            o.write("%12.4f%12.4f%12.4f xy xz yz\n\n"%(xy, xz, yz))        
+    else:
+        print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
+        o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
+        o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
+
+    o.write("\nMasses\n\n")
+    counter = 1
+    for i in s.atomtypes:
+        # atom name 
+        na = counter
+        ele = s.atomtypes[na-1]
+        o.write("%12d %12s # %s\n"%(na, ELEMENT2MASS[ele], ele))
+        counter += 1 
+    o.write("\n")
+    o.write("Atoms\n")
+    o.write("\n")
+
+    counter = 1
+    for i in s.atoms:
+        line = ''
+        line += "%12d"%counter
+        line += "%12d"%i.resn
+        line += "%6d"%i.type2
+        line += "%12.6f"%i.charge
+        line += "%12.6f"%i.x[0]
+        line += "%12.6f"%i.x[1]
+        line += "%12.6f"%i.x[2]
+        line += "    #    "
+        line += "%6s"%i.name
+        line += "\n"
+        o.write(line)
+        counter += 1
+
+    counter = 1
+    if s.n_bonds > 0:
+        o.write("\nBonds\n\n")
+        for i in s.bonds:
+            o.write("%12d"%counter)
+            o.write("%12d"%i[1])
+            o.write("%12d"%i[2])
+            o.write("%12d"%i[3])
+            o.write("\n")
+            counter += 1
+
+    counter = 1
+    if s.n_angles > 0:
+        o.write("\nAngles\n\n")
+        for i in s.angles:
+            o.write("%12d"%counter)
+            o.write("%12d"%i[1])
+            o.write("%12d"%i[2])
+            o.write("%12d"%i[3])
+            o.write("%12d"%i[4])
+            o.write("\n")
+            counter += 1
+
+    counter = 1
+    if s.n_dihedrals > 0:
+        o.write("\nDihedrals\n\n")
+        for i in s.dihedrals:
+            o.write("%12d"%counter)
+            o.write("%12d"%i[1])
+            o.write("%12d"%i[2])
+            o.write("%12d"%i[3])
+            o.write("%12d"%i[4])
+            o.write("%12d"%i[5])
+            o.write("\n")
+            counter += 1
+
+    if len(s.ffparams) > 0:
+        o.write("\n")
+        for i in s.ffparams:
+            o.write(i)
+        o.write("\n")
+
+    o.close()
 

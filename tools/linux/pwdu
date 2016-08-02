@@ -12,6 +12,8 @@ if "PMD" in cmd:
     wcmd = wcmd.replace("/net/hulk/PMD/tcheng/", "/home/tao/Disk/pmd/")
 elif "temp1" in cmd:
     wcmd = wcmd.replace("/temp1/jobs/", "/home/tao/Disk/giant12/")
+elif "/net/hulk/home6/chengtao/" in cmd:
+    wcmd = wcmd.replace("/net/hulk/home6/chengtao/", "/home/tao/Disk/atom/")
     
 #wcmd = wcmd.replace("/", "\\")
 print wcmd
