@@ -71,11 +71,11 @@ def getData(logfile, key):
     if len(step) > 0:
         plt.xlabel = "Simulation Steps"
     plt.ylabel(key)
-    plt.savefig("%s.eps"%key)
-    plt.show()
+    #plt.savefig("%s.eps"%key)
+    #plt.show()
     o = open("%s_lammps.csv"%key, "w")
     for i in range(len(x)):
-        o.write("%.4f\t,%.4f\n"%(x[i], data[i]))
+        o.write("%.4f %.4f\n"%(x[i], data[i]))
     o.close()
 
 def main():
