@@ -29,10 +29,15 @@ def getEnerTerms(logfile):
                 keys.append(tokens[i*3])
     f.close()
 
-    print "Terms you can select: "
+    sys.stdout.write("Terms you can select: ")
+    n = 0
     for i in keys:
-        print i
-
+        if n%8 == 0:
+            sys.stdout.write("\n")
+        sys.stdout.write("%-8s\t"%i)
+        n += 1
+    sys.stdout.write("\n")
+            
 def getData(logfile, key):
     data = []
     step = []
@@ -60,7 +65,7 @@ def getData(logfile, key):
     ave = np.average(data[len(data)/10:])
     std = np.std(data[len(data)/10:])
 
-    print ave, std
+    sys.stdout.write("%8s = %15.2f (%.2f)\n"%(key, ave, std))
 
     data = np.array(data)
     textx = (np.average(x) + np.min(x))/2
@@ -71,11 +76,11 @@ def getData(logfile, key):
     if len(step) > 0:
         plt.xlabel = "Simulation Steps"
     plt.ylabel(key)
-    plt.savefig("%s.eps"%key)
-    plt.show()
+    plt.savefig("%s.png"%key)
+    #plt.show()
     o = open("%s_lammps.csv"%key, "w")
     for i in range(len(x)):
-        o.write("%.4f\t,%.4f\n"%(x[i], data[i]))
+        o.write("%.4f,%.4f\n"%(x[i], data[i]))
     o.close()
 
 def main():
@@ -84,8 +89,9 @@ def main():
     else:
         logfile = sys.argv[1]
         if len(sys.argv) > 2:
-            key = sys.argv[2]
-            getData(logfile, key)
+            keys = sys.argv[2:]
+            for key in keys:
+                getData(logfile, key)
         else:
             getEnerTerms(logfile)
 
