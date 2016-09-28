@@ -8,6 +8,7 @@ import argparse
 import numpy as np
 from scipy import integrate
 import matplotlib.pyplot as plt
+#import mpltex
 
 NSTART = 20
 
@@ -127,6 +128,7 @@ def read_report(p):
     
     return cvs, dA, mc
 
+#@mpltex.acs_decorator
 def plot_data(cvs, dA, mc, p):
     """
     Plot the data

@@ -2,6 +2,7 @@
 @bug: the first geo missing BIOGRF header
 """
 
+import sys
 import argparse
 
 def dumpBlock(dumpfile, outfile="dump.sep", dt = 1):

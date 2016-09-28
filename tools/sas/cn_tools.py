@@ -32,7 +32,7 @@ from data import ReaxData
 from output_conf import toPdb, toReaxLammps, toXyz
 
 def read_data():
-    datafile = "lammps.data"
+    datafile = "output.data"
     a = ReaxData(datafile)
     b = a.parser()
     b.assignAtomTypes()
@@ -99,13 +99,20 @@ def surface_atoms_cut_off(b):
 def surface_atoms_read(b):
     sur = np.loadtxt("sur_sas.dat")
     b1 = copy.deepcopy(b)
-    atoms = []
+    b2 = copy.deepcopy(b)
+    atoms_sur = []
+    atoms_bulk = []
     for i in range(len(sur)):
         if int(sur[i]) == 1:
-            atoms.append(b.atoms[i])
-    b1.atoms = atoms
+            atoms_sur.append(b.atoms[i])
+        else:
+            atoms_bulk.append(b.atoms[i])
+    b1.atoms = atoms_sur
+    b2.atoms = atoms_bulk
     toPdb(b1, "surface_atoms.pdb")
     toXyz(b1, "surface_atoms.xyz")
+    toPdb(b2, "bulk_atoms.pdb")
+    toXyz(b2, "bulk_atoms.xyz")
 
 def main():
     b = read_data() 
