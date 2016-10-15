@@ -1,6 +1,6 @@
 from block import dumpBlock
 from dump import Dump
-from output_conf import toXyz, toPdb, toPOSCAR
+from output_conf import toXyz, toPdb, toPoscar
 
 lmpfile = "dump.lammpstrj"
 sepfile = "dump.sep"
