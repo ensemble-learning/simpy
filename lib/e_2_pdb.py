@@ -5,7 +5,7 @@ import sys
 import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic, toPoscar
+from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic, toPoscar, toJdft
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -43,8 +43,8 @@ def withPbc(testfile="supper.pdb", args=''):
     a = Pdb(testfile)
     b = a.parser()
     b.assignAtomTypes()
-    print b.atomtypes
     b.assignEleTypes()
+    b.toFrac()
     #b.translate(12.0, "z")
     toXyz(b, "out.xyz")
     toMusic(b, "out.music")
@@ -56,6 +56,7 @@ def withPbc(testfile="supper.pdb", args=''):
     toGeo(b, "sim.geo")
     toMsd(b, "sim.msd")
     toPoscar(b,)
+    toJdft(b,)
     if args:
         if args.element:
             toPdb(b, "out.pdb", 1)
