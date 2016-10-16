@@ -19,20 +19,20 @@ def toReaxLammps(system, outfile="lammps.data"):
     pbc = system.pbc
     if len(pbc) >= 6:
         if pbc[3] == 90.0 and pbc[4] == 90 and pbc[5] == 90:
-            o.write(" 0.0 %9.4f xlo xhi\n"%pbc[0])
-            o.write(" 0.0 %9.4f ylo yhi\n"%pbc[1])
-            o.write(" 0.0 %9.4f zlo zhi\n"%pbc[2])
+            o.write(" 0.0 %12.7f xlo xhi\n"%pbc[0])
+            o.write(" 0.0 %12.7f ylo yhi\n"%pbc[1])
+            o.write(" 0.0 %12.7f zlo zhi\n"%pbc[2])
         else:
             xx, xy, xz, yy, yz, zz = lattice2v(pbc)
-            o.write(" 0.0 %9.4f xlo xhi\n"%xx)
-            o.write(" 0.0 %9.4f ylo yhi\n"%yy)
-            o.write(" 0.0 %9.4f zlo zhi\n"%zz)
-            o.write("%9.4f%9.4f%9.4f xy xz yz\n\n"%(xy, xz, yz))        
+            o.write(" 0.0 %12.7f xlo xhi\n"%xx)
+            o.write(" 0.0 %12.7f ylo yhi\n"%yy)
+            o.write(" 0.0 %12.7f zlo zhi\n"%zz)
+            o.write("%12.7f%12.7f%12.7f xy xz yz\n\n"%(xy, xz, yz))        
     else:
         print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
-        o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
-        o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
-        o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f xlo xhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f ylo yhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f zlo zhi\n"%(-25.0, 25.0))
     o.write("Masses\n\n")
     for i in system.map:
         # atom name 
@@ -52,9 +52,9 @@ def toReaxLammps(system, outfile="lammps.data"):
         line += "%-6d"%counter
         line += "%3d"%i.type1
         line += "%10.6f"%i.charge
-        line += "%12.6f"%i.x[0]
-        line += "%12.6f"%i.x[1]
-        line += "%12.6f"%i.x[2]
+        line += "%16.9f"%i.x[0]
+        line += "%16.9f"%i.x[1]
+        line += "%16.9f"%i.x[2]
         line += "\n"
         o.write(line)
         counter += 1

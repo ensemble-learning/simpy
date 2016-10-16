@@ -15,6 +15,7 @@ for i in range(0, nframe, dt):
 #for i in range(10):
     a = Dump("%s%05d.dump"%(sepfile,i))
     b = a.parser()
+    b.assignAtomTypes()
     b.assignEleTypes()
     b.toFrac()
 
