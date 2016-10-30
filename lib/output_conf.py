@@ -19,20 +19,20 @@ def toReaxLammps(system, outfile="lammps.data"):
     pbc = system.pbc
     if len(pbc) >= 6:
         if pbc[3] == 90.0 and pbc[4] == 90 and pbc[5] == 90:
-            o.write(" 0.0 %9.4f xlo xhi\n"%pbc[0])
-            o.write(" 0.0 %9.4f ylo yhi\n"%pbc[1])
-            o.write(" 0.0 %9.4f zlo zhi\n"%pbc[2])
+            o.write(" 0.0 %12.7f xlo xhi\n"%pbc[0])
+            o.write(" 0.0 %12.7f ylo yhi\n"%pbc[1])
+            o.write(" 0.0 %12.7f zlo zhi\n"%pbc[2])
         else:
             xx, xy, xz, yy, yz, zz = lattice2v(pbc)
-            o.write(" 0.0 %9.4f xlo xhi\n"%xx)
-            o.write(" 0.0 %9.4f ylo yhi\n"%yy)
-            o.write(" 0.0 %9.4f zlo zhi\n"%zz)
-            o.write("%9.4f%9.4f%9.4f xy xz yz\n\n"%(xy, xz, yz))        
+            o.write(" 0.0 %12.7f xlo xhi\n"%xx)
+            o.write(" 0.0 %12.7f ylo yhi\n"%yy)
+            o.write(" 0.0 %12.7f zlo zhi\n"%zz)
+            o.write("%12.7f%12.7f%12.7f xy xz yz\n\n"%(xy, xz, yz))        
     else:
         print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
-        o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
-        o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
-        o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f xlo xhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f ylo yhi\n"%(-25.0, 25.0))
+        o.write(" %12.7f %12.7f zlo zhi\n"%(-25.0, 25.0))
     o.write("Masses\n\n")
     for i in system.map:
         # atom name 
@@ -52,9 +52,9 @@ def toReaxLammps(system, outfile="lammps.data"):
         line += "%-6d"%counter
         line += "%3d"%i.type1
         line += "%10.6f"%i.charge
-        line += "%12.6f"%i.x[0]
-        line += "%12.6f"%i.x[1]
-        line += "%12.6f"%i.x[2]
+        line += "%16.9f"%i.x[0]
+        line += "%16.9f"%i.x[1]
+        line += "%16.9f"%i.x[2]
         line += "\n"
         o.write(line)
         counter += 1
@@ -334,7 +334,7 @@ def toMsd(system, outfile="dff.msd"):
     o.close()
 
 def toPoscar(system, outfile="POSCAR"):
-    """Output the msd file
+    """Output the POSCAR file
     """
     s = system
     o = open(outfile, "w")
@@ -345,12 +345,6 @@ def toPoscar(system, outfile="POSCAR"):
     a = [xx, 0.0, 0.0]
     b = [xy, yy, 0.0]
     c = [xz, yz, zz]
-
-    """
-    latvecs = np.array([a, b, c], dtype=float)
-    invlatvecs = np.linalg.inv(latvecs)
-    [xf, yf, zf] = np.dot(coords[i], invlatvecs)
-    """
 
     # write the cells
     for i in a:
@@ -363,21 +357,33 @@ def toPoscar(system, outfile="POSCAR"):
         o.write("%20.15f"%i)
     o.write("\n")
 
-    for i in s.atomtypes:
+    elements = {}
+    elements_list = []
+    # sort the coordinations according to element type
+    for i in s.atoms:
+        element = i.element
+        if not element in elements.keys():
+            elements[element] =[]
+            elements_list.append(element)
+        elements[element].append(i)
+    
+    for i in elements_list:
         o.write("%6s"%i)
     o.write("\n")
-    for i in s.natoms:
-        o.write("%6d"%i)
+
+    for i in elements_list:
+        o.write("%6d"%len(elements[i]))
     o.write("\n")
     o.write("Selective dynamics\n")
     o.write("Direct\n")
     coords = []
     coordsXr = []
     natom = 0
-    for i in s.atoms:
-        coords.append(np.array(i.xFrac))
-        coordsXr.append(i.xr)
-        natom += 1
+    for i in elements_list:
+        for j in elements[i]:
+            coords.append(np.array(j.xFrac))
+            coordsXr.append(j.xr)
+            natom += 1
 
     for i in range(natom):
         xf = coords[i][0]

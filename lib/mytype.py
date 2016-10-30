@@ -2,7 +2,10 @@
 @version: 1.0
 @author: hawkweedcheng
 @contact: chengtao@sjtu.edu.cn
+@todo: 
+        - 2016-10-05 convert xyz to frac;
 """
+import numpy
 import math
 import re
 from cons import ELEMENT2MASS 
@@ -238,6 +241,25 @@ class System():
         for i in self.atoms:
             i.type1 = c[i.name.strip()]
 
+    def toFrac(self,):
+        a2r = numpy.pi / 180.0
+        alpha = a2r * self.pbc[3]
+        beta = a2r * self.pbc[4]
+        gamma = a2r * self.pbc[5]
+        a, b, c = self.pbc[0], self.pbc[1], self.pbc[2]
+        v = math.sqrt(1 -math.cos(alpha)*math.cos(alpha)\
+                 - math.cos(beta)*math.cos(beta)\
+                 - math.cos(gamma)*math.cos(gamma)\
+                 + 2*math.cos(alpha)*math.cos(beta)*math.cos(gamma))
+        tmat = numpy.matrix( [
+            [1.0/a, -math.cos(gamma)/(a*math.sin(gamma)), (math.cos(alpha)*math.cos(gamma)-math.cos(beta))/(a*v*math.sin(gamma))],
+            [ 0.0, 1.0/(b*math.sin(gamma)), (math.cos(beta)*math.cos(gamma)-math.cos(alpha))/ (b*v*math.sin(gamma))  ],
+            [ 0.0, 0.0, math.sin(gamma)/(c*v)]])
+        for i in self.atoms:
+            cart_coord = numpy.array(i.x)
+            r = cart_coord*tmat.T
+            i.xFrac = numpy.squeeze(numpy.asarray(r))
+        
     def translate(self, delta=0.0, axis="z"):
         """ translate the coordination along x, y or z
         """
