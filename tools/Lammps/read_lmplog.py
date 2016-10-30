@@ -67,6 +67,7 @@ def getData(logfile, key):
 
     sys.stdout.write("%8s = %15.2f (%.2f)\n"%(key, ave, std))
 
+"""
     data = np.array(data)
     textx = (np.average(x) + np.min(x))/2
     texty = (np.average(data) + np.max(data))/2
@@ -82,6 +83,7 @@ def getData(logfile, key):
     for i in range(len(x)):
         o.write("%.4f,%.4f\n"%(x[i], data[i]))
     o.close()
+"""
 
 def main():
     if len(sys.argv) < 2:
