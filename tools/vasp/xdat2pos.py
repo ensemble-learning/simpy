@@ -90,6 +90,8 @@ def toPOSCAR(t0, conf, steps):
 def main():
     a = Poscar("POSCAR") 
     b = a.parser()
+    b.assignAtomTypes()
+    b.assignEleTypes()
     conf, steps = parse_XDATCAR()
     toPOSCAR(b, conf, steps)
 
