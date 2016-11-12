@@ -7,6 +7,8 @@ import sys
 import argparse
 import numpy as np
 from scipy import integrate
+import matplotlib as mpl
+mpl.use('Agg')
 import matplotlib.pyplot as plt
 #import mpltex
 
@@ -160,7 +162,7 @@ def plot_data(cvs, dA, mc, p):
     ax.set_ylabel("FE (ev)", size="x-large")
     ax.set_xlabel("CV", size="x-large")
     plt.savefig("fe.png")
-    plt.show()
+    #plt.show()
 
 def main():
     """
