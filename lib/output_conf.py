@@ -601,7 +601,6 @@ def toFullLammps(system, outfile="output.data"):
 def toCfg(system, outfile="out.cfg"):
     """Output the cfg file
     """
-    print "I am here!!!!!!!!!"
     s = system
     o = open(outfile, "w")
     o.write("Number of particles = %d\n"%len(s.atoms))

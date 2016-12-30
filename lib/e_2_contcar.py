@@ -4,6 +4,7 @@ import argparse
 from mytype import System, Molecule, Atom
 from poscar import Poscar
 from output_conf import toXyz, toGeo, toPdb, toReaxLammps, toJdft
+from cons import ATOMIC_MASS_CONSTANT
 
 def main():
     parser = argparse.ArgumentParser()
@@ -15,10 +16,13 @@ def main():
     b = a.parser()
     b.assignAtomTypes()
     b.assignEleTypes()
-    print b.getVol()
+    vol = b.getVol()
+    mass = b.getMass()
+    density = mass/vol*ATOMIC_MASS_CONSTANT*1e27
+    print density
     #print b.pbc
     
-    toXyz(b)
+    toXyz(b, "contcar.xyz")
     toGeo(b, "geo")
     toPdb(b, "sim.pdb")
     toReaxLammps(b, "lammps.data")
