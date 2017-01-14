@@ -1,7 +1,8 @@
 """
 Parse the Jaguar out file
 """
-import sys
+import sys, os
+import shutil
 import re
 
 class OneStep():
@@ -39,6 +40,8 @@ def parse_out(fname):
                 frame.energy = float(tokens[1])
             elif i.strip().startswith("new geometry:"):
                 break
+            elif i.strip().startswith("final geometry:"):
+                break
         counter = 0
         for i in f:
             if len(i.strip()) == 0:
@@ -70,6 +73,7 @@ def toXYZ(frames):
             o.write("%s\t%.6f\t%.6f\t%.6f\n"%(ele, x, y, z))
         o.close()
         counter += 1
+    shutil.copy("config_%03d.xyz"%(counter-1), "final.xyz")
 
 def usage():
     sys.stdout.write("python parse_out.py outfile\n")
@@ -80,6 +84,9 @@ def main():
     else:
         fname = sys.argv[1]
         frames = parse_out(fname)
+        if not os.path.exists("conf"):
+            os.mkdir("conf")
+        os.chdir("conf")
         toXYZ(frames)
 
 if __name__ == "__main__":
