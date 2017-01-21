@@ -29,7 +29,7 @@ elif socket.gethostname() == "zwicky":
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
-    LIB = "/home/tao/Soft/simpy/lib"
+    LIB = "/home/tao/Soft/simpy/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
