@@ -1,4 +1,4 @@
-""" read the geo file and output to data (LAMMPS), geo and xyz file.
+""" add adsorbed atoms on catalysis
 """
 import sys, socket
 import copy
@@ -37,8 +37,10 @@ from output_conf import toPdb, toReaxLammps
 
 DELTA_X = 2.77
 
-
 def read_pdb(pdbfile):
+    """read pdb file
+    """
+
     a = Pdb(pdbfile)
     b = a.parser()
     b.assignAtomTypes()
@@ -46,6 +48,8 @@ def read_pdb(pdbfile):
     return b
 
 def read_data(datafile):
+    """read data file
+    """
     a = ReaxData(datafile)
     b = a.parser()
     b.assignAtomTypes()
@@ -53,10 +57,14 @@ def read_data(datafile):
     return b
 
 def read_cn(cnfile):
+    """read cn file
+    """
     cn = np.loadtxt(cnfile)
     return cn
 
 def read_build_log():
+    """read log file 
+    """
     n_ignore = 0
     ndx = []
     f =open("build.log", "r")
@@ -110,6 +118,8 @@ def cal_centers(b):
     return centers
 
 def add_oh(b, centers, cn, n_ignore, ndx):
+    """add oh
+    """
     dx = DELTA_X
     zl = b.pbc[2]
     b1 = copy.deepcopy(b)
@@ -181,6 +191,8 @@ def add_oh(b, centers, cn, n_ignore, ndx):
     toPdb(b1, "add_oh.pdb")
 
 def add_o(b, centers, cn):
+    """add o
+    """
     dx = DELTA_X
     zl = b.pbc[2]
     b1 = copy.deepcopy(b)
@@ -217,6 +229,8 @@ def add_o(b, centers, cn):
     toPdb(b1, "add_o.pdb")
 
 def add_h(b, centers, cn):
+    """add h
+    """
     dx = DELTA_X
     zl = b.pbc[2]
     b1 = copy.deepcopy(b)
@@ -253,6 +267,8 @@ def add_h(b, centers, cn):
     #toPdb(b1, "add_h_%05d.pdb"%i)
     
 def main():
+    """add adsorbed atoms on catalysis
+    """
     pdb = 0
     if pdb:
         pdbfile = "out_sorted.pdb"
@@ -273,4 +289,5 @@ def main():
     add_oh(b, centers, cn, n_ignore, ndx)
     
 
-main()
+if __name__ == "__main__":
+    main()
