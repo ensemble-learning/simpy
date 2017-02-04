@@ -1,0 +1,63 @@
+#!/bin/bash
+
+#PBS -V
+#PBS -j oe
+#PBS -N JDFT
+#PBS -l nodes=1:core16
+#PBS -l walltime=12:00:00
+
+export JDFTLOC=/home/haixiao/JDFTx/build
+export exe=$JDFTLOC/jdftx
+echo "The JDFT executable is: " $exe
+
+export DATADIR=$PBS_O_WORKDIR
+export WORKDIR=/panfs/ds06/wag/tcheng
+
+export NPROCS=`wc -l $PBS_NODEFILE | cut -f1 -d " "`
+export JOBID=`echo $PBS_JOBID | awk -F'.' '{print $1}'`
+export OUTPUTDIR=$WORKDIR/JDFT/$JOBID
+echo "The JDFT output will temporarily be written to :" $OUTPUTDIR
+echo "JDFT Job: " $JOBID "is starting with " $NPROCS "cores on:"
+cat $PBS_NODEFILE
+echo
+
+# Create Directories
+#
+mkdir -p $OUTPUTDIR
+
+# export job info
+#
+echo $PBS_JOBID >  $DATADIR/jobinfo
+cat $PBS_NODEFILE >>  $DATADIR/jobinfo
+echo $OUTPUTDIR >>  $DATADIR/jobinfo
+
+# Copy executable and any required input files to your work directory
+#
+cp $DATADIR/* $OUTPUTDIR
+cd $OUTPUTDIR
+
+#
+# Run JDFT
+#
+date
+$exe -i ce.in -o ce.log -d
+wait
+$exe -i u0.in -o u0.log -d
+wait
+$exe -i u1.in -o u1.log -d
+wait
+$exe -i u2.in -o u2.log -d
+
+
+echo
+date
+#rm ce.*
+echo "JDFT has finished."
+echo "The JDFT output is being copied back to: " $PBS_O_WORKDIR
+cd ..
+tar -cvzf $JOBID.tar.gz $JOBID
+cp -r $JOBID.tar.gz $PBS_O_WORKDIR
+rm $JOBID.tar.gz
+
+exit 0
+

@@ -1,0 +1,4 @@
+#Brillouin zone sampling
+kpoint-folding 1 1 1   # 3x3x1 uniform k-mesh
+kpoint 0 0 0  1        # gamma-centered k-point mesh
+
