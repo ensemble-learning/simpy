@@ -32,11 +32,11 @@ from output_conf import toPoscar, toXyz
 
 def gen_scan(s, args):
 
-    start = 0.8
-    end = 1.2
+    start = 0.9
+    end = 1.1
     start = np.power(start, 1/3.0)
     end = np.power(end, 1/3.0)
-    n = 11
+    n = 3
     x = np.linspace(start, end, n)
 
     for i in range(n):

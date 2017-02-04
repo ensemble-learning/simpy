@@ -1,0 +1,6 @@
+include coords
+include kpoints
+include common
+
+dump-name ce.$VAR
+
