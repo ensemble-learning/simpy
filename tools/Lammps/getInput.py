@@ -26,6 +26,8 @@ elif socket.gethostname() == "giant1":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
+elif socket.gethostname() == "tao-Precision-Tower-3420":
+    LIB = "/home/tao/Soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
@@ -117,6 +119,10 @@ def main(args):
         lines = MIN_CELL
     elif rtype == "RERUN":
         lines = RERUN 
+    elif rtype == "RERUN_REAX":
+        lines = RERUN_REAX
+    elif rtype == "RERUN_LJ":
+        lines = RERUN_LJ
 
     print "processing %s simulation......"%rtype
 
@@ -132,6 +138,14 @@ def main(args):
         lines = lines.replace("%ffield_atoms%", " ".join(elem))
 
     lines = lines.replace("%elements%", " ".join(elem))
+
+    if rtype == "RERUN_LJ":
+        lines = RERUN_LJ
+        tmp = ""
+        for i in range(len(elem)):
+            tmp += "pair_coeff     %d     %d      0.0100      1.0000\n"%(i+1, i+1)
+        print tmp
+        lines = lines.replace("%pair_coeff%", tmp)
 
     o = open("lammps_input", "w")
     o.write(lines)

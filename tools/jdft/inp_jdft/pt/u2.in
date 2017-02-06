@@ -1,0 +1,8 @@
+include coords
+include kpoints
+include common
+
+initial-state ce.$VAR
+target-mu -0.207266
+dump End None
+
