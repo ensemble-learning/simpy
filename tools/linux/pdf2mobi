@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+"""
+Usage: pdf2mobi pdffile
+Log:
+2017-01-13: version 1.0
+"""
+
+import os
+import sys
+import time
+DEBUG = 0
+
+if len(sys.argv) > 1:
+    link = sys.argv[1]
+    fname = "k%d"%(int(time.time()))
+
+    o = open(fname+".log", "w")
+    o.write("%s\n"%link)
+    o.write("convert pdf to epub\n")
+    cmd = "pandoc -s -r pdf %s -t epub -s -o %s.epub"%(link, fname)
+    o.write("done\n")
+    if DEBUG:
+        print cmd
+    os.system(cmd)
+    o.write("convert pdf to docx\n")
+    cmd = "pandoc -s -r pdf %s -t docx -s -o %s.docx"%(link, fname)
+    o.write("done\n")
+    if DEBUG:
+        print cmd
+    os.system(cmd)
+    o.write("convert epub to mobi\n")
+    cmd = "kindlegen %s.epub -o %s.mobi"%(fname, fname)
+    o.write("done\n")
+    if DEBUG:
+        print cmd
+    os.system(cmd)
+    o.write("remove epub file\n")
+    cmd = "rm %s.epub"%fname
+    os.system(cmd)
+    o.write("done\n")
+    o.close()
+else:
+    print __doc__
+
+
+
