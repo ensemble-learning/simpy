@@ -1,0 +1,18 @@
+atom_style        charge
+boundary        p p p
+
+units		metal
+timestep	0.001
+
+read_data       lammps.data
+pair_style      none
+atom_modify     sort 0 0
+
+# synchrotron
+compute         XRD all xrd  1.0 Cu 2Theta 20 110 c 1 1 1 LP 1 echo
+
+fix             1 all ave/histo/weight 1 1 1 20 110 500 c_XRD[1] c_XRD[2] &
+                mode vector file Cu.hist.xrd
+
+run             0
+
