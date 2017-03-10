@@ -98,7 +98,7 @@ def main(args):
     if args.c:
 	a = Xyz(fname)
         b = a.parser()
-        b.pbc = [100, 100, 100, 90, 90, 90]
+        b.pbc = [20, 20, 23, 90, 90, 90]
         toPdb(b)
 
     if args.s:
