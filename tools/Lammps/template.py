@@ -242,6 +242,80 @@ write_restart  npt.rst
 
 """
 
+RERUN_REAX = """
+units             real
+atom_style        charge
+boundary          p p p
+
+read_data        lammps.data
+#read_restart      min.rst
+
+reset_timestep   0
+
+#pair_style      reax/c control
+#pair_style      reax/c NULL lgvdw yes
+pair_style       %reax_potential% safezone 1.8 mincap 180
+
+#----Neighbor Section----#
+
+neighbor        1.0 bin
+neigh_modify    delay 0 every 10 check no
+
+pair_coeff      * * ffield %ffield_atoms%
+fix             QEQ all qeq/reax 1 0.0 10.0 1.0e-6 reax/c
+
+compute         reax all pair reax/c
+
+variable eb     equal c_reax[1]
+variable ea     equal c_reax[2]
+variable elp    equal c_reax[3]
+variable emol   equal c_reax[4]
+variable ev     equal c_reax[5]
+variable epen   equal c_reax[6]
+variable ecoa   equal c_reax[7]
+variable ehb    equal c_reax[8]
+variable et     equal c_reax[9]
+variable eco    equal c_reax[10]
+variable ew     equal c_reax[11]
+variable ep     equal c_reax[12]
+variable efi    equal c_reax[13]
+variable eqeq   equal c_reax[14]
+
+
+#--------Output info--------
+
+thermo         1
+thermo_style    custom step etotal ke pe temp press vol v_eb v_ea v_elp v_emol v_ev v_epen v_ecoa v_ehb v_et v_eco v_ew v_ep v_efi v_eqeq cella cellb cellc cellalpha cellbeta cellgamma pxx pyy pzz
+thermo_modify   line multi
+
+fix             metad all plumed plumedfile plumed.dat outfile COLVARS
+rerun           movie.xyz dump x y z box no format xyz
+
+"""
+
+RERUN_LJ = """units             real
+atom_style        charge
+boundary          p p p
+
+read_data        lammps.data
+
+reset_timestep   0
+
+pair_style     lj/cut     5.0
+pair_modify    mix arithmetic
+
+%pair_coeff%
+
+#--------Output info--------
+
+thermo         1
+thermo_style    custom step etotal ke pe temp press
+thermo_modify   line multi
+
+rerun           movie.xyz dump x y z box no format xyz
+"""
+
+
 CONTROL = """simulation_name         lammps  ! output files will carry this name + their specific extension
 
 tabulate_long_range     0 ! denotes the granularity of long range tabulation, 0 means no tabulation

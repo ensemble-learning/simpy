@@ -6,7 +6,7 @@ import math
 import sys
 import ConfigParser
 
-MAX_NEIBOUR = 24
+MAX_NEIBOUR = 200
 DEBUG = 0
 
 class Params():

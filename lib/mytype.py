@@ -128,7 +128,6 @@ class System():
         """@ivar: molecule list (format {resname: [ 1, 2, ....]})
         @type: dict 
         @note: """
-
         self.pbc = []
         """@ivar: pbc 
         @type: list 
@@ -323,6 +322,7 @@ class System():
         for i in self.atoms:
             mass += ELEMENT2MASS[i.element] 
         self.mass = mass
+        return mass
 
     def getBondDist(self, a1, a2):
         """Get the distance

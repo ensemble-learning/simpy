@@ -51,7 +51,7 @@ class ReaxData():
             elif "Atoms" in i:
                 break
             else:
-                self.atomtypes.append(MASS2ELMENT[int(float(tokens[1]) + 0.5)])
+                self.atomtypes.append(MASS2ELMENT[float(tokens[1])])
         
         counter = 0
         for i in f:

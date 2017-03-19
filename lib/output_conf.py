@@ -598,3 +598,46 @@ def toFullLammps(system, outfile="output.data"):
 
     o.close()
 
+def toCfg(system, outfile="out.cfg"):
+    """Output the cfg file
+    """
+    s = system
+    o = open(outfile, "w")
+    o.write("Number of particles = %d\n"%len(s.atoms))
+    o.write("A = 1.0 Angstrom (basic length-scale)\n")
+    xx, xy, xz, yy, yz, zz = lattice2v(s.pbc)
+    a = [xx, 0.0, 0.0]
+    b = [xy, yy, 0.0]
+    c = [xz, yz, zz]
+    o.write("H0(1,1) = %.4f A\n"%a[0])
+    o.write("H0(1,2) = %.4f A\n"%a[1])
+    o.write("H0(1,3) = %.4f A\n"%a[2])
+    o.write("H0(2,1) = %.4f A\n"%b[0])
+    o.write("H0(2,2) = %.4f A\n"%b[1])
+    o.write("H0(2,3) = %.4f A\n"%b[2])
+    o.write("H0(3,1) = %.4f A\n"%c[0])
+    o.write("H0(3,2) = %.4f A\n"%c[1])
+    o.write("H0(3,3) = %.4f A\n"%c[2])
+    o.write(".NO_VELOCITY.\n")
+    o.write("entry_count = 3\n")
+    
+    elements = {}
+    elements_list = []
+    # sort the coordinations according to element type
+    for i in s.atoms:
+        element = i.element
+        if not element in elements.keys():
+            elements[element] =[]
+            elements_list.append(element)
+        elements[element].append(i)
+    
+    for i in elements_list:
+        o.write("%d\n"%ELEMENT2ATN[i])
+        o.write("%s\n"%i)
+        for j in elements[i]:
+            xf = j.xFrac[0]
+            yf = j.xFrac[1]
+            zf = j.xFrac[2]
+            o.write("%20.15f%20.15f%20.15f\n"%(xf, yf, zf))
+    o.close()
+

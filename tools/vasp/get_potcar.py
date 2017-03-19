@@ -4,6 +4,8 @@ import socket
 
 LIB = ''
 
+print socket.gethostname()
+
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
@@ -14,8 +16,10 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
-elif socket.gethostname() == "comet-ln3.sdsc.edu":
+elif "comet" in socket.gethostname():
     LIB = "/home/tcheng/soft/simpy/lib"
+elif socket.gethostname() == "tao-Precision-Tower-3420":
+    LIB = "/home/tao/Soft/simpy/lib"
 elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
 
@@ -29,7 +33,8 @@ POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P
        "Ca":"Ca_pv", "Al":"Al", "Cu":"Cu", "Na":"Na", "Cl":"Cl", "Cr":"Cr", "Ga":"Ga",
         "Br":"Br", "D": "H", "Si": "Si", "Ni": "Ni", "Pt":"Pt_pv", "Co":"Co", "Cr":"Cr", 
        "I":"I", "K":"K_pv", "F":"F", "W":"W", "Au":"Au", "Cs":"Cs_sv", "Mg":"Mg",
-       "Ag":"Ag", "Se":"Se", "B":"B"}
+       "Ag":"Ag", "Se":"Se", "B":"B", "He":"He", "Ar":"Ar", "Xe":"Xe", "Kr":"Kr", 
+       "Mo": "Mo",}
 
 if socket.gethostname() == "cluster.hpc.org":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
@@ -41,8 +46,10 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "giant12":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
-elif socket.gethostname() == "comet-ln3.sdsc.edu":
+elif "comet" in socket.gethostname():
     POT_DATA_BASE = "/home/tcheng/soft/vasp.5.3/potpaw_PBE"
+elif socket.gethostname() == "tao-Precision-Tower-3420":
+    POT_DATA_BASE = "/home/tao/Soft/vasp/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "zwicky":
     POT_DATA_BASE = "/home/tcheng/Soft/potpaw_PBE"
 
