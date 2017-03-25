@@ -15,8 +15,8 @@ def get_efermi():
     return efermi
 
 def get_eq():
-    n0 = 120
-    n1 = 130
+    n0 = 40
+    n1 = 50
     f = open("vplanar.txt", "r")
     n = 0
     eq = 0.0
