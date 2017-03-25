@@ -98,7 +98,10 @@ def main(args):
     if args.c:
 	a = Xyz(fname)
         b = a.parser()
-        b.pbc = [20, 20, 23, 90, 90, 90]
+        if args.pbc:
+            b.pbc =  args.pbc
+        else:
+            b.pbc = [20, 20, 23, 90, 90, 90]
         toPdb(b)
 
     if args.s:
@@ -121,6 +124,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", nargs=1, help="configure file")
     parser.add_argument("-c", action='store_true', help="change format")
     parser.add_argument("-nbox", nargs=3, type=int, help="replicate the box in a, b and c")
+    parser.add_argument("-pbc", nargs=6, type=float, help="pbc parameters: a, b, c, alpha, beta and gamma")
     args = parser.parse_args()
 
     main(args)
