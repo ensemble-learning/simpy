@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import os
+import shutil
+
+folder = 'inp'
+if not os.path.exists(folder):
+    os.mkdir(folder)
+
+flist = ["POSCAR", "POTCAR", "KPOINTS", "INCAR"]
+
+for i in flist:
+    inputfile = i
+    outputfile = os.path.join(folder, inputfile)
+    shutil.copy(inputfile, outputfile)
+
+if os.path.exists("CONTCAR"):
+    inputfile = "CONTCAR"
+    outputfile = os.path.join(folder, "POSCAR")
+
+
