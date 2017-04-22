@@ -45,9 +45,9 @@ class Pdb():
             a = Atom()
             # note need to confirm with the standary pdb format
             a.name = i[12:17].strip()
-            a.x[0] = float(i[27:39])
-            a.x[1] = float(i[39:47])
-            a.x[2] = float(i[47:55])
+            a.x[0] = float(i[27:38])
+            a.x[1] = float(i[38:46])
+            a.x[2] = float(i[46:55])
             s.atoms.append(a)
 
         # only storage the first half of the bond matrix

@@ -169,17 +169,22 @@ def toPdb(system, outfile="test.pdb", element=0):
     counter = 1
     for i in system.atoms:
         o.write("HETATM")
-        o.write("%5d"%counter)
+        n_id = counter
+        if counter > 99999: 
+            n_id = counter/1000
+        o.write("%5d"%n_id)
         if len(i.name) > 4:
             i.name = i.name[:4]
         if element:
             i.name = i.element
         o.write("%4s"%i.name)
         o.write("%5s"%"LIG")
-        o.write("%6d"%counter)
-        o.write("%12.3f"%i.x[0])
-        o.write("%8.3f"%i.x[1])
-        o.write("%8.3f"%i.x[2])
+        if counter > 99999: 
+            n_id = counter/1000
+        o.write("%6d"%n_id)
+        o.write("%12.2f"%i.x[0])
+        o.write("%8.2f"%i.x[1])
+        o.write("%8.2f"%i.x[2])
         o.write("%6.2f"%1.0)
         o.write("%6.2f"%0.0)
         o.write("%12s"%i.name)

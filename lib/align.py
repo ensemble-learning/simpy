@@ -27,6 +27,8 @@ def align_axis(v1, v2):
     cos_tht = np.dot(v1, v2)/np.linalg.norm(v1)/np.linalg.norm(v2)
     tht = np.arccos(cos_tht)
     R = np.identity(3) + w_hat*np.sin(tht) + w_hat*w_hat*(1-np.cos(tht))
+    v_new = np.dot(R, v1)
+    print v_new
     return R
 
 def test():
@@ -34,6 +36,5 @@ def test():
     v2 = np.array([0.0, 0.0, 1.0])
     R = align_axis(v1, v2)
     print R
-
 if __name__ == "__main__":
     test()
