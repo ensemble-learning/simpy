@@ -2,14 +2,14 @@ import os, shutil
 # HubbardDerivs
 HD = { "C": -0.1492, "H": -0.1857, "O":-0.1575, "N":-0.1535,
         "Cu":-0.2000, "S":-0.11, "Na":-0.0454, "F":-0.1623,
-     "Ca":-0.0340,}
+     "Ca":-0.0340, "Cl": -0.0697}
 # MaxAngularMomentum
 MM = { "C": "p", "H": "s", "O":"p", "N":"p", "Cu":"d", "S":"d",
-      "Na": "p", "F":"p", "Ca":"p"}
+      "Na": "p", "F":"p", "Ca":"p", "Cl": "p"}
 # CovalentRadius 
 # http://periodictable.com/Properties/A/CovalentRadius.html
 CR = {"C":0.77, "H":0.37, "O": 0.73, "N":0.75, "Cu":1.38, "S":1.02,
-      "Na":0.71, "F":0.71, "Ca":1.76}
+      "Na":0.71, "F":0.71, "Ca":1.76, "Cl":0.99,}
 # HybridPolarisations
 HP = {
 "C": [1.382, 1.382, 1.382, 1.064, 1.064, 1.064, 3.8, 3.8, 3.8, 3.8, 3.8, 3.8, 2.50],
@@ -22,6 +22,7 @@ HP = {
 # fake values
 "F": [1.030, 1.030, 1.090, 1.090, 1.090, 1.090, 3.8, 3.8, 3.8, 3.8, 3.8, 3.8, 2.82],
 "Ca": [1.030, 1.030, 1.090, 1.090, 1.090, 1.090, 3.8, 3.8, 3.8, 3.8, 3.8, 3.8, 2.82],
+"Cl": [1.030, 1.030, 1.090, 1.090, 1.090, 1.090, 3.8, 3.8, 3.8, 3.8, 3.8, 3.8, 2.82],
 }
 
 class Gen():
@@ -106,7 +107,12 @@ def gen_inp_opt(gen):
         o.write("  }\n")
     o.write("}\n")
     o.write("\n")
+    o.write("Analysis = {\n")
+    o.write("  WriteEigenvectors = Yes\n")
+    o.write("}\n")
+    o.write("\n")
     o.write("Options = {\n")
+    o.write("  WriteDetailedXML = Yes\n")
     o.write("}\n")
     o.write("\n")
     o.write("ParserOptions = {\n")
