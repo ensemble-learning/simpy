@@ -44,6 +44,7 @@ def gen_inp_opt(gen):
     o.write('    <<<"geo_start.gen"\n')
     o.write("}\n")
     o.write("\n")
+    # For opt
     o.write("Driver = ConjugateGradient {\n")
     o.write(" MovedAtoms = 1:-1\n")
     o.write(" MaxSteps = 50000\n")
@@ -51,6 +52,21 @@ def gen_inp_opt(gen):
     o.write(" MaxForceComponent = 1.0E-3\n")
     o.write("}\n")
     o.write("\n")
+
+    # For MD
+    
+    if 0:
+        o.write("Driver = VelocityVerlet {\n")
+        o.write("MovedAtoms = 1:-1\n")
+        o.write("Steps = 1000\n")
+        o.write("TimeStep [fs] = 1.0\n")
+        o.write("Thermostat = Berendsen {\n")
+        o.write("Temperature [K] = 200\n")
+        o.write("CouplingStrength = 2\n")
+        o.write("AdaptFillingTemp = Yes\n")
+        o.write("}\n")
+        o.write("}\n")
+
     o.write("Hamiltonian = DFTB {\n")
     o.write("  SCC = Yes\n")
     o.write("  SCCTolerance = 1E-4\n")
