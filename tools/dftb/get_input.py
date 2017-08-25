@@ -50,6 +50,8 @@ def gen_inp_opt(gen):
     o.write(" MaxSteps = 50000\n")
     o.write(' AppendGeometries = Yes\n')
     o.write(" MaxForceComponent = 1.0E-3\n")
+    o.write("#LatticeOpt = Yes\n")
+    o.write("#Pressure [Pa] = 1.0E5\n")
     o.write("}\n")
     o.write("\n")
 
@@ -64,6 +66,7 @@ def gen_inp_opt(gen):
         o.write("Temperature [K] = 200\n")
         o.write("CouplingStrength = 2\n")
         o.write("AdaptFillingTemp = Yes\n")
+
         o.write("}\n")
         o.write("}\n")
 
@@ -95,23 +98,32 @@ def gen_inp_opt(gen):
     o.write('    Separator = "-"\n')
     o.write('    Suffix = ".skf"\n')
     o.write("  } \n")
-    o.write("  Dispersion = SlaterKirkwood {\n")
-    o.write("    PolarRadiusCharge = HybridDependentPol {\n")
-    # Dispersion
-    for i in gen.atoms:
-        ele = i
-        cr = CR[ele]
-        hp = HP[ele]
-        o.write("      %s = {\n"%ele)
-        o.write("        CovalentRadius [Angstrom] = %.2f\n"%cr)
-        o.write("        HybridPolarisations [Angstrom^3,Angstrom,] = {\n")
-        for j in hp:
-            o.write("%.3f "%j)
-        o.write("\n")
-        o.write("        }\n")
-        o.write("      }\n")
-    o.write("    }\n")
-    o.write("  }\n")
+    if 0: # Dispersion SlaterKirkwood
+        o.write("  Dispersion = SlaterKirkwood {\n")
+        o.write("    PolarRadiusCharge = HybridDependentPol {\n")
+        for i in gen.atoms:
+            ele = i
+            cr = CR[ele]
+            hp = HP[ele]
+            o.write("      %s = {\n"%ele)
+            o.write("        CovalentRadius [Angstrom] = %.2f\n"%cr)
+            o.write("        HybridPolarisations [Angstrom^3,Angstrom,] = {\n")
+            for j in hp:
+                o.write("%.3f "%j)
+            o.write("\n")
+            o.write("        }\n")
+            o.write("      }\n")
+        o.write("    }\n")
+        o.write("  }\n")
+    if 1: # Dispersion D3 Becke-Jonson (BJ)
+        o.write("  Dispersion = DftD3 {\n")
+        o.write("    Damping = BeckeJohnson {\n")
+        o.write("      a1 = 0.5719\n")
+        o.write("      a2 = 3.6017\n")
+        o.write("    }\n")
+        o.write("    s6 = 1.0\n")
+        o.write("    s8 = 0.5883\n")
+        o.write("  }\n")
 
     # Kpoints
     if gen.cell:
