@@ -1,11 +1,13 @@
 import os, shutil
 # HubbardDerivs
+# http://www.dftb.org/parameters/download/3ob/3ob-3-1-cc/
 HD = { "C": -0.1492, "H": -0.1857, "O":-0.1575, "N":-0.1535,
         "Cu":-0.2000, "S":-0.11, "Na":-0.0454, "F":-0.1623,
-     "Ca":-0.0340, "Cl": -0.0697}
+     "Ca":-0.0340, "Cl": -0.0697, "Mg":-0.02,
+      }
 # MaxAngularMomentum
 MM = { "C": "p", "H": "s", "O":"p", "N":"p", "Cu":"d", "S":"d",
-      "Na": "p", "F":"p", "Ca":"p", "Cl": "p"}
+      "Na": "p", "F":"p", "Ca":"p", "Cl": "p", "Mg":"p",}
 # CovalentRadius 
 # http://periodictable.com/Properties/A/CovalentRadius.html
 CR = {"C":0.77, "H":0.37, "O": 0.73, "N":0.75, "Cu":1.38, "S":1.02,
