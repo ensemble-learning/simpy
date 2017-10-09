@@ -76,6 +76,11 @@ def read_report(p):
             n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
+        elif i.strip().startswith("cc> D"):
+            fv1 = float(tokens[2])
+            n = nx%p.nconst
+            cvs[n].append(fv1)
+            nx += 1
         elif i.strip().startswith("mc> S"):
             fv1 = float(tokens[2])
             mc.append(fv1)
