@@ -1,0 +1,77 @@
+#!/usr/bin/env python
+
+import os
+import sys
+
+CMD = "/p/home/taocheng/src/mopac/MOPAC2016.exe"
+
+def read_input(inputfile):
+    inp = []
+    f = open(inputfile+".arc", "r")
+    for j in f:
+        if j.strip().startswith("FINAL GEOMETRY OBTAINED"):
+            break
+    for j in f:
+        inp.append(j)
+    f.close()
+    return inp
+
+def output_file(outputfile, inputfile, lines, inp, flag):
+    if flag:
+        o = open(outputfile+".mop", "w")
+        for i in lines:
+            o.write(i)
+        o.close()
+    inp[2] = "MMOK PDBOUT 0SCF\n"
+    o = open(inputfile + "-0scf.mop", "w")
+    for i in inp:
+        o.write(i)
+    o.close()
+
+def update_params(inp, val, n_atom, n_constrain):
+    tokens = inp[n_atom + 4].strip().split()
+    if n_constrain == 4:
+        tokens[5] = "%.2f"%val
+        tokens[6] = "0"
+    lines = inp
+    lines[n_atom + 4] = " ".join(tokens) + "\n"
+    return lines
+
+def run_mopac(outputfile, inputfile, flag):
+    if flag:
+        os.system("%s %s.mop"%(CMD, outputfile))
+    os.system("%s %s-0scf.mop"%(CMD, inputfile))
+
+def main():
+    # read parameters
+    if len(sys.argv) < 7:
+        sys.stdout.write("mopac_scan p0 n_p dp n_atom n_constrain inputfile\n")
+        sys.stdout.write("For example: mopac_scan 70.0 7 30.0 8 4 opt\n")
+    else:
+        p0 = float(sys.argv[1])
+        n_p = int(sys.argv[2])
+        dp = float(sys.argv[3])
+        
+        n_atom = int(sys.argv[4])
+        n_constrain = int(sys.argv[5])
+        inputfile = sys.argv[6]
+
+        val = 0
+        for i in range(n_p):
+            val = p0 + i*dp
+            # read mopac inputfile
+            inp = read_input(inputfile)
+            outputfile = "a_%03d"%val
+            # update parameters
+            lines = update_params(inp, val, n_atom, n_constrain)
+            # output mopac inputfile
+            output_file(outputfile, inputfile, lines, inp, 1)
+            # run mopac
+            run_mopac(outputfile, inputfile, 1)
+            inputfile = outputfile
+        inp = read_input(inputfile)
+        output_file(outputfile, inputfile, lines, inp, 0)
+        run_mopac(outputfile, inputfile, 0)
+
+if __name__ == "__main__":
+    main()
