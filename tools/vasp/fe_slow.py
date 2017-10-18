@@ -66,17 +66,17 @@ def read_report(p):
             n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
+        elif i.strip().startswith("cc> D"):
+            fv1 = float(tokens[2])
+            n = nx%p.nconst
+            cvs[n].append(fv1)
+            nx += 1
         elif i.strip().startswith("cc> A"):
             fv1 = float(tokens[2])
             n = nx%p.nconst
             cvs[n].append(fv1)
             nx += 1
         elif i.strip().startswith("cc> T"):
-            fv1 = float(tokens[2])
-            n = nx%p.nconst
-            cvs[n].append(fv1)
-            nx += 1
-        elif i.strip().startswith("cc> D"):
             fv1 = float(tokens[2])
             n = nx%p.nconst
             cvs[n].append(fv1)
@@ -92,7 +92,7 @@ def read_report(p):
             n = ny%p.nconst
             fvall[n].append([fv1, fv2, fv3, fv4])
             val = fv4/fv2
-            #print val, fv1, fv2, fv3, fv4
+            print val, fv1, fv2, fv3, fv4
             dA[n].append(val)
             ny += 1
     
