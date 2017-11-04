@@ -1,23 +1,22 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import shutil
 
-folder = 'inp'
-if not os.path.exists(folder):
-    os.mkdir(folder)
+if not os.path.exists("inp"):
+    os.mkdir("inp")
 
-flist = ["POSCAR", "POTCAR", "KPOINTS", "INCAR",
-         "runVASP_12.in"]
-
-for i in flist:
-    inputfile = i
-    outputfile = os.path.join(folder, inputfile)
-    shutil.copy(inputfile, outputfile)
-
-if os.path.exists("CONTCAR"):
-    inputfile = "CONTCAR"
-    outputfile = os.path.join(folder, "POSCAR")
-    shutil.copy(inputfile, outputfile)
-
+if os.path.exists("POSCAR"):
+    shutil.copy("POSCAR", "inp")
+if os.path.exists("POTCAR"):
+    shutil.copy("POTCAR", "inp")
+if os.path.exists("KPOINTS"):
+    shutil.copy("KPOINTS", "inp")
+if os.path.exists("INCAR"):
+    shutil.copy("INCAR", "inp")
+if os.path.exists("run.in"):
+    shutil.copy("run.in", "inp")
+if os.path.exists("ICONST"):
+    shutil.copy("ICONST", "inp")
 
