@@ -22,6 +22,8 @@ elif socket.gethostname() == "tao-Precision-Tower-3420":
     LIB = "/home/tao/Soft/simpy/lib"
 elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
+elif socket.gethostname() == "tao-ThinkCentre-M79":
+    LIB = "/home/tao/Soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -54,6 +56,8 @@ elif socket.gethostname() == "tao-Precision-Tower-3420":
     POT_DATA_BASE = "/home/tao/Soft/vasp/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "zwicky":
     POT_DATA_BASE = "/home/tcheng/Soft/potpaw_PBE"
+elif socket.gethostname() == "tao-ThinkCentre-M79":
+    POT_DATA_BASE = "/home/tao/Soft/vasp/vasp.5.3.5/potcar/potpaw_PBE"
 
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
