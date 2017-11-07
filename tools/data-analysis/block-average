@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+
+"""
+ref: http://aip.scitation.org/doi/pdf/10.1063/1.457480
+Title: Error estimates on averages of correlated data
+ref: http://pyblock.readthedocs.io/en/latest/tutorial.html
+pyblock
+"""
+
+import numpy as np
+import pyblock
+import sys
+
+def usage():
+    sys.stdout.write("block-average datafile ndata\n")
+
+def corr_data(N, L):
+    '''Generate random correlated data containing 2^N data points.
+    Randon data is convolved over a 2^L/10 length to give the correlated signal.'''
+    return numpy.convolve(numpy.random.randn(2**N), numpy.ones(2**L)/10, 'same')
+
+
+def block_average(input_data):
+
+    data = []
+    reblock_data = pyblock.blocking.reblock(input_data)
+    for reblock_iter in reblock_data:
+        x = int(reblock_iter[0])
+        xn = int(reblock_iter[1])
+        y = float(reblock_iter[4])
+        yerr = float(reblock_iter[5])
+        data.append([x, xn, y, yerr])
+
+    opt = pyblock.blocking.find_optimal_block(len(input_data), reblock_data)
+    #print(opt)
+    print(reblock_data[opt[0]])
+    o = open("output.dat", "w")
+    o.write("# opt block is %d\n"%opt[0])
+    for i in data:
+        o.write("%8d%8d%12.4f%12.4f\n"%(i[0], i[1], i[2], i[3]))
+    o.close()
+
+
+def test():
+    rand_data = corr_data(16, 6)
+    block_average(rand_data)
+
+def main():
+    if len(sys.argv) < 3:
+        usage()
+    else:
+        inputfile = sys.argv[1]
+        ndata = int(sys.argv[2])
+        data = np.loadtxt(inputfile)
+        data = data.transpose()
+        input_data = data[ndata]
+        block_average(input_data)
+
+if __name__ == "__main__":
+    main()

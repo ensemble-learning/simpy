@@ -18,7 +18,7 @@ elif socket.gethostname() == "giant12":
 elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
-    LIB = "/home/tao/Soft/simpy/simpy/lib/"
+    LIB = "/home/tao/Soft/simpy/lib/"
 elif socket.gethostname() == "fermion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "onyx" in socket.gethostname():
