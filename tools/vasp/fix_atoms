@@ -1,0 +1,21 @@
+#!/usr/bin/env python
+
+import shutil
+import sys
+import time
+
+n_atom0 = 8
+f = open("POSCAR", "r")
+lines = f.readlines()
+f.close()
+shutil.copy("POSCAR", "POSCAR.%d"%(int(time.time()*100.0)))
+
+if len(sys.argv) > 1:
+    for i in sys.argv[1:]:
+        n = int(i) + n_atom0
+        lines[n] = lines[n].replace("T", "F")
+
+o = open("POSCAR", "w")
+for i in lines:
+    o.write(i)
+o.close()
