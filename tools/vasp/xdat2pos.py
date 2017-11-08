@@ -21,6 +21,8 @@ elif socket.gethostname() == "tao-ThinkCentre-M79":
     LIB = "/home/tao/Soft/simpy/lib/"
 elif socket.gethostname() == "fermion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif "onyx" in socket.gethostname():
+    LIB = "/p/home/taocheng/src/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
