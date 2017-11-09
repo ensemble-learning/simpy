@@ -16,7 +16,7 @@ for i in folders:
         files.append(j)
     files.sort()
     for j in files:
-        fname = "POSCAR_%05d"%n
+        fname = "POSCAR_%06d"%n
         shutil.copy(j, "../%s"%fname)
         n += 1
     os.chdir("..")
