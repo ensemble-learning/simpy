@@ -1,0 +1,22 @@
+#!/usr/bin/env python
+
+import os, shutil
+
+folders = []
+for i in os.listdir("."):
+    if os.path.isdir(i):
+        folders.append(i)
+folders.sort()
+
+n = 0
+for i in folders:
+    os.chdir(i)
+    files = []
+    for j in os.listdir("."):
+        files.append(j)
+    files.sort()
+    for j in files:
+        fname = "POSCAR_%05d"%n
+        shutil.copy(j, "../%s"%fname)
+        n += 1
+    os.chdir("..")
