@@ -24,6 +24,8 @@ elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
 elif socket.gethostname() == "onyx06":
     LIB = "/p/home/taocheng/src/simpy/lib"
+elif socket.gethostname() == "onyx02":
+    LIB = "/p/home/taocheng/src/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
     LIB = "/home/tao/Soft/simpy/lib"
 
@@ -59,6 +61,8 @@ elif socket.gethostname() == "tao-Precision-Tower-3420":
 elif socket.gethostname() == "zwicky":
     POT_DATA_BASE = "/home/tcheng/Soft/potpaw_PBE"
 elif socket.gethostname() == "onyx06":
+    POT_DATA_BASE = "/p/home/taocheng/src/vasp/vasp.5.3/potcar/potpaw_PBE"
+elif socket.gethostname() == "onyx02":
     POT_DATA_BASE = "/p/home/taocheng/src/vasp/vasp.5.3/potcar/potpaw_PBE"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
     POT_DATA_BASE = "/home/tao/src/vasp/vasp.5.3.5/potcar/potpaw_PBE"
