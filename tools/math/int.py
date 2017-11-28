@@ -15,5 +15,5 @@ y_int = integrate.cumtrapz(y, x, initial=0)
 
 o = open("fe-int.dat", "w")
 for i in range(len(x)):
-    o.write("%12.4f%12.4f\n"%(x[i], y[i]))
+    o.write("%12.4f%12.4f\n"%(x[i], y_int[i]))
 
