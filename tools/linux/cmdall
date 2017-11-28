@@ -22,15 +22,16 @@ def get_folders():
 
 def exec_folders(dlist, cmd, args):
     for i in dlist:
-        run = cmd
-        os.chdir(i)
-        if args.v:
-            print "cmd processing in %s"%os.getcwd()
-        if args.arg:
-            folder = os.path.basename(os.getcwd())
-            run += " %s"%folder
-        os.system(run)
-        os.chdir("..")
+        if i not in args.ignore:
+            run = cmd
+            os.chdir(i)
+            if args.v:
+                print "cmd processing in %s"%os.getcwd()
+            if args.arg:
+                folder = os.path.basename(os.getcwd())
+                run += " %s"%folder
+            os.system(run)
+            os.chdir("..")
 
 def main():
     parser = argparse.ArgumentParser()
@@ -38,7 +39,7 @@ def main():
     parser.add_argument("-R", action="store_true", help="reverse the folder sequence")
     parser.add_argument("-v", action="store_true", help="verbose output")
     parser.add_argument("-arg", action="store_true", help="take folder as argument")
-    #parser.add_argument("-b", nargs=2, type=int, help="get the bond distance between a1, a2, a3")
+    parser.add_argument("-ignore", nargs="*", help="ignore the following folders")
     #parser.add_argument("-a", nargs=3, type=int,help="get the angle of a1-a2-a3")
     args = parser.parse_args()
 
@@ -51,6 +52,8 @@ def main():
     dlist = get_folders()
     if args.R:
         dlist.sort(reverse=True)
+    if args.ignore:
+        ignore_folders = args.ignore
 
     if len(cmd.strip()) > 0:
         exec_folders(dlist, cmd, args)
