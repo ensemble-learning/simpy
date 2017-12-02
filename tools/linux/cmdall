@@ -21,8 +21,11 @@ def get_folders():
 
 
 def exec_folders(dlist, cmd, args):
+    ignore_folders = []
+    if args.ignore:
+        ignore_folders = args.ignore
     for i in dlist:
-        if i not in args.ignore:
+        if i not in ignore_folders:
             run = cmd
             os.chdir(i)
             if args.v:
