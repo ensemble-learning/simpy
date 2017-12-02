@@ -1,0 +1,30 @@
+#!/usr/bin/env python
+"""
+Usage: html2docx[link]
+Log:
+2017-12-01: output the log info
+"""
+
+import os
+import sys
+import time
+DEBUG = 0
+
+if len(sys.argv) > 1:
+    link = sys.argv[1]
+    fname = "k%d"%(int(time.time()))
+
+    o = open(fname+".log", "w")
+    o.write("%s\n"%link)
+    o.write("convert html to docx\n")
+    cmd = "pandoc -s -r html %s -t docx -s -o %s.docx"%(link, fname)
+    o.write("done\n")
+    if DEBUG:
+        print cmd
+    os.system(cmd)
+    o.close()
+else:
+    print __doc__
+
+
+

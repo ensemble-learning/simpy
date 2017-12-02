@@ -22,15 +22,6 @@ if len(sys.argv) > 1:
     if DEBUG:
         print cmd
     os.system(cmd)
-    o.write("convert html to docx\n")
-    cmd = "pandoc -s -r html %s -t docx -s -o %s.docx"%(link, fname)
-    o.write("done\n")
-    o.write("convert html to docx\n")
-    cmd = "pandoc -s -r html %s -t latex --latex-engine=xelatex -s -o %s.pdf"%(link, fname)
-    o.write("done\n")
-    if DEBUG:
-        print cmd
-    os.system(cmd)
     o.write("convert epub to mobi\n")
     cmd = "kindlegen %s.epub -o %s.mobi"%(fname, fname)
     o.write("done\n")
