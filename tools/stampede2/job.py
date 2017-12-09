@@ -74,5 +74,5 @@ if len(wait_jobs) > 3:
 print "-"*20,
 print "Jobs summary",
 print "-"*20
-print totoal_jobs
+print total_jobs
 
