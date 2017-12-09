@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 """
-Usage: html2mobi [link]
+Usage: html2pdf [link]
 Log:
-2016-11-07: output the log info
+2017-12-01: output the log info
 """
 
 import os
@@ -16,15 +16,11 @@ if len(sys.argv) > 1:
 
     o = open(fname+".log", "w")
     o.write("%s\n"%link)
-    o.write("convert html to epub\n")
-    cmd = "pandoc -s -r html %s -t epub -s -o %s.epub"%(link, fname)
+    o.write("convert html to pdf\n")
+    cmd = "pandoc -s -r html %s -t latex --latex-engine=xelatex -s -o %s.pdf"%(link, fname)
     o.write("done\n")
     if DEBUG:
         print cmd
-    os.system(cmd)
-
-    o.write("remove epub file\n")
-    cmd = "rm %s.epub"%fname
     os.system(cmd)
     o.write("done\n")
     o.close()
