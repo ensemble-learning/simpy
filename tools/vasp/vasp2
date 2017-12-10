@@ -19,4 +19,6 @@ if os.path.exists("run.in"):
     shutil.copy("run.in", "inp")
 if os.path.exists("ICONST"):
     shutil.copy("ICONST", "inp")
+if os.path.exists("pbs"):
+    shutil.copy("pbs", "inp")
 
