@@ -1,9 +1,15 @@
+#!/usr/bin/env python
+
 import sys
 import os
 import socket
 import copy
 
+print socket.gethostname()
+
 LIB = ''
+
+print socket.gethostname()
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
@@ -23,6 +29,10 @@ elif socket.gethostname() == "fermion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "onyx" in socket.gethostname():
     LIB = "/p/home/taocheng/src/simpy/lib"
+elif "armstrong" in socket.gethostname():
+    LIB = "/p/home/taocheng/src/simpy/lib"
+elif "stampede2" in socket.gethostname():
+    LIB = "/home1/04076/tg833760/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
