@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, shutil, sys
 
 pbs = """#PBS -S /bin/tcsh
