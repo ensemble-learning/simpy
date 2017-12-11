@@ -1,0 +1,24 @@
+! general
+SYSTEM = phonon
+ISTART = 0 
+ICHARG = 2 
+PREC = N 
+ENCUT = 400.0 
+NELMIN = 4
+EDIFF = 1.0E-4 
+IBRION = 5
+ISMEAR = 1
+SIGMA = 0.2
+LWAVE = .FALSE. 
+LCHARG = .FALSE. 
+LREAL = Auto
+IALGO = 48
+ADDGRID = .TRUE.
+! phonon
+POTIM = 0.01
+! parallelisation
+NPAR = 7
+! output
+LELF = .FALSE.
+LVTOT = .FALSE.
+NWRITE=3

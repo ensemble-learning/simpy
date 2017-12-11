@@ -1,0 +1,23 @@
+Warning: no access to tty (Bad file descriptor).
+Thus no job control in this shell.
+
+checking quotas for chengtao on hulk ....
+Filesystem             usage   quota   limit
+                     3393728 8388608 8388608              /net/hulk/home6
+Setting up MPS...
+HOSTNAME: Undefined variable.
+HOSTNAME: Undefined variable.
+Running...
+Done. Quitting MPS.
+HOSTNAME: Undefined variable.
+HOSTNAME: Undefined variable.
+Setting up MPS...
+HOSTNAME: Undefined variable.
+HOSTNAME: Undefined variable.
+Traceback (most recent call last):
+  File "/ul/chengtao/bin/vasp_raman", line 291, in <module>
+    eigval = eigvals[i]
+IndexError: list index out of range
+Done. Quitting MPS.
+HOSTNAME: Undefined variable.
+HOSTNAME: Undefined variable.

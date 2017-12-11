@@ -1,0 +1,24 @@
+! general
+SYSTEM = raman
+ISTART = 0 
+NWRITE = 3
+ICHARG = 2 
+PREC = N 
+ENCUT = 400.0 
+NELMIN = 4
+EDIFF = 1.0E-4 
+ISMEAR = 1
+SIGMA = 0.2
+LWAVE = .FALSE. 
+LCHARG = .FALSE. 
+LREAL = Auto
+IALGO = 38
+ADDGRID = .TRUE.
+! raman
+LEPSILON=.TRUE.
+! parallelisation
+NPAR = 7
+ISYM = 0
+! output
+LELF = .FALSE.
+LVTOT = .FALSE.
