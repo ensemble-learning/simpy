@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 
 import os, shutil, sys
+import socket
 
-pbs = """#PBS -S /bin/tcsh
+if socket.gethostname() == "fermion.wag.caltech.edu":
+    print socket.gethostname()
+    pbs = """#PBS -S /bin/tcsh
 #PBS -l nodes=node-4-1:ppn=7,walltime=72:00:00
 #PBS -j oe
 #PBS -o pbs.out
