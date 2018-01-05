@@ -646,3 +646,20 @@ def toCfg(system, outfile="out.cfg"):
             o.write("%20.15f%20.15f%20.15f\n"%(xf, yf, zf))
     o.close()
 
+def toTowheecoords(system, outfile="towhee_coords"):
+    """ output to towhee_coords file format
+    """
+    o = open(outfile, 'w')
+    for i in system.atoms:
+        line = ''
+        line += "%25.15f"%i.x[0]
+        line += "%25.15f"%i.x[1]
+        line += "%25.15f"%i.x[2]
+        if len(i.element) > 0:
+            line += "%10s"%i.element
+        else:
+            line += "%10s"%i.name
+        line += "\n"
+        o.write(line)
+    o.close()
+

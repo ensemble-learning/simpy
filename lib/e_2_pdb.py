@@ -5,7 +5,7 @@ import sys
 import argparse
 from mytype import System, Molecule, Atom
 from pdb import Pdb
-from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic, toPoscar, toJdft, toCfg
+from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic, toPoscar, toJdft, toCfg, toTowheecoords
 
 def usage():
     print """python e_2_pdb [pbc|nopbc]
@@ -58,6 +58,7 @@ def withPbc(testfile="supper.pdb", args=''):
     toPoscar(b,)
     toCfg(b,)
     toJdft(b,)
+    toTowheecoords(b)
     if args:
         if args.element:
             toPdb(b, "out.pdb", 1)
