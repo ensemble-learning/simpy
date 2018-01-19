@@ -4,9 +4,11 @@ import os
 
 run_jobs = []
 wait_jobs = []
+complete_or_err_jobs = []
 block_jobs = []
 total_jobs = ""
 
+end_flag = 0
 f = os.popen("showq -u")
 for i in f:
     if i.strip().startswith("ACTIVE JOBS"):
@@ -17,18 +19,31 @@ for i in f:
     run_jobs.append(i)
 
 for i in f:
+    if i.strip().startswith("COMPLETING"):
+        break
     if i.strip().startswith("BLOCKED JOBS"):
         break
     if i.strip().startswith("Total Jobs"):
+        end_flag = 1
         total_jobs = i
         break
     wait_jobs.append(i)
 
 for i in f:
-    if i.strip().startswith("Total Jobs"):
-	total_jobs = i
+    if i.strip().startswith("BLOCKED JOBS"):
         break
-    block_jobs.append(i)
+    if i.strip().startswith("Total Jobs"):
+        end_flag = 1
+        total_jobs = i
+        break
+    complete_or_err_jobs.append(i)
+
+if not end_flag:
+    for i in f:
+        if i.strip().startswith("Total Jobs"):
+	    total_jobs = i
+            break
+        block_jobs.append(i)
 
 f.close()
 
