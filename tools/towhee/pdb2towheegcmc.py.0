@@ -41,8 +41,7 @@ from output_conf import toTowheecoords
 from utilities import lattice2v
 from cons import ELEMENT2MASS, ELEMENT2ATN, A2Bohr
 
-UFF ={"Pt":"Pt4+2", "Cl":"Cl", "O":"O_3", 
-      "H":"H_", "C":"C_3", "N":"N_3", "Fe":"Fe3+2"}
+UFF ={"Pt":"Pt4+2", "Cl":"Cl", "O":"O_3"}
 
 water = """#water
 input_style

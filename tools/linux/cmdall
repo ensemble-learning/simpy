@@ -32,7 +32,10 @@ def exec_folders(dlist, cmd, args):
                 print "cmd processing in %s"%os.getcwd()
             if args.arg:
                 folder = os.path.basename(os.getcwd())
-                run += " %s"%folder
+                print folder
+                run = run.replace("xx", folder)
+            if args.v:
+                print "cmd is %s"%run
             os.system(run)
             os.chdir("..")
 
