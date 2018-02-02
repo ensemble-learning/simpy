@@ -162,7 +162,7 @@ if len(sys.argv) > 2:
     o.write("ltailc\n")
     o.write(".true.\n")
     o.write("rmin  \n")
-    o.write("1.0d0 \n")
+    o.write("0.6d0 \n")
     o.write("rcut  \n")
     o.write("4.0d0\n")
     o.write("rcutin \n")
