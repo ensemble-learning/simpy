@@ -42,7 +42,7 @@ POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P
        "Ag":"Ag", "Se":"Se", "B":"B", "He":"He", "Ar":"Ar", "Xe":"Xe", "Kr":"Kr", 
        "Mo": "Mo", "Fe": "Fe", "As": "As", "Ge": "Ge", "Sc": "Sc", "Zr": "Zr",
        "Y": "Y_sv", "Zn": "Zn", "Cd": "Cd", "V": "V", "Mn": "Mn", "Co": "Co",
-       "Nb": "Nb_sv", "Tc": "Tc", "Ru": "Ru", "Rh": "Rh", "Pd": "Pd"}
+       "Nb": "Nb_sv", "Tc": "Tc", "Ru": "Ru", "Rh": "Rh", "Pd": "Pd", "Ne": "Ne"}
 
 if socket.gethostname() == "cluster.hpc.org":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"

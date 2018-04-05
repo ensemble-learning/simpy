@@ -1,3 +1,6 @@
+"""
+generate water solvated interface
+"""
 equil_mdp = """
 title           = DFF generated gromacs input file
 cpp             = /usr/bin/cpp
@@ -281,6 +284,6 @@ cmd = "python /home/tao/Soft/simpy/tools/vasp/fix_atoms "
 for i in fixed_atoms:
     cmd += "%d "%i
 os.popen(cmd)
-os.rename("POSCAR", "POSCAR-tmp")
+#os.rename("POSCAR", "POSCAR-tmp")
 
 

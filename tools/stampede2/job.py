@@ -4,8 +4,11 @@ import os
 
 run_jobs = []
 wait_jobs = []
+complete_or_err_jobs = []
+block_jobs = []
 total_jobs = ""
 
+end_flag = 0
 f = os.popen("showq -u")
 for i in f:
     if i.strip().startswith("ACTIVE JOBS"):
@@ -13,20 +16,35 @@ for i in f:
 for i in f:
     if i.strip().startswith("WAITING JOBS"):
         break
-    if i.strip().startswith("Total Jobs"):
-	totoal_jobs = i
-        break
     run_jobs.append(i)
+
 for i in f:
-    if i.strip().startswith("COMPLETING/ERRORED JOBS"):
+    if i.strip().startswith("COMPLETING"):
+        break
+    if i.strip().startswith("BLOCKED JOBS"):
         break
     if i.strip().startswith("Total Jobs"):
-	totoal_jobs = i
+        end_flag = 1
+        total_jobs = i
         break
     wait_jobs.append(i)
 
-#print run_jobs
-#print wait_jobs
+for i in f:
+    if i.strip().startswith("BLOCKED JOBS"):
+        break
+    if i.strip().startswith("Total Jobs"):
+        end_flag = 1
+        total_jobs = i
+        break
+    complete_or_err_jobs.append(i)
+
+if not end_flag:
+    for i in f:
+        if i.strip().startswith("Total Jobs"):
+	    total_jobs = i
+            break
+        block_jobs.append(i)
+
 f.close()
 
 if len(run_jobs) > 3:
@@ -47,8 +65,8 @@ if len(run_jobs) > 3:
         for j in f:
             if j.strip().startswith("WorkDir"):
                 tokens = j.strip().split()
-                workfolder = tokens[0].split("=")[1][21:]
-                workfolder = "~" + workfolder
+                workfolder = tokens[0].split("=")[1]
+                #workfolder = "~" + workfolder
                 break
         print workfolder
         f.close()
@@ -58,6 +76,24 @@ if len(wait_jobs) > 3:
     print "Jobs waiting",
     print "-"*20
     for i in wait_jobs[2:-1]:
+        tokens = i.strip().split()
+        jobid = tokens[0]
+        print jobid, 
+        f = os.popen("scontrol show job %s"%jobid)
+        for j in f:
+            if j.strip().startswith("WorkDir"):
+                tokens = j.strip().split()
+                workfolder = tokens[0].split("=")[1][21:]
+                workfolder = "~" + workfolder
+                break
+        print workfolder
+        f.close()
+
+if len(block_jobs) > 3:
+    print "-"*20,
+    print "Jobs blocking",
+    print "-"*20
+    for i in block_jobs[2:-1]:
         tokens = i.strip().split()
         jobid = tokens[0]
         print jobid, 
