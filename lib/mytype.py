@@ -209,6 +209,8 @@ class System():
         counter = 0
         for i in self.atoms:
             b = i.name.strip()
+            if "_" in b:
+                b = b.split("_")[0]
             match = pattern.match(b)
             if match:
                 i.element= match.group(1)

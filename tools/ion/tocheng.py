@@ -11,7 +11,7 @@ def main():
     args = parser.parse_args()
     files = args.fname
     folder = args.o
-    ip = "131.215.26.220"
+    ip = "131.215.26.219"
     usr = "tao"
     cmd = "scp -r "
     cmd += " ".join(files)
