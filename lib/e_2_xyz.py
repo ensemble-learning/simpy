@@ -47,7 +47,7 @@ def replicate(xyz_info, args):
                 b.step = i
                 toPdb(b, "output%05d.pdb"%i)
             # replicate the box using external code (genconf in Gromacs)
-            subprocess.Popen(["genconf", "-f", "output%05d.pdb"%i, 
+            subprocess.Popen(["gmx", "genconf", "-f", "output%05d.pdb"%i, 
                               "-o", "s_%05d.pdb"%i, "-nbox",
                                 "%d"%na, "%d"%nb, "%d"%nc],
                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)

@@ -1,0 +1,10 @@
+convert slice-0.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-00.png
+convert slice-1.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-01.png
+convert slice-2.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-02.png
+convert slice-3.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-03.png
+convert slice-4.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-04.png
+convert slice-5.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-05.png
+convert slice-6.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-06.png
+convert slice-7.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-07.png
+convert slice-8.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-08.png
+convert slice-9.png -resize 800x400 -background 'rgb(255,255,255)' -compose Copy -gravity center -extent 300x300 re-09.png
