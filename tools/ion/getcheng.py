@@ -9,7 +9,7 @@ files = ""
 if len(sys.argv) > 1:
     for i in range(1, len(sys.argv)):
         files += sys.argv[i] + " "
-    cmd += "tao@131.215.26.245:"
+    cmd += "tao@131.215.26.219:"
     cmd += files
     cmd += " ."
     print cmd
