@@ -93,8 +93,8 @@ iseed=-52907
 !
 If (iseed > 0) iseed = -1 * iseed
 
-Read(*,*) atom_file
-Read(*,*) coord_file
+Read(*,*) atom_file !atom types and diameters
+Read(*,*) coord_file ! coordination files
 Open(9, file=atom_file, status='old')
 Open(10, file=coord_file, status='old')
 
