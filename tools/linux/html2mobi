@@ -20,16 +20,19 @@ if len(sys.argv) > 1:
     cmd = "pandoc -s -r html %s -t epub -s -o %s.epub"%(link, fname)
     o.write("done\n")
     if DEBUG:
-        print cmd
+        print(cmd)
     os.system(cmd)
 
+    cmd = "kindlegen %s.epub -o %s.mobi"%(fname, fname)
+    o.write("done\n")
+
     o.write("remove epub file\n")
-    cmd = "rm %s.epub"%fname
+    #cmd = "rm %s.epub"%fname
     os.system(cmd)
     o.write("done\n")
     o.close()
 else:
-    print __doc__
+    print(__doc__)
 
 
 
