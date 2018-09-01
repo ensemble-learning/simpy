@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os, math, re
 from periodictable import formula
 pdbfile = "water-0056.pdb"
