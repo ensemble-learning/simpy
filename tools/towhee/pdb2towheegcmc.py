@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 """
-@note: require MCCCS Towhee
+@note: require MCCCS Towhee 7-2-0
 @usage: pdb2towheecoords pdbfile nmol
 """
 
@@ -43,8 +43,11 @@ from output_conf import toTowheecoords
 from utilities import lattice2v
 from cons import ELEMENT2MASS, ELEMENT2ATN, A2Bohr
 
+UFF_path = "/home/tao/data/soft/towhee/towhee-7.2.0/ForceFields/towhee_ff_UFF"
+
 UFF ={"Pt":"Pt4+2", "Cl":"Cl", "O":"O_3", 
-      "H":"H_", "C":"C_3", "N":"N_3", "Fe":"Fe3+2"}
+      "H":"H_", "C":"C_3", "N":"N_3", "Fe":"Fe3+2",
+      "Cu":"Cu3+1"}
 
 water = """#water
 input_style
@@ -154,7 +157,7 @@ if len(sys.argv) > 2:
     o.write("ffnumber\n")
     o.write("1\n")
     o.write("ff_filename\n")
-    o.write("/home/tao/Soft/towhee/towhee-7.2.0/ForceFields/towhee_ff_UFF\n")
+    o.write("%s\n"%UFF_path)
     o.write("classical_potential\n")
     o.write("'UFF 12-6'       \n")
     o.write("classical_mixrule\n")
@@ -336,6 +339,7 @@ if len(sys.argv) > 2:
         o.write("improper\n")
         o.write("0\n")
     o.write(water)
+    os.system("towhee")
 
 else:
     pass

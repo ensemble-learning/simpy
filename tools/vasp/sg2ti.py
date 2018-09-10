@@ -18,9 +18,9 @@ def zero_increm():
         o.write(i)
     o.close()
 
-os.system("xdata2pos")
+os.system("xdat2pos")
 os.chdir("./poscars")
-os.system("select_frame 1 300 11")
+os.system("select_frame 1 2000 11")
 os.chdir("wf")
 os.system("ls POSCAR_000* > flist")
 os.system("bsr")

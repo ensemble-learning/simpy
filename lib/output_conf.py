@@ -145,7 +145,7 @@ def toMusic(system, outfile="test.music"):
         line += "%10.4f"%i.x[0]
         line += "%10.4f"%i.x[1]
         line += "%10.4f"%i.x[2]
-        line += "%6s"%i.name
+        line += "%6s"%i.element
         line += " 0.0 0 0"
         line += "\n"
         o.write(line)

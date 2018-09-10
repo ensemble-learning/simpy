@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 import sys
 import os
@@ -33,6 +33,8 @@ elif "armstrong" in socket.gethostname():
     LIB = "/p/home/taocheng/src/simpy/lib"
 elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
+elif "tao-Precision-Tower-3420-ubuntu" in socket.gethostname():
+    LIB = "/home/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
