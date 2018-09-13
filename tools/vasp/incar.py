@@ -1,5 +1,5 @@
 INCAR = """
- System = ADN
+ System = vasp
 ##################################
 #  Start parameter for this run  #
 ##################################
@@ -10,7 +10,7 @@ INCAR = """
 #     Electronic Relaxation      #
 ##################################
  PREC     = A
- ENCUT    = 500
+ ENCUT    = 400
  NELMIN   = 5
  EDIFF    = 1.0E-6
 # IALGO = 48
@@ -19,7 +19,7 @@ INCAR = """
 ##################################
 # Ionic Relaxation
 ##################################
- EDIFFG    = -1.0E-3
+ EDIFFG   = -1.0E-3
  NSW      = 500
  IBRION   = 2
  ISIF     = 3
@@ -33,14 +33,14 @@ INCAR = """
 ##################################
 #   Output control               #
 ##################################
- LWAVE = .FALSE.
+ LWAVE  = .FALSE.
  LCHARG = .FALSE.
  NWRITE = 0
 
 ##################################
 # Other parameters
 ##################################
- LVDW= .TRUE.      # PBE_ULG
+ LVDW = 12      # PBE_ULG
  NPAR = 2
 
 """

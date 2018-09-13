@@ -1,0 +1,22 @@
+1. Frequency calculation to determine the imaginary frequency.
+    VASP frequency calculation
+    ENCUT = 200
+    EDIFF = 1E-06
+    IBRION = 5
+    NFREE = 1
+2. Check the vibration mode of the i-frequency.
+    imagefreq.py 
+    freqmov.pl POSCAR freq23 freq24  30 0.6
+3. Prepare Modecar file
+    modemake.py freq24
+4. Do the dimer calculation
+    IBRION = 3
+    POTIM = 0
+    ICHAIN = 2
+    DdR = 0.005
+    DRotMax = 10
+    DFNMin = 0.01
+    DFNMax = 1.0
+5. Check the DIMCAR file
+
+ref: https://zhuanlan.zhihu.com/p/31732134

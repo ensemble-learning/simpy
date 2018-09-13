@@ -1,0 +1,48 @@
+# turn on lights 0 and 1
+light 0 on
+light 1 on
+light 2 off
+light 3 off 
+
+# add personalized keyboard shortcuts 
+user add key E echo on
+user add key e echo off
+user add key g display reset
+user add key A stage location bottom
+user add key m mol list
+
+# display 
+display projection orthographic
+display depthcue off
+display reposition  0   768
+display resize      600 600
+display ambientocclusion  on
+display aoambient 0.8
+display aodirect  0.3
+display shadows on
+color Display Background white
+
+# position the stage and axes
+axes location off
+stage location off
+
+# position and turn on menus
+menu main move 5 196
+menu display move 386 90
+menu animate move 124 7
+menu edit move 125 196
+menu graphics move 5 455
+menu files move 5 496
+menu mol move 5 745
+
+menu main on
+
+# colors
+color Name Li purple
+color Name F green
+color Name Cu orange
+color Name Co blue
+color Name C silver
+color Element C silver
+color Element Co blue
+color Labels Bonds blue 
