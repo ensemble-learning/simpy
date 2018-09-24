@@ -47,7 +47,7 @@ UFF_path = "/home/tao/data/soft/towhee/towhee-7.2.0/ForceFields/towhee_ff_UFF"
 
 UFF ={"Pt":"Pt4+2", "Cl":"Cl", "O":"O_3", 
       "H":"H_", "C":"C_3", "N":"N_3", "Fe":"Fe3+2",
-      "Cu":"Cu3+1"}
+      "Cu":"Cu3+1", "Au":"Au4+3"}
 
 water = """#water
 input_style
@@ -339,7 +339,7 @@ if len(sys.argv) > 2:
         o.write("improper\n")
         o.write("0\n")
     o.write(water)
-    os.system("towhee")
+    #os.system("towhee")
 
 else:
     pass
