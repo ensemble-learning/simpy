@@ -1,0 +1,28 @@
+title               =  amylose in dmso
+cpp                 =  /usr/bin/cpp
+;define              =  -DFLEXIBLE
+constraints         =  none
+integrator          =  steep
+dt                  =  0.001    ; ps !
+nsteps              =  1000
+nstlist             =  10
+ns_type             =  grid
+rlist               =  1.0
+coulombtype         =  PME
+rcoulomb            =  1.0
+rvdw                =  1.0
+fourierspacing      =  0.12
+fourier_nx          =  0
+fourier_ny          =  0
+fourier_nz          =  0
+pme_order           =  4
+ewald_rtol          =  1e-5
+optimize_fft        =  no
+;
+;       Energy minimizing stuff
+;
+emtol               =  10.0
+emstep              =  0.01
+
+freezegrps          = Cu
+freezedim           = Y Y Y

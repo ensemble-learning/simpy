@@ -106,7 +106,7 @@ def assign_charges(atoms):
     print("%.4f"%np.sum(charges), "total charges")
     return charges   
 
-def assign_atom_types(atoms, nl):
+def assign_atom_types_opls(atoms, nl):
     chemical_symbols = atoms.get_chemical_symbols()
     atomtypes = []
     for i in range(len(atoms)):
@@ -120,7 +120,7 @@ if len(sys.argv) > 1:
     atoms = ase.io.read(fname)
     nl, bl, al, dl = get_lists(atoms)
     charges = assign_charges(atoms)
-    atomtypes = assign_atom_types(atoms, nl)
+    atomtypes = assign_atom_types_opls(atoms, nl)
 
     to_itp(itpfile, atoms, nl, bl, al, dl, charges, atomtypes)
 

@@ -1,0 +1,16 @@
+#include "./oplsaa.ff/forcefield.itp"
+#include "c15.itp"
+#include "spc.itp"
+#include "cu.itp"
+#include "br.itp"
+
+[ system ]
+mixture
+
+[ molecules ]
+Cu  1440
+c15 18
+Br  18
+SOL 1000
+
+
