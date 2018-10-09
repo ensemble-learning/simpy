@@ -1,6 +1,10 @@
-"""Ref: acscatal.7b03142
-tau = 5e14 for RuO2
-tau = 2.6e15 for Pt(111)
+#!/usr/bin/env python
+
+"""
+convert the exchange current density to reaction barrier.
+ref: acscatal.7b03142
+note: tau = 5e14 for RuO2
+note: tau = 2.6e15 for Pt(111)
 """
 
 import sys, math
