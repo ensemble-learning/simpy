@@ -1,4 +1,4 @@
-import os, shutil
+import os, shutil, stat
 
 def read_freqs():
     f = open("OUTCAR", "r")
@@ -56,6 +56,8 @@ def convert_to_xyz():
     os.chdir("freqs")
     o = open("run.sh", "w")
     o.write("freqmov.pl ../../POSCAR freq 30 0.6")
+    st = os.stat('run.sh')
+    os.chmod('run.sh', st.st_mode | stat.S_IEXEC)
     o.close()
     os.chdir("..")
 

@@ -4,7 +4,7 @@ import socket
 
 LIB = ''
 
-print socket.gethostname()
+print(socket.gethostname())
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
@@ -44,7 +44,8 @@ POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P
        "Ag":"Ag", "Se":"Se", "B":"B", "He":"He", "Ar":"Ar", "Xe":"Xe", "Kr":"Kr", 
        "Mo": "Mo", "Fe": "Fe", "As": "As", "Ge": "Ge", "Sc": "Sc", "Zr": "Zr",
        "Y": "Y_sv", "Zn": "Zn", "Cd": "Cd", "V": "V", "Mn": "Mn", "Co": "Co",
-       "Nb": "Nb_sv", "Tc": "Tc", "Ru": "Ru", "Rh": "Rh", "Pd": "Pd", "Ne": "Ne"}
+       "Nb": "Nb_sv", "Tc": "Tc", "Ru": "Ru", "Rh": "Rh", "Pd": "Pd", "Ne": "Ne", 
+       "Bi": "Bi"}
 
 if socket.gethostname() == "cluster.hpc.org":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
@@ -76,7 +77,7 @@ elif "stampede2" in socket.gethostname():
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
 for i in a.atomtypes:
-    print i
+    print(i)
     pot = os.path.join(POT_DATA_BASE, POT[i])
     pot = os.path.join(pot, "POTCAR")
     f = open(pot, "r")
