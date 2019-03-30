@@ -40,6 +40,7 @@ if len(sys.argv) == 4:
   Tvib = []
   for i in Evib:
     Tvib.append(i*meV2K)
+    print i
   ###for i in Tvib:
   ###  print "%12.6f"%(i)
 
@@ -118,6 +119,7 @@ if len(sys.argv) == 4:
       q = i/T
       H_vib = H_vib + k * i / (exp(q) - 1.0)
       S_vib = S_vib + k * (q / (exp(q) - 1.0) - log(1.0 - exp(-q)))
+      print i, q, k * (q / (exp(q) - 1.0) - log(1.0 - exp(-q)))
   ###print "%13.6E"%(H_vib)
   ###print "%13.6E"%(S_vib)
   G_vib = H_vib - T * S_vib
