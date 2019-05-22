@@ -105,7 +105,7 @@ def main(args):
         toPdb(b)
 
     if args.s:
-        config = configparser.configparser() 
+        config = configparser.ConfigParser() 
         config.read(args.s[0])
         read_info(xyz_info, config)
 
