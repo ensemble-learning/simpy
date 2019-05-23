@@ -19,6 +19,9 @@ if len(sys.argv) > 1:
             flag = 1
         n += 1
     shutil.copy("POSCAR", fname)
+
+    for i in range(len(lines)):
+        lines[i] = lines[i].replace("F", "T")
     
     # print lines[7]
     na0 = 8

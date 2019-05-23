@@ -8,12 +8,12 @@ from pdb import Pdb
 from output_conf import toReaxLammps, toGeo, toPdb, toMsd, toXyz, toMusic, toPoscar, toJdft, toCfg, toTowheecoords
 
 def usage():
-    print """python e_2_pdb [pbc|nopbc]
+    print("""python e_2_pdb [pbc|nopbc]
     read the pdb file and output to geo and data files
     options:
     pbc      crystal strucutre (default is supper.pdb)
     nobbc    gas phase cluster (default is output.pdb)
-    """
+    """)
 
 def test():
     testfile = "e_2_pdb.pdb"
