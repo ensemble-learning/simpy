@@ -19,7 +19,7 @@ def main():
     vol = b.getVol()
     mass = b.getMass()
     density = mass/vol*ATOMIC_MASS_CONSTANT*1e27
-    print density
+    print(density)
     #print b.pbc
     
     toXyz(b, "contcar.xyz")

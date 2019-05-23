@@ -29,7 +29,7 @@ def toReaxLammps(system, outfile="lammps.data"):
             o.write(" 0.0 %12.7f zlo zhi\n"%zz)
             o.write("%12.7f%12.7f%12.7f xy xz yz\n\n"%(xy, xz, yz))        
     else:
-        print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
+        print("Warning: No box found. Using a default box 5.0 * 5.0 * 5.0")
         o.write(" %12.7f %12.7f xlo xhi\n"%(-25.0, 25.0))
         o.write(" %12.7f %12.7f ylo yhi\n"%(-25.0, 25.0))
         o.write(" %12.7f %12.7f zlo zhi\n"%(-25.0, 25.0))
@@ -279,7 +279,7 @@ def toDump(system, outfile="output.dump"):
             o.write(" 0.0 %9.4f %9.4f\n"%(yy, xz))
             o.write(" 0.0 %9.4f %9.4f\n"%(zz, yz))
     else:
-        print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
+        print("Warning: No box found. Using a default box 5.0 * 5.0 * 5.0")
         o.write(" 0.0 %9.4f xlo xhi\n"%5.0)
         o.write(" 0.0 %9.4f ylo yhi\n"%5.0)
         o.write(" 0.0 %9.4f zlo zhi\n"%5.0)
@@ -526,7 +526,7 @@ def toFullLammps(system, outfile="output.data"):
             o.write(" %12.4 %12.4f zlo zhi\n"%(0.0, zz))
             o.write("%12.4f%12.4f%12.4f xy xz yz\n\n"%(xy, xz, yz))        
     else:
-        print "Warning: No box found. Using a default box 5.0 * 5.0 * 5.0"
+        print("Warning: No box found. Using a default box 5.0 * 5.0 * 5.0")
         o.write(" %9.4f %9.4f xlo xhi\n"%(-25.0, 25.0))
         o.write(" %9.4f %9.4f ylo yhi\n"%(-25.0, 25.0))
         o.write(" %9.4f %9.4f zlo zhi\n"%(-25.0, 25.0))
