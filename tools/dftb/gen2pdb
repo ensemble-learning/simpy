@@ -1,4 +1,4 @@
-#!/usr/bin/env /exec/python/pythonEPD-6.3-2-rh3-x86/bin/python
+#!/usr/bin/env python
 
 """
 Convert any file format (with correct ext) to .gen.
@@ -12,7 +12,7 @@ from ase.io import read, write
 if len(sys.argv) > 1:
     infile = sys.argv[1]
     atoms = read(infile)
-    write("geo_start.gen", atoms)
+    write("geo_start.pdb", atoms)
 else:
     print(__doc__)
 
