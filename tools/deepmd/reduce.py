@@ -1,3 +1,4 @@
+import sys
 import shutil, os
 
 flist = [ 
@@ -8,6 +9,10 @@ flist = [
 "virial.raw",
 ]
 
+n_every = 20
+if len(sys.argv) > 1:
+    n_every = int(n_every)
+
 for i in range(len(flist)):
     f = open(flist[i], "r")
     data = f.readlines()
@@ -16,7 +21,7 @@ for i in range(len(flist)):
     dtrain, dtest = [], []
 
     for j in range(len(data)):
-        if j%3 == 0:
+        if j%n_every == 0:
             dtest.append(data[j])
         else:
             dtrain.append(data[j])
@@ -32,8 +37,6 @@ for i in range(len(flist)):
     
     shutil.copy(old_file, new_file)
     o = open(flist[i], "w")
-    for k in dtrain:
-        o.write(k)
     for k in dtest:
         o.write(k)
     o.close()
