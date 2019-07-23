@@ -42,5 +42,5 @@ n = 0
 for i in Mus:
     Mu = i
     mu, G = cal_g(F_pzc, N_pzc, Mu_pzc, C, Mu)
-    print mu, G, "%6.2f"%((G-G_sim[n])*627/23)
+    print(mu, G, "%6.2f"%((G-G_sim[n])*627/23))
     n += 1

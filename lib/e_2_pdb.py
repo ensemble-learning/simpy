@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 """ read the pdb file and output to data (LAMMPS).
 """
 

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import sys, shutil
 import argparse
 import os, copy
@@ -29,11 +31,12 @@ elif socket.gethostname() == "tao-ThinkCentre-M79":
     LIB = "/home/tao/Soft/simpy/lib"
 elif socket.gethostname() == "tao-Precision-Tower-3420-ubuntu":
     LIB = "/home/tao/soft/simpy/lib"
+elif socket.gethostname() == "mu05":
+    LIB = "/home/chengtao/soft/simpy/lib"
 elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
-
 
 from mytype import System, Molecule, Atom
 from poscar import Poscar
@@ -48,7 +51,7 @@ def main():
     if args.n:
         n_fixed = int(args.n)
     else:
-        n_fixed = int(raw_input("number of fixed atoms: "))
+        n_fixed = int(input("number of fixed atoms: "))
 
     poscar_file = args.fname
     a = Poscar(poscar_file)
