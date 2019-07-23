@@ -16,13 +16,13 @@ NSTART = 20
 
 class Params():
     def __init__(self,):
-	self.nconst = 1
-	self.nxy = 1
-	self.nco = 1
-	self.nstart_flag = 0
-	self.nstart = 0
-	self.nend_flag = 0
-	self.nend = 0
+        self.nconst = 1
+        self.nxy = 1
+        self.nco = 1
+        self.nstart_flag = 0
+        self.nstart = 0
+        self.nend_flag = 0
+        self.nend = 0
 
 def read_report(p):
     cvs = []
@@ -106,19 +106,19 @@ def read_report(p):
             o.write("%12.4f%12.4f%12.4f%12.4f\n"%(cvs[i][j], fvall[i][j][1], fvall[i][j][3], dA[i][j]))
         o.close()
 
-	nstart = NSTART
-	nend = len(x)
-	if p.nstart_flag == 1:
-	    nstart = p.nstart
+        nstart = NSTART
+        nend = len(x)
+        if p.nstart_flag == 1:
+            nstart = p.nstart
             if nstart >= nend:
-		sys.stderr.write("Start step beyond the simulation step!\n")
-		sys.exit()
+                sys.stderr.write("Start step beyond the simulation step!\n")
+                sys.exit()
 
-	if p.nend_flag == 1:
-	    if nend < p.nend:
+        if p.nend_flag == 1:
+            if nend < p.nend:
                 s.stderr.write("End step beyond the simulation step!\n")
                 s.stderr.write("Reset to the simulation end step\n")
-	    else:
+            else:
                 nend = p.nend
 	
         if nend > nstart:
