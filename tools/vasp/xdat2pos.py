@@ -5,11 +5,11 @@ import os
 import socket
 import copy
 
-print socket.gethostname()
+print(socket.gethostname())
 
 LIB = ''
 
-print socket.gethostname()
+print(socket.gethostname())
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
