@@ -3,6 +3,7 @@
 import sys, time
 from scihub import SciHub
 doi = sys.argv[1]
+#doi = "https://doi.org/10.1002/jcc.25860"
 sh = SciHub()
 result = sh.fetch(doi)
 fname = "lit%d.pdf"%(int(time.time()))
