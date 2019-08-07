@@ -1,0 +1,43 @@
+    SYSTEM =   vasp
+# Startparameter for this run:
+    NWRITE =      1    
+    PREC   =      N
+    ISTART =      0   
+    ICHARG =      2   
+    ISPIN  =      1  
+# Electronic Relaxation 1
+    ENCUT  =  400.0 
+    NELM   =    200   
+    NELMIN =      5
+    EDIFF  = 0.1E-05 
+    LREAL  =   Auto 
+# Ionic relaxation
+    EDIFFG = -.1E-01  
+    NSW    =      0   
+    NBLOCK =      1
+    IBRION =      0 
+    NFREE  =      1 
+    ISIF   =      2 
+    ISYM   =      0
+    POTIM  =    1.0
+    TEBEG  =  300.0   
+    TEEND  =  300.0 
+    MDALGO =      2
+    SMASS  =      2
+# DOS related values:
+    ISMEAR =     0
+    SIGMA  =   0.10 
+# Electronic relaxation 2 (details)
+    IALGO  =     48    
+# Write flags
+    LWAVE  =      F
+    LCHARG =      F
+    LVTOT  =      F
+# Dipole corrections
+    LMONO  =      F 
+    LDIPOL =      F 
+    IDIPOL =      0
+# Exchange correlation treatment:
+    GGA    =      PE
+# vdw
+    IVDW   =      12
