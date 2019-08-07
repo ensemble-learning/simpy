@@ -1,0 +1,16 @@
+#!/bin/bash
+
+#SBATCH -A wag
+#SBATCH --time=2:00:00   # walltime
+#SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
+#SBATCH --nodes=1   # number of nodes
+#SBATCH --mem-per-cpu=8G   # memory per CPU core
+#SBATCH --gres=gpu:1
+
+# LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
+module load intel/18.1 mkl/18.1 cuda/9.1 
+export LD_LIBRARY_PATH=/central/software/CUDA/9.1/lib64:$LD_LIBRARY_PATH
+
+cd $SLURM_SUBMIT_DIR
+/central/home/tcheng/soft/vasp.5.4.4/vasp.5.4.4/bin/vasp_gpu > log
+
