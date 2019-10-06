@@ -1,0 +1,7 @@
+
+Statistics over 2000001 steps [ 0.0000 through 1000.0000 ps ], 1 data sets
+All statistics are over 20001 points
+
+Energy                      Average   Err.Est.       RMSD  Tot-Drift
+-------------------------------------------------------------------------------
+Density                     1112.02        1.4    9.09496    9.90541  (kg/m^3)

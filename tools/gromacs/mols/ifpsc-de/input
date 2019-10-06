@@ -1,0 +1,12 @@
+# Number of points in the trajectory (5001)
+points = 5001
+# Trajectory period in ps (20)
+tau = 20.
+# Size of the box in nm
+cell = 2.38751   2.38751   2.38751
+# Temperature in K
+temperature = 311.00
+# Trajectory info
+format = gro
+# Estimate velocities from positions
+estimate_velocities = .true.
