@@ -37,44 +37,66 @@ def write_kpoints():
     o.write('kpoint-folding 1 1 1\n')
     o.close()
 
-def write_control(args):
+def write_control():
     o = open('control', 'w')
-    o.write(r"ion-species GBRV/$ID_pbe.uspp"+"\n")
-    o.write(r"elec-ex-corr gga-PBE"+"\n")
-    o.write(r"elec-cutoff 20"+"\n")
-    o.write(r"electronic-SCF energyDiffThreshold 3.6749e-7 nIterations 1000  # 1E-5 eV #default=1e-8 Ha"+"\n")
-    o.write(r"elec-smearing Fermi 0.005"+"\n")
-    o.write("\n")
-    if args.spin:
-        o.write("spintype z-spin" + "\n")
-    o.write(r"symmetry-threshold 0.001"+"\n")
-    o.write(r"coulomb-interaction Periodic"+"\n")
-    o.write("\n")
-    o.write(r"# input and output"+"\n")
-    o.write(r"initial-state $VAR"+"\n")
-    o.write(r"dump-name $VAR"+"\n")
-    o.write(r"dump End State"+"\n")
-    o.write(r"dump End Forces"+"\n")
-    o.write(r"dump End Ecomponents"+"\n")
-    o.write("\n")
-    o.write(r"# solvation"+"\n")
-    o.write(r"fluid LinearPCM"+"\n")
-    o.write(r"pcm-variant CANDLE"+"\n")
-    o.write(r"fluid-solvent H2O"+"\n")
-    o.write(r"fluid-cation K+ 0.1"+"\n")
-    o.write(r"fluid-anion F- 0.1"+"\n")
-    o.write("\n")
+    o.write(r"""ion-species GBRV/$ID_pbe.uspp
+elec-ex-corr gga-PBE
+elec-cutoff 20 
+electronic-SCF energyDiffThreshold 3.6749e-7   # 1E-5 eV #default=1e-8 Ha
+elec-smearing Fermi 0.005
 
-    if args.cp:
-        u = args.cp[0]
-        target_u = -(SHE + u)/EV_2_HARTREE
-        o.write(r"# constant potential" + "\n")
-        o.write("target-mu %.10f"%target_u + "\n")
+symmetry-threshold 0.001
+coulomb-interaction Periodic
 
-    if args.q:
-        q = args.q[0]
-        o.write("elec-initial-charge %.10f"%q+ "\n")
+# input and output
+initial-state $VAR
+dump-name $VAR
+dump End State
+dump End Forces
+dump End Ecomponents
 
+# solvation
+fluid LinearPCM
+pcm-variant CANDLE
+fluid-solvent H2O
+fluid-cation K+ 0.1
+fluid-anion F- 0.1
+
+""")
+    o.close()
+
+def write_control_const_u(args):
+    u = args.cp[0]
+    target_u = -(SHE + u)/EV_2_HARTREE
+    
+    o = open('control', 'w')
+    o.write(r"""ion-species GBRV/$ID_pbe.uspp
+elec-ex-corr gga-PBE
+elec-cutoff 20 
+electronic-SCF energyDiffThreshold 3.6749e-7   # 1E-5 eV #default=1e-8 Ha
+elec-smearing Fermi 0.005
+
+symmetry-threshold 0.001
+coulomb-interaction Periodic
+
+# input and output
+initial-state $VAR
+dump-name $VAR
+dump End State
+dump End Forces
+dump End Ecomponents
+
+# solvation
+fluid LinearPCM
+pcm-variant CANDLE
+fluid-solvent H2O
+fluid-cation K+ 0.1
+fluid-anion F- 0.1
+
+# constant potential
+target-mu %.10f 
+
+"""%target_u)
     o.close()
 
 def write_input():
@@ -115,18 +137,22 @@ $MPIRUN -n $nProcesses $JDFTx -c $nThreads -i jdft.in > $PBS_O_WORKDIR/jdft.out
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("infile", default=["POSCAR"], nargs="*", help="inputfile")
+    parser.add_argument("infile", default="POSCAR", nargs="*", help="inputfile")
     parser.add_argument("-cp", nargs=1, type=float,help="the voltage (in V)")
-    parser.add_argument("-q", nargs=1, type=float,help="excess electrons compared to a neutral system")
-    parser.add_argument("-spin", action='store_true', help="spin-polarized calculation")
     args = parser.parse_args()
 
-    infile = args.infile[0]
-
+    if args.infile:
+    	infile = args.infile[0]
+    else:
+    	infile = args.infile
+    print(infile)
     atoms = read(infile)
     write_coords(atoms)
     write_kpoints()
-    write_control(args)
+    if args.cp:
+        write_control_const_u(args)
+    else:
+        write_control()
     write_input()
     write_pbs()
 
