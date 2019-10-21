@@ -33,7 +33,7 @@ elif "armstrong" in socket.gethostname():
     LIB = "/p/home/taocheng/src/simpy/lib"
 elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
-elif socket.gethostname() == "mu-01":
+elif socket.gethostname() == "mu01":
     LIB = "/opt/sourcecoude/simpy/lib"
 elif "tao-Precision-Tower-3420-ubuntu" in socket.gethostname():
     LIB = "/home/tao/soft/simpy/lib"
