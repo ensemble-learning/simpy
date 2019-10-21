@@ -16,7 +16,7 @@ else:
         os.mkdir("wf")
 
     data = np.linspace(t0, t1, nt)
-    print t0, t1, data
+    print(t0, t1, data)
     for i in data:
         fname = "POSCAR_%06d"%int(i)
         shutil.copy(fname, "wf")
