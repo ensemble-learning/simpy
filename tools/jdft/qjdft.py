@@ -42,7 +42,7 @@ def write_control(args):
     o.write(r"ion-species GBRV/$ID_pbe.uspp"+"\n")
     o.write(r"elec-ex-corr gga-PBE"+"\n")
     o.write(r"elec-cutoff 20"+"\n")
-    o.write(r"electronic-SCF energyDiffThreshold 3.6749e-7 nIterations 1000  # 1E-5 eV #default=1e-8 Ha"+"\n")
+    #o.write(r"electronic-SCF energyDiffThreshold 3.6749e-7 nIterations 1000  # 1E-5 eV #default=1e-8 Ha"+"\n")
     o.write(r"elec-smearing Fermi 0.005"+"\n")
     o.write("\n")
     if args.spin:
