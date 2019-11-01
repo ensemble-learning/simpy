@@ -1,6 +1,7 @@
 """
 Note: require NWRITE = 1
 """
+import os
 
 def read_poscar():
     #get number of atoms
@@ -99,7 +100,7 @@ def read_outcar(atom_numbers):
 def write_type_rawatom(atom_numbers):
     n_atoms = sum(atom_numbers)
     tokens = atom_numbers
-    o = open("type.raw", "w")
+    o = open("./vasp_raw/type.raw", "w")
     n = 0
     for ii in tokens:
         for jj in range(ii): 
@@ -108,29 +109,33 @@ def write_type_rawatom(atom_numbers):
     o.write("\n")
 
 def output_files(virial, box, coord, force, energy):
-    o = open("virial.raw", "w")
+    o = open("./vasp_raw/virial.raw", "w")
     for i in virial:
         o.write(" ".join(i)+'\n')
     o.close()
-    o = open("box.raw", "w")
+    o = open("./vasp_raw/box.raw", "w")
     for i in box:
         o.write(" ".join(i)+'\n')
     o.close()
-    o = open("energy.raw", "w")
+    o = open("./vasp_raw/energy.raw", "w")
     for i in energy:
         o.write(i+'\n')
     o.close()
-    o = open("force.raw", "w")
+    o = open("./vasp_raw/force.raw", "w")
     for i in force:
         o.write(" ".join(i)+'\n')
     o.close()
-    o = open("coord.raw", "w")
+    o = open("./vasp_raw/coord.raw", "w")
     for i in coord:
         o.write(" ".join(i)+'\n')
     o.close()
+    os.chdir('..')
         
 
 def main():
+    if not os.path.exists('vasp_raw'):
+        os.mkdir('vasp_raw')
+
     atom_types, atom_numbers = read_poscar()
     write_type_rawatom(atom_numbers)
     virial, box, coord, force, energy = read_outcar(atom_numbers)
