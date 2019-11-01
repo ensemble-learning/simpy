@@ -9,7 +9,7 @@ flist = [
 "virial.raw",
 ]
 
-n_every = 5
+n_every = 20
 if len(sys.argv) > 1:
     n_every = int(n_every)
 

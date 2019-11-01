@@ -1,0 +1,19 @@
+#PBS -N vasp
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=12:00:00
+#PBS -q batch
+#PBS -V
+#PBS -j oe
+#PBS -S /bin/bash
+#
+### Set intel environment###
+source /opt/intel/compilers_and_libraries_2018/linux/bin/compilervars.sh intel64
+source /opt/intel/mkl/bin/mklvars.sh intel64
+source /opt/intel/impi/2018.1.163/bin64/mpivars.sh
+source /opt/software/gromacs/gromacs2019/bin/GMXRC
+
+cd $PBS_O_WORKDIR
+
+# Run LAMMPS
+gmx_mpi grompp
+gmx_mpi mdrun

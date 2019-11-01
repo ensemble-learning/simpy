@@ -1,3 +1,6 @@
+"""
+@todo: assign atom types
+"""
 import os, sys
 import numpy as np
 import ase
@@ -7,6 +10,7 @@ from ase.neighborlist import neighbor_list
 
 cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85}
 atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237'}
+ERROR_ATP = 'Warning: User-defined atom types provided but the numbers do not match!\n'
 
 def get_lists(atoms):
 
@@ -103,14 +107,27 @@ def assign_charges(atoms):
     charges = [0.0]*len(atoms)
     if os.path.exists("q.dat"):
         charges = np.loadtxt("q.dat")
-    print("%.4f"%np.sum(charges), "total charges")
+    #print("%.4f"%np.sum(charges), "total charges")
     return charges   
 
 def assign_atom_types_opls(atoms, nl):
     chemical_symbols = atoms.get_chemical_symbols()
-    atomtypes = []
+    atomtypes, atomtypes_usr = [], []
     for i in range(len(atoms)):
         atomtypes.append(atom_types_table[chemical_symbols[i]])
+    if os.path.exists('atp.dat'):
+        f = open('atp.dat', 'r')
+        for i in f:
+            tokens = i.strip()
+            if len(tokens) > 0:
+                atomtypes_usr.append(tokens)
+        f.close()
+        if len(atomtypes_usr) == len(atomtypes):
+            for j in range(len(atomtypes)):
+                atomtypes[j] = atomtypes_usr[j]
+        else:
+            sys.stderr.write(ERROR_ATP)
+        
     return atomtypes
 
 if len(sys.argv) > 1:

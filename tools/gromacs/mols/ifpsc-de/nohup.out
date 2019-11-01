@@ -1,0 +1,69 @@
+                      :-) GROMACS - gmx mdrun, 2016.4 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov  Herman J.C. Berendsen    Par Bjelkmar   
+ Aldert van Buuren   Rudi van Drunen     Anton Feenstra    Gerrit Groenhof  
+ Christoph Junghans   Anca Hamuraru    Vincent Hindriksen Dimitrios Karkoulis
+    Peter Kasson        Jiri Kraus      Carsten Kutzner      Per Larsson    
+  Justin A. Lemkul   Magnus Lundborg   Pieter Meulenhoff    Erik Marklund   
+   Teemu Murtola       Szilard Pall       Sander Pronk      Roland Schulz   
+  Alexey Shvetsov     Michael Shirts     Alfons Sijbers     Peter Tieleman  
+  Teemu Virolainen  Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2017, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2016.4
+Executable:   /usr/local/gromacs/bin/gmx
+Data prefix:  /usr/local/gromacs
+Working dir:  /home/tao/Disk/central/03-now/09-ifpsc/gromacs/box
+Command line:
+  gmx mdrun
+
+
+Back Off! I just backed up md.log to ./#md.log.2#
+
+Running on 1 node with total 4 cores, 8 logical cores
+Hardware detected:
+  CPU info:
+    Vendor: Intel
+    Brand:  Intel(R) Core(TM) i7-6700 CPU @ 3.40GHz
+    SIMD instructions most likely to fit this hardware: AVX2_256
+    SIMD instructions selected at GROMACS compile time: AVX2_256
+
+  Hardware topology: Basic
+
+Reading file topol.tpr, VERSION 2016.4 (single precision)
+Changing nstlist from 5 to 40, rlist from 1 to 1
+
+Using 1 MPI thread
+Using 8 OpenMP threads 
+
+
+Back Off! I just backed up traj.trr to ./#traj.trr.2#
+
+Back Off! I just backed up ener.edr to ./#ener.edr.2#
+starting mdrun 'de'
+2000000 steps,   1000.0 ps.
+
+Writing final coordinates.
+
+Back Off! I just backed up confout.gro to ./#confout.gro.1#
+
+               Core t (s)   Wall t (s)        (%)
+       Time:     5832.366      729.046      800.0
+                 (ns/day)    (hour/ns)
+Performance:      118.511        0.203
+
+GROMACS reminds you: "Every Sperm is Sacred" (Monty Python)
+

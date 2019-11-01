@@ -1,4 +1,4 @@
-#!/usr/bin/env /exec/python/pythonEPD-6.3-2-rh3-x86/bin/python
+#!/usr/bin/env python
 
 """
 Convert any file format (with correct ext) to .gen.

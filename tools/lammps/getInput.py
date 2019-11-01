@@ -8,7 +8,7 @@ import argparse
 
 LIB = ''
 
-print socket.gethostname() 
+print(socket.gethostname())
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
@@ -59,9 +59,9 @@ MASS = {12.011:"C", 14.007: "N", 15.999:"O", 1.0079:"H", 40.078:"Ca",\
 """
 
 def usage():
-    print """python genInput.py type
+    print("""python genInput.py type
     type: NVT, MIN
-    """
+    """)
 
 def getElements(args):
     assert os.path.exists("ffield")
@@ -127,7 +127,7 @@ def main(args):
     elif rtype == "RERUN_LJ":
         lines = RERUN_LJ
 
-    print "processing %s simulation......"%rtype
+    print("processing %s simulation......"%rtype)
 
     
     if lg:
@@ -147,7 +147,6 @@ def main(args):
         tmp = ""
         for i in range(len(elem)):
             tmp += "pair_coeff     %d     %d      0.0100      1.0000\n"%(i+1, i+1)
-        print tmp
         lines = lines.replace("%pair_coeff%", tmp)
 
     o = open("lammps_input", "w")
