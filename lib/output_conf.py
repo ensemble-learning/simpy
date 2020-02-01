@@ -341,8 +341,11 @@ def toMsd(system, outfile="dff.msd"):
 def toPoscar(system, outfile="POSCAR"):
     """Output the POSCAR file
     """
+    ndxfile = 'index.ndx'
     s = system
     o = open(outfile, "w")
+    ndx = open(ndxfile, 'w')
+    ndx.write('# original-id new-id\n')
     o.write("%s\n"%s.name) 
     o.write("%20.15f\n"%s.scaleFactor)
 
@@ -383,14 +386,17 @@ def toPoscar(system, outfile="POSCAR"):
     o.write("Direct\n")
     coords = []
     coordsXr = []
+    id_numbers = []
     natom = 0
     for i in elements_list:
         for j in elements[i]:
             coords.append(np.array(j.xFrac))
             coordsXr.append(j.xr)
+            id_numbers.append(j.number)
             natom += 1
 
     for i in range(natom):
+        ndx.write('%d %d\n'%(i+1, id_numbers[i]))
         xf = coords[i][0]
         yf = coords[i][1]
         zf = coords[i][2]
@@ -406,6 +412,7 @@ def toPoscar(system, outfile="POSCAR"):
             zr = "F"
         o.write("%4s%4s%4s\n"%(xr, yr, zr))
     o.write("\n")
+    ndx.close()
     o.close()
 
 def toJdft(system, outfile="coords"):
