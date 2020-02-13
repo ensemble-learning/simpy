@@ -1,0 +1,9 @@
+1. compile on caltech hpc
+module 
+ 1) mkl/18.1        2) python3/3.6.4   3) cmake/3.10.2    4) gcc/6.4.0       5) intel/17.1
+
+cmake -D GSL_PATH=/central/software/gsl/2.4 -D EnableMKL=yes -D MKL_PATH=/central/software/Intel/2017.1/mkl ../jdftx/
+
+cmake -D EnableCUDA=yes -D CUDA_TOOLKIT_ROOT_DIR=/central/software/CUDA/9.1 -D GSL_PATH=/central/software/gsl/2.4 -D EnableMKL=yes -D MKL_PATH=/central/software/Intel/2017.1/mkl ../jdftx/
+
+cmake -D EnableCUDA=yes -D CUDA_TOOLKIT_ROOT_DIR=/central/software/CUDA/9.1 D CUDA_ARCH=compute_60 -D CUDA_CODE=sm_60 -D GSL_PATH=/central/software/gsl/2.4 -D EnableMKL=yes -D MKL_PATH=/central/software/Intel/2017.1/mkl ../jdftx/
