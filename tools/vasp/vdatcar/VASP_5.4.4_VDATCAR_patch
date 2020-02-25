@@ -1,0 +1,40 @@
+*** vasp.5.4.4/src/main.F	Sat Nov 18 09:31:39 2017
+--- vasp.5.4.4.vel/src/main.F	Sat Nov 18 13:18:45 2017
+***************
+*** 479,484 ****
+--- 479,485 ----
+        OPEN(UNIT=16,FILE=DIR_APP(1:DIR_LEN)//'DOSCAR',STATUS='UNKNOWN')
+        OPEN(UNIT=17,FILE=DIR_APP(1:DIR_LEN)//'OSZICAR',STATUS='UNKNOWN')
+        OPEN(UNIT=60,FILE=DIR_APP(1:DIR_LEN)//'PCDAT',STATUS='UNKNOWN')
++       OPEN(UNIT=62,FILE=DIR_APP(1:DIR_LEN)//'VDATCAR',STATUS='UNKNOWN')
+        OPEN(UNIT=61,FILE=DIR_APP(1:DIR_LEN)//'XDATCAR',STATUS='UNKNOWN')
+        OPEN(UNIT=70,FILE=DIR_APP(1:DIR_LEN)//'CHG',STATUS='UNKNOWN')
+  #ifdef tbdyn
+***************
+*** 1911,1916 ****
+--- 1912,1918 ----
+   7017 FORMAT(' position of ions in cartesian coordinates  (Angst):')
+   7009 FORMAT(1X,3F12.8,F12.3)
+   7007 FORMAT(1X,3F12.8)
++  7008 FORMAT(3E16.8)
+  
+        WRITE(TIU6,7104) KPOINTS%SZNAMK
+  
+*************** ibrion: IF (DYN%IBRION==0) THEN
+*** 3821,3826 ****
+--- 3823,3837 ----
+          ENDIF
+          WRITE(61,'(A,I6)') 'Direct configuration=',NSTEP
+          WRITE(61,7007) ((DYN%POSIOC(I,J),I=1,3),J=1,T_INFO%NIONS)
++         WRITE(62,'(A,I6)') '# step =',NSTEP
++         DO NI=1,T_INFO%NIONS
++             VTMP(1) = DYN%VEL(1,NI)/DYN%POTIM
++             VTMP(2) = DYN%VEL(2,NI)/DYN%POTIM
++             VTMP(3) = DYN%VEL(3,NI)/DYN%POTIM
++             CALL DIRKAR(1,VTMP,LATT_CUR%A)
++             WRITE(62,7008)  VTMP(1), VTMP(2), VTMP(3)
++         ENDDO
++ 
+          IF (IO%LOPEN) CALL WFORCE(61)
+          io_end
+  

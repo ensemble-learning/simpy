@@ -46,6 +46,7 @@ def withPbc(testfile="supper.pdb", args=''):
     b = a.parser()
     b.assignAtomTypes()
     b.assignEleTypes()
+    b.assignIdNumbers()
     b.toFrac()
     #b.translate(12.0, "z")
     toXyz(b, "out.xyz")

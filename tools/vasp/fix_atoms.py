@@ -47,6 +47,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("fname", default="POSCAR", nargs="?", help="geo file name")
     parser.add_argument("-n", type=int, help="number of fixed atoms")
+    parser.add_argument("-r", action='store_true', help="reverse the fixing order")
     args = parser.parse_args()
     if args.n:
         n_fixed = int(args.n)
@@ -73,6 +74,8 @@ def main():
         for j in b.atoms[i].x:
             coords[i].append(j)
     coords.sort(key=lambda x: x[3])
+    if args.r:
+        coords.sort(key=lambda x: x[3], reverse=True)
 
     for i in range(len(coords)):
         if i < n_fixed:

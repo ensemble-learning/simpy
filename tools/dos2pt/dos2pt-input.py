@@ -88,11 +88,14 @@ o.write("estimate_velocities = .true.\n")
 
 o = open("masses", "w")
 o.write("""Cu  63.546
+H   1.0080
+Li  6.9400
 C   12.011
-O   16.00
-H   1.01
-Na  23.00
+O   15.999
+F   18.998
+Na  22.990
 K   39.098
+S   32.060
 Au  196.97
 N   14.007
 Pt  195.08

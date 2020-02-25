@@ -242,6 +242,15 @@ class System():
         for i in self.atoms:
             i.type1 = c[i.name.strip()]
 
+    def assignIdNumbers(self,):
+        """ assign id numbers according to the sequence of atoms
+            starting from 1
+        """
+        n = 1
+        for i in self.atoms:
+            i.number = n
+            n += 1
+
     def toFrac(self,):
         a2r = numpy.pi / 180.0
         alpha = a2r * self.pbc[3]
