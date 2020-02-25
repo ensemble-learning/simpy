@@ -101,6 +101,3 @@ for i in a.atomtypes:
 o.close()
     
     
-    
-
-
