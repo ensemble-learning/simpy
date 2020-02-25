@@ -3,8 +3,6 @@ lammps input templates
 """
 
 MIN = """
-#Lammps 2009 input file generate by DFF
-
 units          real
 atom_style     charge
 boundary       p p p

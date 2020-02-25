@@ -3,7 +3,7 @@ Get free energy information from VASP slow-growth simulation
 Plot the free energy plot derived from MD simulation
 """
 
-import sys
+import os, sys
 import argparse
 import numpy as np
 from scipy import integrate
@@ -129,7 +129,8 @@ def read_report(p):
             std = np.std(p2)/np.average(p1)
     
         o = open("ave_c%d.dat"%i, "w")
-        o.write("%12.4f%12.4f%12.4f\n"%(x_ave, y_ave, std))
+        o.write("%s %12.4f%12.4f%12.4f\n"%(os.path.basename(os.getcwd()),
+                                           x_ave, y_ave, std))
         o.close()
     
     return cvs, dA, mc

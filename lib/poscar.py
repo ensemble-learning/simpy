@@ -30,6 +30,8 @@ class Poscar():
         for i in f:
             if i.strip().startswith("Direct"):
                 break
+            elif i.strip().startswith("dir"):
+                break
             elif i.strip().startswith("Cartesian"):
                 break
             elif i.strip().startswith("cart"):
