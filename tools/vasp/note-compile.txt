@@ -1,0 +1,10 @@
+vasp 编译 vtst solv gpu on caltech hpc
+
+VTST_OBJS = bfgs.o dynmat.o instanton.o lbfgs.o sd.o cg.o dimer.o bbm.o \
+fire.o lanczos.o neb.o qm.o opt.o chain.o
+
+and then add those objects after hamil_rot.o, as in:
+
+hamil_rot.o \
+$(VTST_OBJS) \
+dyna.o \
