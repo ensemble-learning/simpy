@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 
 data = []
 
-f = open("result.pwr", "r")
+f = open("output.pwr", "r")
 
 counter = 0
 

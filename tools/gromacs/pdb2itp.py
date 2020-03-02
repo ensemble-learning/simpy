@@ -60,7 +60,7 @@ def get_lists(atoms):
                         dl = k
                         dihedral_list.append([di, dj, dk, dl])
     n_dihedral = len(dihedral_list)
-    print(n_dihedral, "angle terms")
+    print(n_dihedral, "diheral terms")
     return nl, bond_list, angle_list, dihedral_list
 
 def to_itp(fname, atoms, nl, bl, al, dl, charges, atomtypes):
