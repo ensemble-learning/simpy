@@ -130,13 +130,19 @@ def output_files(virial, box, coord, force, energy):
         o.write(" ".join(i)+'\n')
     o.close()
     os.chdir('..')
-        
+
+def write_type_raw_map(atom_types):
+    o = open('./vasp_raw/type_map.raw', 'w')
+    for i in atom_types:
+        o.write('%s\n'%i)
+    o.close()
 
 def main():
     if not os.path.exists('vasp_raw'):
         os.mkdir('vasp_raw')
 
     atom_types, atom_numbers = read_poscar()
+    write_type_raw_map(atom_types)
     write_type_rawatom(atom_numbers)
     virial, box, coord, force, energy = read_outcar(atom_numbers)
     output_files(virial, box, coord, force, energy)
