@@ -92,7 +92,7 @@ def to_data(atoms, nl, bl, al, dl, bp, ap, dp):
     n = 1
     for i in bp:
         tokens = i.strip().split()
-        o.write('%d %.6f %.4f\n'%(n, float(tokens[-2]), float(tokens[-1])))
+        o.write('%d %.6f %.4f\n'%(n, float(tokens[-2])/4.184, float(tokens[-1])))
         n += 1
     o.write('\n')
 
@@ -100,7 +100,7 @@ def to_data(atoms, nl, bl, al, dl, bp, ap, dp):
     n = 1
     for i in ap:
         tokens = i.strip().split()
-        o.write('%d %.6f %.4f\n'%(n, float(tokens[-2]), float(tokens[-1])))
+        o.write('%d %.6f %.4f\n'%(n, float(tokens[-2])/4.184, float(tokens[-1])))
         n += 1
     o.write('\n')
     #o.write('Dihedral Coeffs\n\n')
