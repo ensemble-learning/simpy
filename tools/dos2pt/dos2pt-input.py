@@ -15,23 +15,29 @@ def get_cell():
     return cells
 
 def get_time_step():
-    f = open("INCAR", "r")
-    for i in f:
-        if "POTIM" in i:
-            tokens = i.strip().split("=")
-            tokens = tokens[1].split()
-            ts = float(tokens[0])
-    f.close()
+    if os.path.exists('INCAR'):
+        f = open("INCAR", "r")
+        for i in f:
+            if "POTIM" in i:
+                tokens = i.strip().split("=")
+                tokens = tokens[1].split()
+                ts = float(tokens[0])
+        f.close()
+    else:
+        ts = 5
     return ts
 
 def get_temperature():
-    f = open("INCAR", "r")
-    for i in f:
-        if "TEBEG" in i:
-            tokens = i.strip().split("=")
-            tokens = tokens[1].split()
-            tempt = float(tokens[0])
-    f.close()
+    if os.path.exists('INCAR'):
+        f = open("INCAR", "r")
+        for i in f:
+            if "TEBEG" in i:
+                tokens = i.strip().split("=")
+                tokens = tokens[1].split()
+                tempt = float(tokens[0])
+        f.close()
+    else:
+        tempt = 300
     return tempt
                     
 # read input file
