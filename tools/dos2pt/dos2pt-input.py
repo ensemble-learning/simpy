@@ -6,12 +6,13 @@ n_points = 0
 # http://dospt.org/index.php/DoSPT
 
 def get_cell():
-    f = open("POSCAR", "r")
-    lines = f.readlines()
-    f.close()
     cells = []
-    for i in range(2,5):
-        cells.append(lines[i].strip().split())
+    if os.path.exists('POSCAR'):
+        f = open("POSCAR", "r")
+        lines = f.readlines()
+        f.close()
+        for i in range(2,5):
+            cells.append(lines[i].strip().split())
     return cells
 
 def get_time_step():
@@ -57,7 +58,6 @@ if not os.path.exists("inp"):
                         
     sys.exit(0)
     
-
 f = open("inp", "r")
 lines = f.readlines()
 f.close()
@@ -107,6 +107,7 @@ N   14.007
 Pt  195.08
 Cl   35.45
 Fe  55.845
+B   10.81
 """)
 o.close()
 

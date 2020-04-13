@@ -1,0 +1,62 @@
+# created by fftool
+
+units real
+boundary p p p
+
+atom_style full
+bond_style harmonic
+angle_style harmonic
+
+special_bonds lj/coul 0.0 0.0 0.5
+
+pair_style hybrid lj/cut/coul/long 12.0 12.0
+pair_modify mix geometric tail yes
+kspace_style pppm 1.0e-5
+
+read_data data.lmp
+# read_restart restart1.lmp
+
+pair_coeff    1    1 lj/cut/coul/long     0.018279     2.126000  # Li Li
+pair_coeff    2    2 lj/cut/coul/long     0.095005     3.580000  # B B
+pair_coeff    3    3 lj/cut/coul/long     0.060994     3.120000  # FB FB
+pair_coeff    4    4 lj/cut/coul/long     0.000000     0.000000  # Hw Hw
+pair_coeff    5    5 lj/cut/coul/long     0.155425     3.165500  # Ow Ow
+
+minimize 1.0e-4 1.0e-6 100 1000
+reset_timestep 0
+
+fix SHAKE all shake 0.0001 20 0 b 2
+
+neighbor 2.0 bin
+# neigh_modify delay 0 every 1 check yes
+
+timestep 1.0
+
+variable TK equal 300.0
+variable PBAR equal 1.0
+
+velocity all create ${TK} 12345
+
+fix     2 all plumed plumedfile plumed.dat outfile p.log
+fix TPSTAT all nvt temp ${TK} ${TK} 100 
+
+thermo_style custom step cpu etotal ke pe evdwl ecoul elong temp press vol density
+thermo 1000
+
+dump TRAJ all custom 1000 dump.lammpstrj id mol type element q x y z ix iy iz
+dump_modify TRAJ element Li B F H O
+
+variable t equal time
+compute MSD all msd com yes
+variable msd equal c_MSD[4]
+fix PRMSD all print 2000 "${t} ${msd}" file msd.lammps screen no
+
+variable vinst equal vol
+fix VAVG all ave/time 10 1000 50000 v_vinst
+
+# restart 10000 restart1.lmp restart2.lmp
+
+run 200000
+write_data data.eq.lmp
+
+

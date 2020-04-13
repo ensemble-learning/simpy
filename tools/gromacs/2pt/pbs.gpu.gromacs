@@ -1,0 +1,17 @@
+#!/bin/tcsh
+
+#SBATCH -A wag
+#SBATCH --time=2:00:00   # walltime
+#SBATCH --ntasks=1   # number of processor cores (i.e. tasks)
+#SBATCH --nodes=1   # number of nodes
+#SBATCH --mem-per-cpu=8G   # memory per CPU core
+#SBATCH --gres=gpu:1
+
+# LOAD MODULES, INSERT CODE, AND RUN YOUR PROGRAMS HERE
+module load cuda/9.1 openmpi/3.0.0 gromacs/2018.4_ompi300_cuda91 openmpi/3.0.0 plumed/2.5.0_ompi300
+export LD_LIBRARY_PATH=/central/software/CUDA/9.1/lib64:$LD_LIBRARY_PATH
+
+cd $SLURM_SUBMIT_DIR
+gmx_mpi grompp -f 2pt.mdp -p field.top -o md.tpr
+gmx_mpi mdrun -deffnm md
+echo 0 | gmx_mpi trjconv -f md.trr -s md.tpr -o traj.gro -dt 0.004 -ndec 5 -vel

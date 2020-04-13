@@ -1,0 +1,172 @@
+export: Command not found.
+                      :-) GROMACS - gmx grompp, 2018.4 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar    Aldert van Buuren   Rudi van Drunen     Anton Feenstra  
+  Gerrit Groenhof    Aleksei Iupinov   Christoph Junghans   Anca Hamuraru   
+ Vincent Hindriksen Dimitrios Karkoulis    Peter Kasson        Jiri Kraus    
+  Carsten Kutzner      Per Larsson      Justin A. Lemkul    Viveca Lindahl  
+  Magnus Lundborg   Pieter Meulenhoff    Erik Marklund      Teemu Murtola   
+    Szilard Pall       Sander Pronk      Roland Schulz     Alexey Shvetsov  
+   Michael Shirts     Alfons Sijbers     Peter Tieleman    Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2017, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx grompp, version 2018.4
+Executable:   /central/software/gromacs/2018.4_ompi300//bin/gmx_mpi
+Data prefix:  /central/software/gromacs/2018.4_ompi300/
+Working dir:  /central/groups/wag/data/03-now/33-ml-cff/10-liquid-run/02-ethane/ethane-0.5000-gromacs/gromacs/2pt
+Command line:
+  gmx_mpi grompp -f 2pt.mdp -p field.top -o md.tpr
+
+
+NOTE 1 [file 2pt.mdp]:
+  With Verlet lists the optimal nstlist is >= 10, with GPUs >= 20. Note
+  that with the Verlet scheme, nstlist has no effect on the accuracy of
+  your simulation.
+
+Setting the LD random seed to 103357756
+Generated 3 of the 3 non-bonded parameter combinations
+Generating 1-4 interactions: fudge = 0.5
+Generated 3 of the 3 1-4 parameter combinations
+Excluding 3 bonded neighbours molecule type 'ethane'
+Setting gen_seed to 1223641431
+Velocities were taken from a Maxwell distribution at 300 K
+Removing all charge groups because cutoff-scheme=Verlet
+Number of degrees of freedom in T-Coupling group System is 3165.00
+Estimate for the relative computational load of the PME mesh part: 0.75
+
+NOTE 2 [file 2pt.mdp]:
+  The optimal PME mesh load for parallel simulations is below 0.5
+  and for highly parallel simulations between 0.25 and 0.33,
+  for higher performance, increase the cut-off and the PME grid spacing.
+
+
+
+There were 2 notes
+
+GROMACS reminds you: "What If None Of Your Dreams Come True ?" (E. Costello)
+
+                      :-) GROMACS - gmx mdrun, 2018.4 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar    Aldert van Buuren   Rudi van Drunen     Anton Feenstra  
+  Gerrit Groenhof    Aleksei Iupinov   Christoph Junghans   Anca Hamuraru   
+ Vincent Hindriksen Dimitrios Karkoulis    Peter Kasson        Jiri Kraus    
+  Carsten Kutzner      Per Larsson      Justin A. Lemkul    Viveca Lindahl  
+  Magnus Lundborg   Pieter Meulenhoff    Erik Marklund      Teemu Murtola   
+    Szilard Pall       Sander Pronk      Roland Schulz     Alexey Shvetsov  
+   Michael Shirts     Alfons Sijbers     Peter Tieleman    Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2017, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx mdrun, version 2018.4
+Executable:   /central/software/gromacs/2018.4_ompi300//bin/gmx_mpi
+Data prefix:  /central/software/gromacs/2018.4_ompi300/
+Working dir:  /central/groups/wag/data/03-now/33-ml-cff/10-liquid-run/02-ethane/ethane-0.5000-gromacs/gromacs/2pt
+Command line:
+  gmx_mpi mdrun -deffnm md
+
+Reading file md.tpr, VERSION 2018.4 (single precision)
+Changing nstlist from 5 to 100, rlist from 1.2 to 1.2
+
+Using 1 MPI process
+Using 28 OpenMP threads 
+
+1 GPU auto-selected for this run.
+Mapping of GPU IDs to the 1 GPU task in the 1 rank on this node:
+  PP:0
+
+NOTE: GROMACS was configured without NVML support hence it can not exploit
+      application clocks of the detected Tesla P100-PCIE-16GB GPU to improve performance.
+      Recompile with the NVML library (compatible with the driver used) or set application clocks manually.
+
+Non-default thread affinity set probably by the OpenMP library,
+disabling internal thread affinity
+starting mdrun 'simbox'
+20000 steps,     20.0 ps.
+
+Writing final coordinates.
+
+               Core t (s)   Wall t (s)        (%)
+       Time:     5852.306      209.011     2800.0
+                 (ns/day)    (hour/ns)
+Performance:        8.268        2.903
+
+GROMACS reminds you: "Nada e organico, e tudo programado" (Pitty)
+
+                     :-) GROMACS - gmx trjconv, 2018.4 (-:
+
+                            GROMACS is written by:
+     Emile Apol      Rossen Apostolov      Paul Bauer     Herman J.C. Berendsen
+    Par Bjelkmar    Aldert van Buuren   Rudi van Drunen     Anton Feenstra  
+  Gerrit Groenhof    Aleksei Iupinov   Christoph Junghans   Anca Hamuraru   
+ Vincent Hindriksen Dimitrios Karkoulis    Peter Kasson        Jiri Kraus    
+  Carsten Kutzner      Per Larsson      Justin A. Lemkul    Viveca Lindahl  
+  Magnus Lundborg   Pieter Meulenhoff    Erik Marklund      Teemu Murtola   
+    Szilard Pall       Sander Pronk      Roland Schulz     Alexey Shvetsov  
+   Michael Shirts     Alfons Sijbers     Peter Tieleman    Teemu Virolainen 
+ Christian Wennberg    Maarten Wolf   
+                           and the project leaders:
+        Mark Abraham, Berk Hess, Erik Lindahl, and David van der Spoel
+
+Copyright (c) 1991-2000, University of Groningen, The Netherlands.
+Copyright (c) 2001-2017, The GROMACS development team at
+Uppsala University, Stockholm University and
+the Royal Institute of Technology, Sweden.
+check out http://www.gromacs.org for more information.
+
+GROMACS is free software; you can redistribute it and/or modify it
+under the terms of the GNU Lesser General Public License
+as published by the Free Software Foundation; either version 2.1
+of the License, or (at your option) any later version.
+
+GROMACS:      gmx trjconv, version 2018.4
+Executable:   /central/software/gromacs/2018.4_ompi300//bin/gmx_mpi
+Data prefix:  /central/software/gromacs/2018.4_ompi300/
+Working dir:  /central/groups/wag/data/03-now/33-ml-cff/10-liquid-run/02-ethane/ethane-0.5000-gromacs/gromacs/2pt
+Command line:
+  gmx_mpi trjconv -f md.trr -s md.tpr -o traj.gro -dt 0.004 -ndec 5 -vel
+
+Will write gro: Coordinate file in Gromos-87 format
+Reading file md.tpr, VERSION 2018.4 (single precision)
+Reading file md.tpr, VERSION 2018.4 (single precision)
+Group     0 (         System) has  1408 elements
+Group     1 (          Other) has  1408 elements
+Group     2 (          ethan) has  1408 elements
+Select a group: trr version: GMX_trn_file (single precision)
+Reading frame       0 time    0.000   
+Setting output precision to 1e-05 (nm)
+
+Back Off! I just backed up traj.gro to ./#traj.gro.2#
+ ->  frame      0 time    0.000      Reading frame       1 time    0.004    ->  frame      1 time    0.004      Reading frame       2 time    0.008    ->  frame      2 time    0.008      Reading frame       3 time    0.012    ->  frame      3 time    0.012      Reading frame       4 time    0.016    ->  frame      4 time    0.016      Reading frame       5 time    0.020    ->  frame      5 time    0.020      Reading frame       6 time    0.024    ->  frame      6 time    0.024      Reading frame       7 time    0.028    ->  frame      7 time    0.028      Reading frame       8 time    0.032    ->  frame      8 time    0.032      Reading frame       9 time    0.036    ->  frame      9 time    0.036      Reading frame      10 time    0.040    ->  frame     10 time    0.040      Reading frame      11 time    0.044   Reading frame      12 time    0.048   Reading frame      13 time    0.052   Reading frame      14 time    0.056   Reading frame      15 time    0.060   Reading frame      16 time    0.064   Reading frame      17 time    0.068   Reading frame      18 time    0.072   Reading frame      19 time    0.076   Reading frame      20 time    0.080    ->  frame     20 time    0.080      Reading frame      30 time    0.120    ->  frame     30 time    0.120      Reading frame      40 time    0.160    ->  frame     40 time    0.160      Reading frame      50 time    0.200    ->  frame     50 time    0.200      Reading frame      60 time    0.240    ->  frame     60 time    0.240      Reading frame      70 time    0.280    ->  frame     70 time    0.280      Reading frame      80 time    0.320    ->  frame     80 time    0.320      Reading frame      90 time    0.360    ->  frame     90 time    0.360      Reading frame     100 time    0.400    ->  frame    100 time    0.400      Reading frame     110 time    0.440    ->  frame    110 time    0.440      Reading frame     120 time    0.480    ->  frame    120 time    0.480      Reading frame     130 time    0.520    ->  frame    130 time    0.520      Reading frame     140 time    0.560    ->  frame    140 time    0.560      Reading frame     150 time    0.600    ->  frame    150 time    0.600      Reading frame     160 time    0.640    ->  frame    160 time    0.640      Reading frame     170 time    0.680    ->  frame    170 time    0.680      Reading frame     180 time    0.720    ->  frame    180 time    0.720      Reading frame     190 time    0.760    ->  frame    190 time    0.760      Reading frame     200 time    0.800    ->  frame    200 time    0.800       ->  frame    210 time    0.840       ->  frame    220 time    0.880       ->  frame    230 time    0.920       ->  frame    240 time    0.960       ->  frame    250 time    1.000       ->  frame    260 time    1.040       ->  frame    270 time    1.080       ->  frame    280 time    1.120       ->  frame    290 time    1.160      Reading frame     300 time    1.200    ->  frame    300 time    1.200       ->  frame    310 time    1.240       ->  frame    320 time    1.280       ->  frame    330 time    1.320       ->  frame    340 time    1.360       ->  frame    350 time    1.400       ->  frame    360 time    1.440       ->  frame    370 time    1.480       ->  frame    380 time    1.520       ->  frame    390 time    1.560      Reading frame     400 time    1.600    ->  frame    400 time    1.600       ->  frame    410 time    1.640       ->  frame    420 time    1.680       ->  frame    430 time    1.720       ->  frame    440 time    1.760       ->  frame    450 time    1.800       ->  frame    460 time    1.840       ->  frame    470 time    1.880       ->  frame    480 time    1.920       ->  frame    490 time    1.960      Reading frame     500 time    2.000    ->  frame    500 time    2.000       ->  frame    510 time    2.040       ->  frame    520 time    2.080       ->  frame    530 time    2.120       ->  frame    540 time    2.160       ->  frame    550 time    2.200       ->  frame    560 time    2.240       ->  frame    570 time    2.280       ->  frame    580 time    2.320       ->  frame    590 time    2.360      Reading frame     600 time    2.400    ->  frame    600 time    2.400       ->  frame    610 time    2.440       ->  frame    620 time    2.480       ->  frame    630 time    2.520       ->  frame    640 time    2.560       ->  frame    650 time    2.600       ->  frame    660 time    2.640       ->  frame    670 time    2.680       ->  frame    680 time    2.720       ->  frame    690 time    2.760      Reading frame     700 time    2.800    ->  frame    700 time    2.800       ->  frame    710 time    2.840       ->  frame    720 time    2.880       ->  frame    730 time    2.920       ->  frame    740 time    2.960       ->  frame    750 time    3.000       ->  frame    760 time    3.040       ->  frame    770 time    3.080       ->  frame    780 time    3.120       ->  frame    790 time    3.160      Reading frame     800 time    3.200    ->  frame    800 time    3.200       ->  frame    810 time    3.240       ->  frame    820 time    3.280       ->  frame    830 time    3.320       ->  frame    840 time    3.360       ->  frame    850 time    3.400       ->  frame    860 time    3.440       ->  frame    870 time    3.480       ->  frame    880 time    3.520       ->  frame    890 time    3.560      Reading frame     900 time    3.600    ->  frame    900 time    3.600       ->  frame    910 time    3.640       ->  frame    920 time    3.680       ->  frame    930 time    3.720       ->  frame    940 time    3.760       ->  frame    950 time    3.800       ->  frame    960 time    3.840       ->  frame    970 time    3.880       ->  frame    980 time    3.920       ->  frame    990 time    3.960      Reading frame    1000 time    4.000    ->  frame   1000 time    4.000       ->  frame   1010 time    4.040       ->  frame   1020 time    4.080       ->  frame   1030 time    4.120       ->  frame   1040 time    4.160       ->  frame   1050 time    4.200       ->  frame   1060 time    4.240       ->  frame   1070 time    4.280       ->  frame   1080 time    4.320       ->  frame   1090 time    4.360      Reading frame    1100 time    4.400    ->  frame   1100 time    4.400       ->  frame   1110 time    4.440       ->  frame   1120 time    4.480       ->  frame   1130 time    4.520       ->  frame   1140 time    4.560       ->  frame   1150 time    4.600       ->  frame   1160 time    4.640       ->  frame   1170 time    4.680       ->  frame   1180 time    4.720       ->  frame   1190 time    4.760      Reading frame    1200 time    4.800    ->  frame   1200 time    4.800       ->  frame   1210 time    4.840       ->  frame   1220 time    4.880       ->  frame   1230 time    4.920       ->  frame   1240 time    4.960       ->  frame   1250 time    5.000       ->  frame   1260 time    5.040       ->  frame   1270 time    5.080       ->  frame   1280 time    5.120       ->  frame   1290 time    5.160      Reading frame    1300 time    5.200    ->  frame   1300 time    5.200       ->  frame   1310 time    5.240       ->  frame   1320 time    5.280       ->  frame   1330 time    5.320       ->  frame   1340 time    5.360       ->  frame   1350 time    5.400       ->  frame   1360 time    5.440       ->  frame   1370 time    5.480       ->  frame   1380 time    5.520       ->  frame   1390 time    5.560      Reading frame    1400 time    5.600    ->  frame   1400 time    5.600       ->  frame   1410 time    5.640       ->  frame   1420 time    5.680       ->  frame   1430 time    5.720       ->  frame   1440 time    5.760       ->  frame   1450 time    5.800       ->  frame   1460 time    5.840       ->  frame   1470 time    5.880       ->  frame   1480 time    5.920       ->  frame   1490 time    5.960      Reading frame    1500 time    6.000    ->  frame   1500 time    6.000       ->  frame   1510 time    6.040       ->  frame   1520 time    6.080       ->  frame   1530 time    6.120       ->  frame   1540 time    6.160       ->  frame   1550 time    6.200       ->  frame   1560 time    6.240       ->  frame   1570 time    6.280       ->  frame   1580 time    6.320       ->  frame   1590 time    6.360      Reading frame    1600 time    6.400    ->  frame   1600 time    6.400       ->  frame   1610 time    6.440       ->  frame   1620 time    6.480       ->  frame   1630 time    6.520       ->  frame   1640 time    6.560       ->  frame   1650 time    6.600       ->  frame   1660 time    6.640       ->  frame   1670 time    6.680       ->  frame   1680 time    6.720       ->  frame   1690 time    6.760      Reading frame    1700 time    6.800    ->  frame   1700 time    6.800       ->  frame   1710 time    6.840       ->  frame   1720 time    6.880       ->  frame   1730 time    6.920       ->  frame   1740 time    6.960       ->  frame   1750 time    7.000       ->  frame   1760 time    7.040       ->  frame   1770 time    7.080       ->  frame   1780 time    7.120       ->  frame   1790 time    7.160      Reading frame    1800 time    7.200    ->  frame   1800 time    7.200       ->  frame   1810 time    7.240       ->  frame   1820 time    7.280       ->  frame   1830 time    7.320       ->  frame   1840 time    7.360       ->  frame   1850 time    7.400       ->  frame   1860 time    7.440       ->  frame   1870 time    7.480       ->  frame   1880 time    7.520       ->  frame   1890 time    7.560      Reading frame    1900 time    7.600    ->  frame   1900 time    7.600       ->  frame   1910 time    7.640       ->  frame   1920 time    7.680       ->  frame   1930 time    7.720       ->  frame   1940 time    7.760       ->  frame   1950 time    7.800       ->  frame   1960 time    7.840       ->  frame   1970 time    7.880       ->  frame   1980 time    7.920       ->  frame   1990 time    7.960      Reading frame    2000 time    8.000    ->  frame   2000 time    8.000       ->  frame   2010 time    8.040       ->  frame   2020 time    8.080       ->  frame   2030 time    8.120       ->  frame   2040 time    8.160       ->  frame   2050 time    8.200       ->  frame   2060 time    8.240       ->  frame   2070 time    8.280       ->  frame   2080 time    8.320       ->  frame   2090 time    8.360       ->  frame   2100 time    8.400       ->  frame   2110 time    8.440       ->  frame   2120 time    8.480       ->  frame   2130 time    8.520       ->  frame   2140 time    8.560       ->  frame   2150 time    8.600       ->  frame   2160 time    8.640       ->  frame   2170 time    8.680       ->  frame   2180 time    8.720       ->  frame   2190 time    8.760       ->  frame   2200 time    8.800       ->  frame   2210 time    8.840       ->  frame   2220 time    8.880       ->  frame   2230 time    8.920       ->  frame   2240 time    8.960       ->  frame   2250 time    9.000       ->  frame   2260 time    9.040       ->  frame   2270 time    9.080       ->  frame   2280 time    9.120       ->  frame   2290 time    9.160       ->  frame   2300 time    9.200       ->  frame   2310 time    9.240       ->  frame   2320 time    9.280       ->  frame   2330 time    9.320       ->  frame   2340 time    9.360       ->  frame   2350 time    9.400       ->  frame   2360 time    9.440       ->  frame   2370 time    9.480       ->  frame   2380 time    9.520       ->  frame   2390 time    9.560       ->  frame   2400 time    9.600       ->  frame   2410 time    9.640       ->  frame   2420 time    9.680       ->  frame   2430 time    9.720       ->  frame   2440 time    9.760       ->  frame   2450 time    9.800       ->  frame   2460 time    9.840       ->  frame   2470 time    9.880       ->  frame   2480 time    9.920       ->  frame   2490 time    9.960       ->  frame   2500 time   10.000       ->  frame   2510 time   10.040       ->  frame   2520 time   10.080       ->  frame   2530 time   10.120       ->  frame   2540 time   10.160       ->  frame   2550 time   10.200       ->  frame   2560 time   10.240       ->  frame   2570 time   10.280       ->  frame   2580 time   10.320       ->  frame   2590 time   10.360       ->  frame   2600 time   10.400       ->  frame   2610 time   10.440       ->  frame   2620 time   10.480       ->  frame   2630 time   10.520       ->  frame   2640 time   10.560       ->  frame   2650 time   10.600       ->  frame   2660 time   10.640       ->  frame   2670 time   10.680       ->  frame   2680 time   10.720       ->  frame   2690 time   10.760       ->  frame   2700 time   10.800       ->  frame   2710 time   10.840       ->  frame   2720 time   10.880       ->  frame   2730 time   10.920       ->  frame   2740 time   10.960       ->  frame   2750 time   11.000       ->  frame   2760 time   11.040       ->  frame   2770 time   11.080       ->  frame   2780 time   11.120       ->  frame   2790 time   11.160       ->  frame   2800 time   11.200       ->  frame   2810 time   11.240       ->  frame   2820 time   11.280       ->  frame   2830 time   11.320       ->  frame   2840 time   11.360       ->  frame   2850 time   11.400       ->  frame   2860 time   11.440       ->  frame   2870 time   11.480       ->  frame   2880 time   11.520       ->  frame   2890 time   11.560       ->  frame   2900 time   11.600       ->  frame   2910 time   11.640       ->  frame   2920 time   11.680       ->  frame   2930 time   11.720       ->  frame   2940 time   11.760       ->  frame   2950 time   11.800       ->  frame   2960 time   11.840       ->  frame   2970 time   11.880       ->  frame   2980 time   11.920       ->  frame   2990 time   11.960      Reading frame    3000 time   12.000    ->  frame   3000 time   12.000       ->  frame   3010 time   12.040       ->  frame   3020 time   12.080       ->  frame   3030 time   12.120       ->  frame   3040 time   12.160       ->  frame   3050 time   12.200       ->  frame   3060 time   12.240       ->  frame   3070 time   12.280       ->  frame   3080 time   12.320       ->  frame   3090 time   12.360       ->  frame   3100 time   12.400       ->  frame   3110 time   12.440       ->  frame   3120 time   12.480       ->  frame   3130 time   12.520       ->  frame   3140 time   12.560       ->  frame   3150 time   12.600       ->  frame   3160 time   12.640       ->  frame   3170 time   12.680       ->  frame   3180 time   12.720       ->  frame   3190 time   12.760       ->  frame   3200 time   12.800       ->  frame   3210 time   12.840       ->  frame   3220 time   12.880       ->  frame   3230 time   12.920       ->  frame   3240 time   12.960       ->  frame   3250 time   13.000       ->  frame   3260 time   13.040       ->  frame   3270 time   13.080       ->  frame   3280 time   13.120       ->  frame   3290 time   13.160       ->  frame   3300 time   13.200       ->  frame   3310 time   13.240       ->  frame   3320 time   13.280       ->  frame   3330 time   13.320       ->  frame   3340 time   13.360       ->  frame   3350 time   13.400       ->  frame   3360 time   13.440       ->  frame   3370 time   13.480       ->  frame   3380 time   13.520       ->  frame   3390 time   13.560       ->  frame   3400 time   13.600       ->  frame   3410 time   13.640       ->  frame   3420 time   13.680       ->  frame   3430 time   13.720       ->  frame   3440 time   13.760       ->  frame   3450 time   13.800       ->  frame   3460 time   13.840       ->  frame   3470 time   13.880       ->  frame   3480 time   13.920       ->  frame   3490 time   13.960       ->  frame   3500 time   14.000       ->  frame   3510 time   14.040       ->  frame   3520 time   14.080       ->  frame   3530 time   14.120       ->  frame   3540 time   14.160       ->  frame   3550 time   14.200       ->  frame   3560 time   14.240       ->  frame   3570 time   14.280       ->  frame   3580 time   14.320       ->  frame   3590 time   14.360       ->  frame   3600 time   14.400       ->  frame   3610 time   14.440       ->  frame   3620 time   14.480       ->  frame   3630 time   14.520       ->  frame   3640 time   14.560       ->  frame   3650 time   14.600       ->  frame   3660 time   14.640       ->  frame   3670 time   14.680       ->  frame   3680 time   14.720       ->  frame   3690 time   14.760       ->  frame   3700 time   14.800       ->  frame   3710 time   14.840       ->  frame   3720 time   14.880       ->  frame   3730 time   14.920       ->  frame   3740 time   14.960       ->  frame   3750 time   15.000       ->  frame   3760 time   15.040       ->  frame   3770 time   15.080       ->  frame   3780 time   15.120       ->  frame   3790 time   15.160       ->  frame   3800 time   15.200       ->  frame   3810 time   15.240       ->  frame   3820 time   15.280       ->  frame   3830 time   15.320       ->  frame   3840 time   15.360       ->  frame   3850 time   15.400       ->  frame   3860 time   15.440       ->  frame   3870 time   15.480       ->  frame   3880 time   15.520       ->  frame   3890 time   15.560       ->  frame   3900 time   15.600       ->  frame   3910 time   15.640       ->  frame   3920 time   15.680       ->  frame   3930 time   15.720       ->  frame   3940 time   15.760       ->  frame   3950 time   15.800       ->  frame   3960 time   15.840       ->  frame   3970 time   15.880       ->  frame   3980 time   15.920       ->  frame   3990 time   15.960      Reading frame    4000 time   16.000    ->  frame   4000 time   16.000       ->  frame   4010 time   16.040       ->  frame   4020 time   16.080       ->  frame   4030 time   16.120       ->  frame   4040 time   16.160       ->  frame   4050 time   16.200       ->  frame   4060 time   16.240       ->  frame   4070 time   16.280       ->  frame   4080 time   16.320       ->  frame   4090 time   16.360       ->  frame   4100 time   16.400       ->  frame   4110 time   16.440       ->  frame   4120 time   16.480       ->  frame   4130 time   16.520       ->  frame   4140 time   16.560       ->  frame   4150 time   16.600       ->  frame   4160 time   16.640       ->  frame   4170 time   16.680       ->  frame   4180 time   16.720       ->  frame   4190 time   16.760       ->  frame   4200 time   16.800       ->  frame   4210 time   16.840       ->  frame   4220 time   16.880       ->  frame   4230 time   16.920       ->  frame   4240 time   16.960       ->  frame   4250 time   17.000       ->  frame   4260 time   17.040       ->  frame   4270 time   17.080       ->  frame   4280 time   17.120       ->  frame   4290 time   17.160       ->  frame   4300 time   17.200       ->  frame   4310 time   17.240       ->  frame   4320 time   17.280       ->  frame   4330 time   17.320       ->  frame   4340 time   17.360       ->  frame   4350 time   17.400       ->  frame   4360 time   17.440       ->  frame   4370 time   17.480       ->  frame   4380 time   17.520       ->  frame   4390 time   17.560       ->  frame   4400 time   17.600       ->  frame   4410 time   17.640       ->  frame   4420 time   17.680       ->  frame   4430 time   17.720       ->  frame   4440 time   17.760       ->  frame   4450 time   17.800       ->  frame   4460 time   17.840       ->  frame   4470 time   17.880       ->  frame   4480 time   17.920       ->  frame   4490 time   17.960       ->  frame   4500 time   18.000       ->  frame   4510 time   18.040       ->  frame   4520 time   18.080       ->  frame   4530 time   18.120       ->  frame   4540 time   18.160       ->  frame   4550 time   18.200       ->  frame   4560 time   18.240       ->  frame   4570 time   18.280       ->  frame   4580 time   18.320       ->  frame   4590 time   18.360       ->  frame   4600 time   18.400       ->  frame   4610 time   18.440       ->  frame   4620 time   18.480       ->  frame   4630 time   18.520       ->  frame   4640 time   18.560       ->  frame   4650 time   18.600       ->  frame   4660 time   18.640       ->  frame   4670 time   18.680       ->  frame   4680 time   18.720       ->  frame   4690 time   18.760       ->  frame   4700 time   18.800       ->  frame   4710 time   18.840       ->  frame   4720 time   18.880       ->  frame   4730 time   18.920       ->  frame   4740 time   18.960       ->  frame   4750 time   19.000       ->  frame   4760 time   19.040       ->  frame   4770 time   19.080       ->  frame   4780 time   19.120       ->  frame   4790 time   19.160       ->  frame   4800 time   19.200       ->  frame   4810 time   19.240       ->  frame   4820 time   19.280       ->  frame   4830 time   19.320       ->  frame   4840 time   19.360       ->  frame   4850 time   19.400       ->  frame   4860 time   19.440       ->  frame   4870 time   19.480       ->  frame   4880 time   19.520       ->  frame   4890 time   19.560       ->  frame   4900 time   19.600       ->  frame   4910 time   19.640       ->  frame   4920 time   19.680       ->  frame   4930 time   19.720       ->  frame   4940 time   19.760       ->  frame   4950 time   19.800       ->  frame   4960 time   19.840       ->  frame   4970 time   19.880       ->  frame   4980 time   19.920       ->  frame   4990 time   19.960      Reading frame    5000 time   20.000    ->  frame   5000 time   20.000      Last frame       5000 time   20.000   
+
+
+GROMACS reminds you: "Never mind, death professor, your structure's fine" (TV on the Radio)
+
