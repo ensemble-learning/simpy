@@ -345,7 +345,7 @@ def toPoscar(system, outfile="POSCAR"):
     s = system
     o = open(outfile, "w")
     ndx = open(ndxfile, 'w')
-    ndx.write('# original-id new-id\n')
+    ndx.write('# new-id old-id\n')
     o.write("%s\n"%s.name) 
     o.write("%20.15f\n"%s.scaleFactor)
 
@@ -396,7 +396,7 @@ def toPoscar(system, outfile="POSCAR"):
             natom += 1
 
     for i in range(natom):
-        ndx.write('%d %d\n'%(i+1, id_numbers[i]))
+        ndx.write('%d %d\n'%(id_numbers[i], i+1))
         xf = coords[i][0]
         yf = coords[i][1]
         zf = coords[i][2]

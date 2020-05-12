@@ -92,8 +92,6 @@ elif "onyx" in socket.gethostname():
     POT_DATA_BASE = "/p/home/taocheng/src/vasp/vasp.5.3/potcar/potpaw_PBE"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
     POT_DATA_BASE = "/home/tao/src/vasp/vasp.5.3.5/potcar/potpaw_PBE"
-elif socket.gethostname() == "tao-ThinkCentre-M79":
-    POT_DATA_BASE = "/home/tao/src/vasp/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "tao-Precision-Tower-3420-ubuntu":
     POT_DATA_BASE = "/home/tao/data/soft/vasp/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "mu05":
