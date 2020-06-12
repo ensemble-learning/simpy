@@ -205,7 +205,7 @@ class System():
     def assignEleTypes(self,):
         """ assign element types 
         """
-        pattern = re.compile(r'(\D+)(\d*)')
+        pattern = re.compile(r'(\d*)(\D+)(\d*)')
         counter = 0
         for i in self.atoms:
             b = i.name.strip()
@@ -213,7 +213,7 @@ class System():
                 b = b.split("_")[0]
             match = pattern.match(b)
             if match:
-                i.element= match.group(1)
+                i.element= match.group(2)
                 if len(i.element) > 1:
                     i.element = i.element[0].upper() + i.element[1].lower()
     
