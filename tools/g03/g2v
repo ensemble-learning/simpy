@@ -1,0 +1,49 @@
+#!/usr/bin/env python2
+
+f = open("sim.pdb", "r")
+for i in f:
+    if i.strip().startswith("CRYST"):
+        pbc = i
+        break
+f.close()
+
+f = open("sim-1.pdb", "r")
+lines = f.readlines()
+f.close()
+
+o = open("sim-2.pdb", "w")
+o.write(pbc)
+for i in lines:
+    o.write(i)
+o.close()
+
+import shutil
+shutil.copy("POSCAR", "POSCAR.0")
+
+import os
+os.system("python2 ~/soft/simpy/lib/e_2_pdb.py sim-2.pdb -c")
+os.system("python2 ~/soft/simpy/tools/vasp/get_potcar.py")
+
+
+f = open("POSCAR", "r")
+lines = f.readlines()
+f.close()
+
+f = open("POSCAR.0", "r")
+lines0 = f.readlines()
+f.close()
+
+
+n0 = 9
+for i in range(n0, len(lines0)):
+    if "F" in lines0[i]:
+        lines[i] = lines[i].replace("T", "F")
+o = open("POSCAR", "w")
+for i in lines:
+    o.write(i)
+o.close()
+
+shutil.copy("POSCAR", "..")
+shutil.copy("POTCAR", "..")
+
+

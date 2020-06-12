@@ -7,7 +7,7 @@ import stat
 import time
 import argparse
 import subprocess
-import ConfigParser
+import configparser
 from mytype import System, Molecule, Atom
 from xyz import Xyz
 from output_conf import toDump, toPdb
@@ -96,7 +96,7 @@ def main(args):
         sys.stderr.write("Using default xyz file: movie.xyz\n")
 
     if args.c:
-	a = Xyz(fname)
+        a = Xyz(fname)
         b = a.parser()
         if args.pbc:
             b.pbc =  args.pbc
@@ -105,7 +105,7 @@ def main(args):
         toPdb(b)
 
     if args.s:
-        config = ConfigParser.ConfigParser() 
+        config = configparser.ConfigParser() 
         config.read(args.s[0])
         read_info(xyz_info, config)
 

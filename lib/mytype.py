@@ -242,6 +242,15 @@ class System():
         for i in self.atoms:
             i.type1 = c[i.name.strip()]
 
+    def assignIdNumbers(self,):
+        """ assign id numbers according to the sequence of atoms
+            starting from 1
+        """
+        n = 1
+        for i in self.atoms:
+            i.number = n
+            n += 1
+
     def toFrac(self,):
         a2r = numpy.pi / 180.0
         alpha = a2r * self.pbc[3]
@@ -313,7 +322,7 @@ class System():
             sq = math.sqrt(1+2*cos-cos2)
             vol = a*b*c*sq
         else:
-            print "Warning: no box defined"
+            print("Warning: no box defined")
         return vol
 
     def getMass(self):
@@ -358,7 +367,7 @@ class System():
         elif axis == "z":
             atoms = sorted(self.atoms, key=lambda atom: atom.x[2])
         else:
-            print "Error: non-sense input"
+            print("Error: non-sense input")
             atoms = self.atoms
 
         self.atoms = atoms
@@ -403,7 +412,7 @@ class Molecule():
                     else:
                         pass
         else:
-            print "Note : There is no bond info in inputfile!"
+            print("Note : There is no bond info in inputfile!")
 
     def getMaxCoord(self, n=0):
         """return the maximun coordinate value in x, y or z ( n = 0, 1, 2)
@@ -412,7 +421,7 @@ class Molecule():
         for i in self.mol:
             if max < i.x[n]:
                 max = i.x[n]
-        print max
+        print(max)
 
     def getMinCoord(self, n=0):
         """return the min coordinate value in x, y or z ( n = 0, 1, 2)
@@ -421,7 +430,7 @@ class Molecule():
         for i in self.mol:
             if min > i.x[n]:
                 min = i.x[n]
-        print min
+        print(min)
     
 def test():
     """test some functions

@@ -1,0 +1,53 @@
+title           = viscosity for spc 1728
+
+
+cpp             = /usr/bin/cpp
+integrator      = md
+dt              = 0.0010 ; ps !
+nsteps          = 500000 ;
+nstcomm         = 1
+nstxout         = 100000 ; collect data every 1.0 ps
+nstvout         = 100000
+nstfout         = 100000
+nstlist         = 5
+ns_type         = grid
+rlist           = 1.0
+coulombtype     = PME
+rcoulomb        = 1.0
+rvdw            = 1.0
+DispCorr        = EnerPres
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+; Berendsen temperature coupling is on in two groups
+Tcoupl          = nose-hoover ;berendsen
+tc_grps         = System
+tau_t           = 0.1
+ref_t           = 298.0
+; Pressure coupling is on
+Pcoupl          = no ;Parrinello-Rahman ;berendsen
+pcoupltype      = isotropic
+tau_p           = 0.5
+compressibility = 4.5e-5
+ref_p           = 1.000
+; Free Energy
+free_energy     = yes
+init_lambda     = 0.0
+delta_lambda    = 0.0
+sc-alpha        = 0.25
+sc-power        = 1.0
+sc-sigma        = 0.3
+; Generate velocites is on at 300 K.
+gen_vel         = no
+gen_temp        = 293.0
+gen_seed        = 94823
+; Constrains of Bonds
+constraints      = none ;hbonds
+constraint_algorithm = Lincs
+shake_tol        = 0.0010
+; Viscosity calculations
+;cos_acceleration = 0.06 

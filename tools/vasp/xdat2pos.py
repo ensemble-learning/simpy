@@ -1,15 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
 import sys
 import os
 import socket
 import copy
 
-print socket.gethostname()
+print(socket.gethostname())
 
 LIB = ''
 
-print socket.gethostname()
+print(socket.gethostname())
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
@@ -33,6 +33,10 @@ elif "armstrong" in socket.gethostname():
     LIB = "/p/home/taocheng/src/simpy/lib"
 elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
+elif "login" in socket.gethostname():
+    LIB = "/central/home/tcheng/soft/simpy/lib"
+elif socket.gethostname() == "mu01":
+    LIB = "/opt/sourcecoude/simpy/lib"
 elif "tao-Precision-Tower-3420-ubuntu" in socket.gethostname():
     LIB = "/home/tao/soft/simpy/lib"
 
@@ -42,14 +46,14 @@ from mytype import System, Molecule, Atom
 from poscar import Poscar
 from output_conf import toPoscar
 
-def parse_XDATCAR():
+def parse_XDATCAR(t0=0):
     head = []
     tag = 1
     f = open("XDATCAR", "r")
     for i in f:
         if i.strip().startswith("Direct configuration"):
             tokens = i.strip().split("=")
-            step = int(tokens[1])
+            step = int(tokens[1]) + t0
             break
         else:
             head.append(i)
@@ -66,7 +70,7 @@ def parse_XDATCAR():
                 steps.append(step)
                 coords = []
                 tokens = i.strip().split("=")
-                step = int(tokens[1])
+                step = int(tokens[1]) + t0
                 break
             else:
                 coords.append(i)
@@ -104,11 +108,14 @@ def toPOSCAR(t0, conf, steps):
     os.chdir("..")
 
 def main():
+    t0 = 0
+    if len(sys.argv) > 1:
+        t0 = int(sys.argv[1])
     a = Poscar("POSCAR") 
     b = a.parser()
     b.assignAtomTypes()
     b.assignEleTypes()
-    conf, steps = parse_XDATCAR()
+    conf, steps = parse_XDATCAR(t0)
     toPOSCAR(b, conf, steps)
 
 if __name__ == "__main__":

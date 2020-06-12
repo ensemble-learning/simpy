@@ -1,12 +1,17 @@
+"""
+@todo: assign atom types
+"""
 import os, sys
 import numpy as np
 import ase
 import ase.io
 from ase.neighborlist import NeighborList
 from ase.neighborlist import neighbor_list
+from ase.geometry import distance, get_angles
 
 cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85}
 atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237'}
+ERROR_ATP = 'Warning: User-defined atom types provided but the numbers do not match!\n'
 
 def get_lists(atoms):
 
@@ -19,6 +24,7 @@ def get_lists(atoms):
     for i in range(len(tokens_i)):
         nl[tokens_i[i]].append(tokens_j[i])
 
+    o = open('bonds.dat', 'w')
     # build bond list
     bond_list = []
     for i in range(len(nl)):
@@ -28,9 +34,13 @@ def get_lists(atoms):
                 aj = nl[i][j]
                 if ai < aj:
                     bond_list.append([ai, aj])
+                    print(atoms.get_distance(ai, aj, mic=True))
+                    o.write('%d %d %.4f\n'%(ai, aj, atoms.get_distance(ai, aj, mic=True)))
+    o.close()
     n_bond = len(bond_list)
     print(n_bond, "bond terms")
 
+    o = open('angles.dat', 'w')
     angle_list = []
     # build angle list
     for i in range(len(nl)):
@@ -41,6 +51,8 @@ def get_lists(atoms):
                 for k in nl[i][j+1:]:
                     ak = k
                     angle_list.append([ai, aj, ak])
+                    o.write('%d %d %d %.4f\n'%(ai, aj, ak, atoms.get_angle(ai, aj, ak, mic=True)))
+    o.close()
     n_angle = len(angle_list)
     print(n_angle, "angle terms")
     
@@ -55,8 +67,9 @@ def get_lists(atoms):
                     if k != dj:
                         dl = k
                         dihedral_list.append([di, dj, dk, dl])
+                        print(atoms.get_dihedral(di, dj, dk, dl, mic=True))
     n_dihedral = len(dihedral_list)
-    print(n_dihedral, "angle terms")
+    print(n_dihedral, "diheral terms")
     return nl, bond_list, angle_list, dihedral_list
 
 def to_itp(fname, atoms, nl, bl, al, dl, charges, atomtypes):
@@ -103,14 +116,27 @@ def assign_charges(atoms):
     charges = [0.0]*len(atoms)
     if os.path.exists("q.dat"):
         charges = np.loadtxt("q.dat")
-    print("%.4f"%np.sum(charges), "total charges")
+    #print("%.4f"%np.sum(charges), "total charges")
     return charges   
 
 def assign_atom_types_opls(atoms, nl):
     chemical_symbols = atoms.get_chemical_symbols()
-    atomtypes = []
+    atomtypes, atomtypes_usr = [], []
     for i in range(len(atoms)):
         atomtypes.append(atom_types_table[chemical_symbols[i]])
+    if os.path.exists('atp.dat'):
+        f = open('atp.dat', 'r')
+        for i in f:
+            tokens = i.strip()
+            if len(tokens) > 0:
+                atomtypes_usr.append(tokens)
+        f.close()
+        if len(atomtypes_usr) == len(atomtypes):
+            for j in range(len(atomtypes)):
+                atomtypes[j] = atomtypes_usr[j]
+        else:
+            sys.stderr.write(ERROR_ATP)
+        
     return atomtypes
 
 if len(sys.argv) > 1:

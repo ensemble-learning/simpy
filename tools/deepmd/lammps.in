@@ -1,0 +1,49 @@
+variable        nvt_step equal 50000 # 25 ps
+variable        npt_step equal     0 # 0 ps
+variable        2pt_step equal 40000 # 20 ps
+variable        temperature equal 10 # 10 K
+variable        time_step equal 0.0005 # 0.5 fs
+variable        2pt_dump_freq equal 10 # 5 fs
+
+units           metal
+boundary        p p p
+atom_style      charge
+
+neighbor        2.0 bin
+neigh_modify    every 10 delay 0 check no
+
+read_data	lammps.data
+
+pair_style	deepmd ff
+pair_coeff	
+
+# run NVT equil
+reset_timestep  0
+timestep        ${time_step} # 0.5 fs
+
+thermo_style    custom step pe ke etotal temp press vol
+thermo          100
+dump            1 all custom 100 02-nvt.lammpstrj id type x y z
+
+velocity        all create ${temperature} 23456789
+fix             1 all nvt temp ${temperature} ${temperature} 100
+run             ${nvt_step}
+write_restart   02-nvt.rst
+
+undump          1
+unfix           1
+
+# run 2pt
+reset_timestep  0
+thermo          ${2pt_dump_freq}
+thermo_style    custom etotal ke temp pe press vol
+thermo_modify   line multi
+log             03-2pt.eng
+
+dump		1 all custom ${2pt_dump_freq} 03-2pt.lammps id type x y z 
+dump            2 all xyz ${2pt_dump_freq} traj.xyz 
+dump_modify     2 element C H
+
+fix             1 all nvt temp ${temperature} ${temperature} 0.5
+
+run             ${2pt_step}

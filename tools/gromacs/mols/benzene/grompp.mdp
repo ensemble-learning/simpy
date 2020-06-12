@@ -1,0 +1,44 @@
+title           = gromacs
+cpp             = /usr/bin/cpp
+integrator      = md
+dt              = 0.0010 ; ps !
+nsteps          = 100000 ;
+nstxout         = 2000 ; collect data every 1.0 ps
+nstvout         = 0
+nstfout         = 0
+cutoff-scheme   = Verlet
+ns_type         = grid
+rlist           = 1.0
+coulombtype     = PME
+rcoulomb        = 1.0
+rvdw            = 1.0
+DispCorr        = EnerPres
+fourierspacing  = 0.12
+fourier_nx      = 0
+fourier_ny      = 0
+fourier_nz      = 0
+pme_order       = 4
+ewald_rtol      = 1e-5
+optimize_fft    = yes
+; Berendsen temperature coupling is on in two groups
+Tcoupl          = berendsen
+tc_grps         = System
+tau_t           = 0.2
+ref_t           = 300.0
+; Pressure coupling is on
+Pcoupl          = berendsen ;parrinello-rahman  
+pcoupltype      = isotropic
+tau_p           = 0.5
+compressibility = 4.5e-5
+ref_p           = 1.0
+; Generate velocites is on at 300 K.
+gen_vel         = no
+gen_temp        = 300.0
+gen_seed        = 94823
+; Constrains of Bonds
+; constraints      = hbonds
+;constraint_algorithm = shake
+;shake_tol        = 0.0001
+; Viscosity calculations
+; cos_acceleration = 0.06 
+

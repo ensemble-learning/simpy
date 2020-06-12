@@ -151,7 +151,7 @@ class G03LogConf():
         f.close()
 
     def __parse_keyword(self,):
-	keywords = []
+        keywords = []
         tmp = ''
         state = 0
         for i in self.methods:
@@ -233,7 +233,7 @@ class G03tools():
                 if "HF" in i:
                     ener = float(i[3:])
         else:
-            print "Error: No energy read"
+            print("Error: No energy read")
 
         # get the zpe energy
         zpe = 0
@@ -245,14 +245,14 @@ class G03tools():
         f.close()
         return ener, zpe
 
-    def getCharge(self,):
+    def getMullikenCharge(self,):
         """get Mulliken charege from QM
         """
         charges = []
         lines = []
         f = open(self.name, "r")
         for i in f:
-            if "Mulliken atomic charges" in i or \
+            if "Mulliken charges" in i or \
                 "Total atomic charges" in i:
                 break
         for i in f:
@@ -265,9 +265,29 @@ class G03tools():
             charges.append(tokens)
         return charges
 
+    def getESPCharge(self,):
+        """get ESP charege from QM
+        """
+        charges = []
+        lines = []
+        f = open(self.name, "r")
+        for i in f:
+            if "ESP charges" in i or \
+                "Total atomic charges" in i:
+                break
+        for i in f:
+            if "Sum of ESP charges" in i:
+                break
+            lines.append(i)
+        f.close()
+        for i in lines[1:]:
+            tokens = i.strip().split()
+            charges.append(tokens)
+        return charges
+
 def main():                
     if len(sys.argv) < 2:
-        print "g03.py logfile"
+        print("g03.py logfile")
     else:
         for i in sys.argv[1:]:
             geo = i.split(".")[0]

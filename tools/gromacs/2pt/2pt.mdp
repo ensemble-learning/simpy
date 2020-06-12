@@ -1,0 +1,35 @@
+integrator            = md
+dt                    = 0.001
+nsteps                = 20000
+
+nstxout = 4
+nstvout = 4
+nstlist = 5
+
+cutoff-scheme         = Verlet
+pbc                   = xyz
+
+coulombtype           = PME
+rcoulomb              = 1.2
+ewald-rtol            = 1.0e-5
+fourierspacing        = 0.06
+pme-order             = 8
+vdwtype               = Cut-off
+rvdw                  = 1.2
+DispCorr              = EnerPres
+
+tcoupl                = V-rescale
+tc-grps               = System
+tau-t                 = 0.1
+ref-t                 = 300.0
+
+compressibility       = 4.5e-5
+; refcoord_scaling      = com
+
+gen-vel               = yes
+gen-temp              = 300
+gen-seed              = -1
+
+constraints           = none
+
+

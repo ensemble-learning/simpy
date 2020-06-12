@@ -30,6 +30,8 @@ class Poscar():
         for i in f:
             if i.strip().startswith("Direct"):
                 break
+            elif i.strip().startswith("dir"):
+                break
             elif i.strip().startswith("Cartesian"):
                 break
             elif i.strip().startswith("cart"):
@@ -108,6 +110,8 @@ class Poscar():
                         atom.xr[1] = 1
                     if zr == "F":
                         atom.xr[2] = 1
+                if len(self.coords[j]) == 3:
+                    atom.xr = [0, 0, 0]
                 s.atoms.append(atom)
         return s
             

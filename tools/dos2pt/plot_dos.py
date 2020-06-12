@@ -3,8 +3,6 @@ import numpy as np
 import peakutils
 import matplotlib as mpl
 mpl.use('Agg')
-import matplotlib.pyplot as plt
-import mpltex
 
 PS2CM = 33.35641
 
@@ -16,8 +14,7 @@ def output_data(data, fname):
         o.write("\n")
     o.close()
 
-@mpltex.acs_decorator
-def plot_dos():
+def plot_dos_peaks():
     data = np.loadtxt("dos_sg")
     data = data.transpose()
     x = data[0] * PS2CM
@@ -55,8 +52,8 @@ def plot_dos():
     plt.tight_layout(pad=0.1)
     plt.savefig("dos-3-peaks.png", dpi=600)
 
-@mpltex.acs_decorator
 def plot_dos():
+    import matplotlib.pyplot as plt
     data = np.loadtxt("dos_sg")
     data = data.transpose()
     x = data[0] * PS2CM
@@ -77,9 +74,84 @@ def plot_dos():
     plt.title(title)
     plt.tight_layout(pad=0.1)
     plt.savefig("dos.png", dpi=600)
+    plt.close()
 
+def plot_dos_v():
+    import matplotlib.pyplot as plt
+    data = np.loadtxt("dos_sg")
+    data = data.transpose()
+    x = data[0] * PS2CM
+    y1 = data[1]
+    y2 = data[2]
+    y3 = data[3]
+    y4 = y3
+
+    plt.plot(x, y4)
+    output_data([x, y4], "dos-v.dat")
+
+    #get title
+    title = os.getcwd().split("/")[-2]
+
+    plt.xlim([-50,4000])
+    #plt.ylim([0,1])
+    plt.xlabel("Wavenumber (cm-1)")
+    plt.title(title)
+    plt.tight_layout(pad=0.1)
+    plt.savefig("dos-v.png", dpi=600)
+    plt.close()
+
+def plot_dos_t():
+    import matplotlib.pyplot as plt
+    data = np.loadtxt("dos_sg")
+    data = data.transpose()
+    x = data[0] * PS2CM
+    y1 = data[1]
+    y2 = data[2]
+    y3 = data[3]
+    y4 = y1
+
+    plt.plot(x, y4)
+    output_data([x, y4], "dos-t.dat")
+
+    #get title
+    title = os.getcwd().split("/")[-2]
+
+    plt.xlim([-50,4000])
+    #plt.ylim([0,1])
+    plt.xlabel("Wavenumber (cm-1)")
+    plt.title(title)
+    plt.tight_layout(pad=0.1)
+    plt.savefig("dos-t.png", dpi=600)
+    plt.close()
+
+def plot_dos_r():
+    import matplotlib.pyplot as plt
+    data = np.loadtxt("dos_sg")
+    data = data.transpose()
+    x = data[0] * PS2CM
+    y1 = data[1]
+    y2 = data[2]
+    y3 = data[3]
+    y4 = y2
+
+    plt.plot(x, y4)
+    output_data([x, y4], "dos-r.dat")
+
+    #get title
+    title = os.getcwd().split("/")[-2]
+
+    plt.xlim([-50,4000])
+    #plt.ylim([0,1])
+    plt.xlabel("Wavenumber (cm-1)")
+    plt.title(title)
+    plt.tight_layout(pad=0.1)
+    plt.savefig("dos-r.png", dpi=600)
+    plt.close()
 
 plot_dos()
+plot_dos_v()
+plot_dos_t()
+plot_dos_r()
 
 
 

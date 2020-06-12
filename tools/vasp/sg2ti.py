@@ -20,9 +20,9 @@ def zero_increm():
 
 os.system("xdat2pos")
 os.chdir("./poscars")
-os.system("select_frame 1 2000 11")
+os.system("select_frame 1 1168 11")
 os.chdir("wf")
-os.system("ls POSCAR_000* > flist")
+os.system("ls POSCAR_00* > flist")
 os.system("bsr")
 os.system("rm POSCAR_* flist")
 os.system("cmdall 'cp POSCAR_* POSCAR'")

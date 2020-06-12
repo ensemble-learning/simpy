@@ -54,7 +54,7 @@ def test_cer():
         print("%8.4f%10.6f%10.4f"%(i, ju, ju_log10))
 
 def test_her():
-    # variables for CER
+    # variables for HER
     T = 300.0         # Temperautre (K)
     tau = 2.6e15        # number of electrocatalyst's active sites per surface area (cm-2)
     a1 = 0.405        # symmetry factors

@@ -136,7 +136,7 @@ def g03Block(g03file, ext="log"):
         o.write(j)
     o.close()
 
-    print counter
+    print(counter)
 
 
 if __name__ == "__main__":
@@ -164,7 +164,7 @@ if __name__ == "__main__":
             natoms = int(args.natoms[0])
             nlines = natoms + 2
         else:
-            print "Need input number of atoms"
+            print("Need input number of atoms")
             sys.exit(0)
         dt = 1
         if args.dt:

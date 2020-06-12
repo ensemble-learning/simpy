@@ -9,6 +9,7 @@ import numpy as np
 import argparse
 
 LIB = ''
+print(socket.gethostname())
 
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
@@ -22,6 +23,8 @@ elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "zwicky":
     LIB = "/home/tcheng/Soft/simpy/lib"
+elif socket.gethostname() == "tao-Precision-Tower-3420-ubuntu":
+    LIB = "/home/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -32,8 +35,8 @@ from output_conf import toPoscar, toXyz
 
 def gen_scan(s, args):
 
-    start = 0.8
-    end = 1.2
+    start = 0.7
+    end = 1.3
     start = np.power(start, 1/3.0)
     end = np.power(end, 1/3.0)
     n = 11
@@ -47,7 +50,8 @@ def gen_scan(s, args):
         shutil.copy("../INCAR", ".")
         shutil.copy("../POTCAR", ".")
         shutil.copy("../KPOINTS", ".")
-        shutil.copy("../pbs", ".")
+        if os.path.exists('../pbs'):
+            shutil.copy("../pbs", ".")
         s_new = copy.copy(s)
         xx, xy, xz, yy, yz, zz = lattice2v(s.pbc)
         a = np.array([xx, 0.0, 0.0])

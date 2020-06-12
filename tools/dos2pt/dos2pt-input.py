@@ -5,21 +5,59 @@ n_atoms = 0
 n_points = 0
 # http://dospt.org/index.php/DoSPT
 
+def get_cell():
+    cells = []
+    if os.path.exists('POSCAR'):
+        f = open("POSCAR", "r")
+        lines = f.readlines()
+        f.close()
+        for i in range(2,5):
+            cells.append(lines[i].strip().split())
+    return cells
+
+def get_time_step():
+    if os.path.exists('INCAR'):
+        f = open("INCAR", "r")
+        for i in f:
+            if "POTIM" in i:
+                tokens = i.strip().split("=")
+                tokens = tokens[1].split()
+                ts = float(tokens[0])
+        f.close()
+    else:
+        ts = 5
+    return ts
+
+def get_temperature():
+    if os.path.exists('INCAR'):
+        f = open("INCAR", "r")
+        for i in f:
+            if "TEBEG" in i:
+                tokens = i.strip().split("=")
+                tokens = tokens[1].split()
+                tempt = float(tokens[0])
+        f.close()
+    else:
+        tempt = 300
+    return tempt
+                    
 # read input file
 
 if not os.path.exists("inp"): 
+    cells = get_cell()
+    ts = get_time_step()
+    tempt = get_temperature()
     o = open("inp", "w")
-    o.write("""cell =   1.02 1.02 4.00 # in nm
-temperature = 298.00
-time_step = 1.0 fs
-selected-atoms = 196 49 98
-""")
+    o.write("cell =   %.3f %.3f %.3f # in nm\n"
+            %(float(cells[0][0])/10.0, float(cells[1][1])/10.0, float(cells[2][2])/10.0))
+    o.write("temperature = %.3f\n"%tempt)
+    o.write("time_step = %.3f fs\n"%ts)
+    o.write("selected-atoms = 196 49 98\n")
     sys.stderr.write("Fail to locate inp file, automatically generate a template.\n")
     sys.stderr.write("Please check the parameters\n")
                         
     sys.exit(0)
     
-
 f = open("inp", "r")
 lines = f.readlines()
 f.close()
@@ -56,11 +94,20 @@ o.write("estimate_velocities = .true.\n")
 
 o = open("masses", "w")
 o.write("""Cu  63.546
+H   1.0080
+Li  6.9400
 C   12.011
-O   16.00
-H   1.01
-Na  23.00
+O   15.999
+F   18.998
+Na  22.990
 K   39.098
+S   32.060
+Au  196.97
+N   14.007
+Pt  195.08
+Cl   35.45
+Fe  55.845
+B   10.81
 """)
 o.close()
 
@@ -87,3 +134,7 @@ o = open("run.sh", "w")
 o.write("DoSPT\n")
 o.write("python2 ~/soft/simpy/tools/dos2pt/plot_dos.py\n")
 o.close()
+
+os.system("chmod +x run.sh")
+os.system("chmod +x ./run.sh")
+

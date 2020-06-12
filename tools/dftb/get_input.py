@@ -1,4 +1,8 @@
 import os, shutil
+import socket
+
+print(socket.gethostname())
+
 # HubbardDerivs
 # http://www.dftb.org/parameters/download/3ob/3ob-3-1-cc/
 HD = { "C": -0.1492, "H": -0.1857, "O":-0.1575, "N":-0.1535,
@@ -50,19 +54,20 @@ def gen_inp_opt(gen):
     o.write("}\n")
     o.write("\n")
     # For opt
-    o.write("Driver = ConjugateGradient {\n")
-    o.write(" MovedAtoms = 1:-1\n")
-    o.write(" MaxSteps = 50000\n")
-    o.write(' AppendGeometries = Yes\n')
-    o.write(" MaxForceComponent = 1.0E-3\n")
-    o.write("#LatticeOpt = Yes\n")
-    o.write("#Pressure [Pa] = 1.0E5\n")
-    o.write("}\n")
-    o.write("\n")
-
+    opt = 1
+    if opt:
+        o.write("Driver = ConjugateGradient {\n")
+        o.write(" MovedAtoms = 1:-1\n")
+        o.write(" MaxSteps = 50000\n")
+        o.write(' AppendGeometries = Yes\n')
+        o.write(" MaxForceComponent = 1.0E-3\n")
+        o.write("#LatticeOpt = Yes\n")
+        o.write("#Pressure [Pa] = 1.0E5\n")
+        o.write("}\n")
+        o.write("\n")
     # For MD
-    
-    if 0:
+    md = 0
+    if md:
         o.write("Driver = VelocityVerlet {\n")
         o.write("MovedAtoms = 1:-1\n")
         o.write("Steps = 1000\n")
@@ -99,7 +104,11 @@ def gen_inp_opt(gen):
         o.write('    %s = "%s"\n'%(ele, mm))
     o.write("  }\n")
     o.write("  SlaterKosterFiles = Type2FileNames {\n")
-    o.write('    Prefix = "/net/hulk/home6/chengtao/soft/dftb/3OB-CHNOPSMgZnCaKNaFClBrI/slko/"\n')
+    #o.write('    Prefix = "/net/hulk/home6/chengtao/soft/dftb/3OB-CHNOPSMgZnCaKNaFClBrI/slko/"\n')
+    if socket.gethostname() == "mu01":
+        o.write('    Prefix = "/opt/sourcecoude/dftb/dftb/3OB-CHNOPSMgZnCaKNaFClBrI/slko/"\n')
+    else:
+        o.write('    Prefix = "/home/chengtao/soft/dftb/3ob-3-1/"\n')
     o.write('    Separator = "-"\n')
     o.write('    Suffix = ".skf"\n')
     o.write("  } \n")
