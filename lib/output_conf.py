@@ -52,9 +52,9 @@ def toReaxLammps(system, outfile="lammps.data"):
         line += "%-6d"%counter
         line += "%3d"%i.type1
         line += "%10.6f"%i.charge
-        line += "%16.9f"%i.x[0]
-        line += "%16.9f"%i.x[1]
-        line += "%16.9f"%i.x[2]
+        line += "%20.9f"%i.x[0]
+        line += "%20.9f"%i.x[1]
+        line += "%20.9f"%i.x[2]
         line += "\n"
         o.write(line)
         counter += 1

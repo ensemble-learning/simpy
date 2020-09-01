@@ -16,6 +16,8 @@ elif socket.gethostname() == "atom.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "fermion.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "comet" in socket.gethostname():
@@ -79,6 +81,8 @@ elif socket.gethostname() == "tao-laptop":
 elif socket.gethostname() == "atom.wag.caltech.edu":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "ion.wag.caltech.edu":
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif socket.gethostname() == "fermion.wag.caltech.edu":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 elif socket.gethostname() == "giant12":
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
