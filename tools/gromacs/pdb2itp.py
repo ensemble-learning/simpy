@@ -10,7 +10,7 @@ from ase.neighborlist import neighbor_list
 from ase.geometry import distance, get_angles
 
 cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85}
-atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237'}
+atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I'}
 ERROR_ATP = 'Warning: User-defined atom types provided but the numbers do not match!\n'
 
 def get_lists(atoms):

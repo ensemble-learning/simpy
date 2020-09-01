@@ -56,7 +56,7 @@ class Ffield():
 
         # GLOBAL parameters
         if DEBUG:
-            print "-"*20, "reading GLOBAL parameters", "-"*20
+            print("-"*20, "reading GLOBAL parameters", "-"*20)
         n = self.ati(f.readline())
         self.gl = []
         for i in range(n):
@@ -64,7 +64,7 @@ class Ffield():
 
         # ATOM parameters
         if DEBUG:
-            print "-"*20, "reading ATOM parameters", "-"*20
+            print("-"*20, "reading ATOM parameters", "-"*20)
         n = self.ati(f.readline())    
         f.readline()
         f.readline()
@@ -80,7 +80,7 @@ class Ffield():
 
         # BOND parameters
         if DEBUG:
-            print "-"*20, "reading BOND parameters", "-"*20
+            print("-"*20, "reading BOND parameters", "-"*20)
         n = self.ati(f.readline())    
         f.readline()
         self.bond = []
@@ -90,7 +90,7 @@ class Ffield():
 
         # OFF parameters
         if DEBUG:
-            print "-"*20, "reading OFF parameters", "-"*20
+            print("-"*20, "reading OFF parameters", "-"*20)
         n = self.ati(f.readline())    
         self.off = []
         for i in range(n):
@@ -99,7 +99,7 @@ class Ffield():
 
         # ANGLE parameters
         if DEBUG:
-            print "-"*20, "reading ANGLE parameters", "-"*20
+            print("-"*20, "reading ANGLE parameters", "-"*20)
         n = self.ati(f.readline())    
         self.angle = []
         for i in range(n):
@@ -108,7 +108,7 @@ class Ffield():
 
         # TORSION parameters
         if DEBUG:
-            print "-"*20, "reading TORSION parameters", "-"*20
+            print("-"*20, "reading TORSION parameters", "-"*20)
         n = self.ati(f.readline())    
         self.torsion = []
         for i in range(n):
@@ -117,7 +117,7 @@ class Ffield():
 
         # H-BOND parameters
         if DEBUG:
-            print "-"*20, "reading H-BOND parameters", "-"*20
+            print("-"*20, "reading H-BOND parameters", "-"*20)
         n = self.ati(f.readline())    
         self.hbond = []
         for i in range(n):
@@ -186,8 +186,8 @@ class Ffield():
         for i in self.angle:
             ang_term = "%02d_%02d_%02d"%(int(i[0]), int(i[1]), int(i[2]))
             if ang_term in terms.keys():
-                print "Now:", i
-                print "Pre:", terms[ang_term]
+                print("Now:", i)
+                print("Pre:", terms[ang_term])
             else:
                 terms[ang_term] = i
     
@@ -410,7 +410,7 @@ class Ffield():
         for i in range(len(self.atom)):
             for j in range(i, len(self.atom) - 1):
                 d = math.sqrt(float(self.atom[i][31])*float(self.atom[j][31]))
-                #print self.atom[i][0], self.atom[j][0], self.atom[i][31], self.atom[j][31], d
+                #print(self.atom[i][0], self.atom[j][0], self.atom[i][31], self.atom[j][31], d
                 alpha = math.sqrt(float(self.atom[i][32])*float(self.atom[j][32]))
                 r_inner = math.sqrt(float(self.atom[i][30])*float(self.atom[j][30]))
                 eq26.append([i, j, d, alpha, r_inner])
@@ -562,7 +562,7 @@ class Ffield():
                 end = val * (1-scale)
                 start = val * (1+scale)
             interval = abs(end -start) /20.0
-            o.write("%4d%6d%12.4f%12.4f%12.4f"%(1, n, interval, start, end))
+            o.write("%4d%6d%12.4f%12.4f%12.4f%12.4f%12.4f"%(1, n, interval, start, end, val, val))
             o.write(" ! %s\n"%("gl"))
             n += 1
 
@@ -592,7 +592,7 @@ class Ffield():
                 if n2 in [2, 3, 8, 11, 13, 16, 19, 23, 24, 27]:
                     pass
                 else:
-                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(2, n1, n2, interval, start, end))
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(2, n1, n2, interval, start, end, val))
                     o.write(" ! %s %4s %s in %s\n"%("at", "@"+a1, ATOM[n2-1], ATOME[n2-1]))
                 n2 += 1
             n1 += 1
@@ -614,7 +614,7 @@ class Ffield():
                 if n2 in [6, 12, 15, 16]:
                     pass
                 else:
-                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end))
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(3, n1, n2, interval, start, end, val))
                     o.write(" ! %s %4s %4s %s in %s\n"%("bo", "@"+a1, "@"+a2, BOND[n2-1], BONDE[n2-1]))
                 n2 += 1
             n1 += 1
@@ -631,7 +631,7 @@ class Ffield():
                 start = val * (1-scale)
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(4, n1, n2, interval, start, end))
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(4, n1, n2, interval, start, end, val))
                 o.write(" ! %s %4s %4s %s in %s\n"%("of", "@"+a1, "@"+a2, OFF[n2-1], OFFE[n2-1]))
                 n2 += 1
             n1 += 1
@@ -649,7 +649,7 @@ class Ffield():
                 start = val * (1-scale)
                 end = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end))
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end, val))
                 o.write(" ! %s %4s %4s %4s %s in %s\n"%("ang", "@"+a1, "@"+a2, "@"+a3, ANG[n2-1], ANGE[n2-1]))
                 n2 += 1
             n1 += 1
@@ -671,7 +671,7 @@ class Ffield():
                 if n2 in [5, 6]:
                     pass
                 else:
-                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(6, n1, n2, interval, start, end))
+                    o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(6, n1, n2, interval, start, end, val))
                     o.write(" ! %s %4s %4s %4s %4s %s in %s\n"%("tor", "@"+a1, "@"+a2, "@"+a3, "@"+a4, TOR[n2-1], TORE[n2-1]))
                 n2 += 1
             n1 += 1
@@ -693,7 +693,7 @@ class Ffield():
                     end = val * (1-scale)
                     start = val * (1+scale)
                 interval = abs(end -start) /20.0
-                o.write("%4d%6d%6d%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end))
+                o.write("%4d%6d%6d%12.4f%12.4f%12.4f%12.4f"%(5, n1, n2, interval, start, end, val))
                 o.write(" ! %s %4s %4s %4s %s in %s\n"%("hbo", "@"+a1, "@"+a2, "@"+a3, HBO[n2-1], HBOE[n2-1]))
                 n2 += 1
             n1 += 1
@@ -711,7 +711,7 @@ def main():
     parser.add_argument("-checkout", nargs='+', help="check out the force field")
     parser.add_argument("-check", action="store_true", help="check the force field")
     args = parser.parse_args()
-    #print b.getBondDist(3,2)
+    #print(b.getBondDist(3,2)
     
     fname = args.fname
 
@@ -724,7 +724,7 @@ def main():
         ntype = args.type[0]
     else:
         ntype = 0
-        print "Note: Using default force field type"
+        print("Note: Using default force field type")
 
     ff = Ffield(fname, ntype)
     if args.trans:

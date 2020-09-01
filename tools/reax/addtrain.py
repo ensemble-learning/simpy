@@ -8,20 +8,20 @@ import numpy as np
 
 def usage():
     print
-    print """python addtran.py [reference name] [reference energy] [energy unit]
-    @note: Now we support kcal, hartree and ev"""
+    print("""python addtran.py [reference name] [reference energy] [energy unit]
+    @note: Now we support kcal, hartree and ev""")
 
 def preprocess():
     print
-    print "-----------------------hint----------------------"
+    print("-----------------------hint----------------------")
     flag = 1
     if os.path.exists("results"):
         data = np.loadtxt("results")
-        print "The lowest energy in results is: ",
-        print data.min()
-        print "The index of the lowest energy in results is: ",
+        print("The lowest energy in results is: ",)
+        print(data.min())
+        print("The index of the lowest energy in results is: ",)
         n = data.argmin()
-        print data.argmin()
+        print(data.argmin())
         flag = 1
     if os.path.exists("geo"):
         labels = []
@@ -31,9 +31,9 @@ def preprocess():
                 tokens = i.strip().split()
                 labels.append(tokens[1])
         if flag == 1:
-            print "possibel reference is: ",
-            print labels[n]
-    print "-----------------------end----------------------"
+            print("possible reference is: ",)
+            print(labels[n])
+    print("-----------------------end----------------------")
         
 
 
@@ -45,7 +45,7 @@ else:
     rname = sys.argv[1]
     rener = float(sys.argv[2])
     if len(sys.argv) == 3:
-        print "Using default energy unit (kCal/mol)"
+        print("Using default energy unit (kCal/mol)")
         unit = 1
     else:
         if sys.argv[3] == "ev":
@@ -55,7 +55,7 @@ else:
         elif sys.argv[3] == "kcal":
             unit = 1 
         else:
-            print "No defined units."
+            print("No defined units.")
             unit = 1
 
     ener = np.loadtxt("results")
@@ -77,7 +77,7 @@ else:
                 de = 0.01
             o.write(" 0.1 + %s/1 - %s/1  %9.2f\n"%(conf[i], rname, de))
     else:
-        print len(conf), len(ener)
-        print "Error!"
+        print(len(conf), len(ener))
+        print("Error!")
     o.close()
     

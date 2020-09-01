@@ -123,7 +123,7 @@ def get_qm_input(fname):
     time.sleep(0.1)
 
 def get_uff():
-    os.system('obgmx -G 12 freq.pdb > uff.log')
+    os.system('obgmx -H -G 7 freq.pdb > uff.log')
     time.sleep(0.1)
 
 def convert_qm_to_pdb(cell):

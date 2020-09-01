@@ -3,6 +3,19 @@
 import sys
 import time, datetime
 
+def toFfieldLammps(ff, outfile='out.ffield'):
+    o = open(outfile, 'w')
+    for i in ff.pair:
+        o.write('%s %d %d %.4f %.4f # %s\n'%(i[0], int(i[1]), int(i[2]),
+                float(i[3]), float(i[4]), i[5])) 
+    for i in ff.bond:
+        o.write('%s %d %.4f %.4f # %s\n'%(i[0], int(i[1]),
+                float(i[2]), float(i[3]), i[4])) 
+    for i in ff.angle:
+        o.write('%s %d %.4f %.4f # %s\n'%(i[0], int(i[1]),
+                float(i[2]), float(i[3]), i[4])) 
+    o.close()
+
 def toFfield(ff, outfile="out.ffield"):
     o = open(outfile, 'w')
     ts = time.time()

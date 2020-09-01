@@ -6,9 +6,9 @@ import os
 import shutil
 
 def usage():
-    print """python addflag.py flag [geo file name]
+    print("""python addflag.py flag [geo file name]
     if no geo file name, use geo as default
-    """
+    """)
 if len(sys.argv) < 2 or len(sys.argv) > 3:
     usage()
 else:

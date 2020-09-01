@@ -20,7 +20,7 @@ class Param():
             else:
                 data = i.strip().split()
                 comment = ""
-            if len(data) == 6:
+            if len(data) >= 6:
                 self.params.append(data)
                 self.comments.append(comment)
     def checkout(self,):
@@ -92,7 +92,7 @@ class Param():
     
     def filter(self, a1, a2, eq):
         for i in self.comments:
-            print i
+            print(i)
           
 def main():
     parser = argparse.ArgumentParser()

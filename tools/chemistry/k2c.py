@@ -37,7 +37,11 @@ def get_current(eta, T, tau, a1, a2, gact1, gact2, dgtd1):
     d4 = math.exp(d4)
 
     ju = c0*(n1-n2)/(d1+d2+d3+d4)
-    return ju, math.log10(ju)
+
+    if ju < 0:
+        return ju, -math.log10(-ju)
+    if ju > 0:
+        return ju, math.log10(ju)
 
 def test_cer():
     # variables for CER
@@ -62,7 +66,21 @@ def test_her():
     gact1 = 0.665     # TS free energy
     gact2 = 0.75      # TS free energy
     dgtd1 = 0.35      # free energy difference of reaction intermediate S-X
-    eta = np.arange(0.02, 0.21, 0.01)
+    eta = np.linspace(-0.02, -0.12, 51)
+    for i in eta:
+        ju, ju_log10 = get_current(i, T, tau, a1, a2, gact1, gact2, dgtd1)
+        print("%8.4f%10.6f%10.4f"%(i, ju, ju_log10))
+
+def test_her_2():
+    # variables for HER
+    T = 300.0         # Temperautre (K)
+    tau = 2.6e15        # number of electrocatalyst's active sites per surface area (cm-2)
+    a1 = 0.405        # symmetry factors
+    a2 = 1.0         # symmetry factors
+    gact1 = 0.665     # TS free energy
+    gact2 = 0.75      # TS free energy
+    dgtd1 = 0.35      # free energy difference of reaction intermediate S-X
+    eta = np.arange(-1, 0.2, 0.01)
     for i in eta:
         ju, ju_log10 = get_current(i, T, tau, a1, a2, gact1, gact2, dgtd1)
         print("%8.4f%10.6f%10.4f"%(i, ju, ju_log10))
@@ -76,4 +94,5 @@ def main():
 if __name__ == "__main__":
     #test_cer()
     test_her()
+    #test_her_2()
     #main()

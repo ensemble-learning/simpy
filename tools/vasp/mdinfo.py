@@ -45,5 +45,5 @@ if flag_plot:
     plt.show()
 
 potf = np.array(potf)
-print np.average(potf[t0:])
+print(np.average(potf[t0:]))
 

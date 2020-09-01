@@ -106,7 +106,7 @@ class ReaxData():
         return s
 
 class FullData():
-    """only work for reax lammps data generated from restart2data
+    """lammps full data
     """
     def __init__(self, datafile="data_lammps"):
         self.name = ""
