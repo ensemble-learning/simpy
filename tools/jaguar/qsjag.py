@@ -41,7 +41,7 @@ filename = args.fname[0]
 if args.ncpu:
     ppn = args.ncpu[0]
 
-print "We're going to use port " + str(port) + "."
+print("We're going to use port " + str(port) + ".")
 
 processors = nodes*ppn
 
@@ -56,7 +56,7 @@ jobname = base[:-1]
 #we'll choose what needs to be displayed.
 #jobname = "j" + jobname[-9:]
 
-print "Using temp space: " + temp_dir
+print("Using temp space: " + temp_dir)
 
 file.write("#!/bin/csh    \n")
 file.write("#PBS -l nodes=%d"%nodes + ":ppn=%d"%ppn + ",walltime=%d"%hours + ":00:00,pvmem=2gb\n")
@@ -90,20 +90,20 @@ if processors == 1:
         file.write("jaguar run -WAIT  " + filename + "\n") #-VER v79025 
 #        file.write("jaguar run  -WAIT " + filename + "\n")
 else:
-	file.write("setenv SCHRODINGER_NODEFILE $PBS_NODEFILE\n")
+        file.write("setenv SCHRODINGER_NODEFILE $PBS_NODEFILE\n")
 #        file.write("setenv PATH /opt/mpich-1.2.5.10-ch_p4-gcc/bin:$PATH\n")
-	file.write("$SCHRODINGER/utilities/mpich start -m $PBS_NODEFILE -p "+str(port)+"\n")
-	file.write("setenv MPI_USEP4SSPORT yes\n")
-	file.write("setenv MPI_P4SSPORT "+str(port)+"\n")
-	file.write("cat $PBS_NODEFILE > " + base + "nodes\n")
-	file.write("date\n")
+        file.write("$SCHRODINGER/utilities/mpich start -m $PBS_NODEFILE -p "+str(port)+"\n")
+        file.write("setenv MPI_USEP4SSPORT yes\n")
+        file.write("setenv MPI_P4SSPORT "+str(port)+"\n")
+        file.write("cat $PBS_NODEFILE > " + base + "nodes\n")
+        file.write("date\n")
         file.write("jaguar run  -WAIT -PROCS " + str(processors) + " " + filename + "\n")
 #        file.write("jaguar pka -WAIT -PROCS " + str(processors) + " " + filename + "\n")
 
 #	file.write("jaguar run -VER v75207 -WAIT -PROCS " + str(processors) + " " + filename + "\n")
-	file.write("date\n")
-	print "Making sure that " + mpi_used + " is selected as our MPI choice."
-	os.system("switcher mpi = " + mpi_used + " --force")
+        file.write("date\n")
+        print("Making sure that " + mpi_used + " is selected as our MPI choice.")
+        os.system("switcher mpi = " + mpi_used + " --force")
 
 #from the jaguar manual:
 #the port, specified by -p, must be higher than 1023 and be a 4 digit number
@@ -111,9 +111,9 @@ else:
 #if MPI_P4SSPORT is not set, then the default of 1234 will be used
 #how can i check which ports are in use??? can different user's choices conflict?
 
-	if int(port) <= 1023 or int(port) > 9999:
-		print "The port needs to be 1023 < port <= 9999, so " + str(port) + " is not a good choice, using something else instead."
-		port = 1123
+        if int(port) <= 1023 or int(port) > 9999:
+            print("The port needs to be 1023 < port <= 9999, so " + str(port) + " is not a good choice, using something else instead.")
+            port = 1123
 
 handle = os.popen("echo `hostname`")
 hostname = handle.readline()
@@ -124,7 +124,7 @@ hostname = hostname.rstrip()
 #file.write("date\n")
 file.close()
 
-print "Submitting " + filename + " (jobname = " + jobname + ") to " + str(processors) + " processors on " + hostname + " for " + " %d hours"%hours
+print("Submitting " + filename + " (jobname = " + jobname + ") to " + str(processors) + " processors on " + hostname + " for " + " %d hours"%hours)
 command = "qsub " + base +"run"
-print command
+print(command)
 #os.system(command) 

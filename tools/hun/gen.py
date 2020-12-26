@@ -13,6 +13,8 @@ elif socket.gethostname() == "atom.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "fermion.wag.caltech.edu":
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant1":
@@ -183,7 +185,7 @@ def main():
     gen_control()
     os.chdir("..")
     
-    if 1:
+    if 0:
         os.system("dump2config.py rerun.lmp ./anal/config.out")
         os.system("trj2reaxbonds.py lammps.trj ./anal/reaxbonds.out")
         os.chdir("anal")
