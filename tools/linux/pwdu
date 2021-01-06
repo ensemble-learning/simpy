@@ -16,5 +16,5 @@ elif "/net/hulk/home6/chengtao/" in cmd:
     wcmd = wcmd.replace("/net/hulk/home6/chengtao/", "/home/tao/Disk/atom/")
     
 #wcmd = wcmd.replace("/", "\\")
-print wcmd
+print(wcmd)
 

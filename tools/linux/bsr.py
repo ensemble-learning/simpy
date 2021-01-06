@@ -7,10 +7,10 @@ import shutil
 import argparse
 
 def usage():
-    print """bsr: build seperated runs
+    print("""bsr: build seperated runs
     usage:  python bsr.py
     req: need a flist file include all the datafile
-    """
+    """)
 
 def main(args):
     f = open("flist", "r")

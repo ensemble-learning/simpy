@@ -38,6 +38,8 @@ elif socket.gethostname() == "mu01":
     LIB = "/opt/sourcecoude/simpy/lib"
 elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
+elif "node" in socket.gethostname():
+    LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -104,6 +106,8 @@ elif socket.gethostname() == "mu01":
     POT_DATA_BASE = "/opt/software/vasp.5.4.4/potpaw_PBE"
 elif "stampede2" in socket.gethostname():
     POT_DATA_BASE = "/home1/04076/tg833760/soft/vasp/potcar/potpaw_PBE"
+elif "node" in socket.gethostname():
+    POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
