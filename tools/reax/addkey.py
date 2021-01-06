@@ -5,10 +5,10 @@ import shutil
 import sys
 
 def usage():
-    print """python addkeys.py keyword atom1 atom2 start step
+    print("""python addkeys.py keyword atom1 atom2 start step
     usage: add keys in the geo file 
     keyword = "bond" or "angle"
-    """
+    """)
 
 def addBondRes(a1, a2, start, step):
 
@@ -27,7 +27,7 @@ def addBondRes(a1, a2, start, step):
             lines.append(key1)
             counter += 1
         elif i.strip().startswith("BOND RESTRAINT"):
-            print "BOND RESTRAINTs have been added"
+            print("BOND RESTRAINTs have been added")
             return 0
     f.close()
 
@@ -56,7 +56,7 @@ def addAngRes(a1, a2, a3, start, step):
             lines.append(key1)
             counter += 1
         elif i.strip().startswith("ANGLE RESTRAINT"):
-            print "Warning: ANGLE RESTRAINTs have been added"
+            print("Warning: ANGLE RESTRAINTs have been added")
     f.close()
 
     shutil.copy("geo", "geo.addAng.bak")
@@ -73,7 +73,7 @@ if __name__ == "__main__":
         key = sys.argv[1]
         if key == "bond":
             if len(sys.argv) < 6:
-                print "error bond input"
+                print("error bond input")
             else:
                 a1 = int(sys.argv[2])
                 a2 = int(sys.argv[3])
@@ -82,7 +82,7 @@ if __name__ == "__main__":
                 addBondRes(a1, a2, start, step)
         elif key == "angle":
             if len(sys.argv) < 6:
-                print "error bond input"
+                print("error bond input")
             else:
                 a1 = int(sys.argv[2])
                 a2 = int(sys.argv[3])

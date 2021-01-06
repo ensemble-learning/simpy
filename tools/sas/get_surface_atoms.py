@@ -6,7 +6,7 @@ import sys
 if len(sys.argv) > 1:
     cutoff = float(sys.argv[1])
 else:
-    print "Using default cutoff 0.3"
+    print("Using default cutoff 0.3")
     cutoff = 0.30
 
 def read_frac_atom():
@@ -45,7 +45,7 @@ for i in range(len(frac)):
     else:
         surface.append(line)
 
-print "find %d surface atoms and %d bulk atoms"%(len(surface), len(bulk))
+print("find %d surface atoms and %d bulk atoms"%(len(surface), len(bulk)))
 o = open("surface.xyz", "w")
 o.write("%d\n\n"%len(surface))
 for i in surface:

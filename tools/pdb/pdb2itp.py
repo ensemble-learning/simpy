@@ -8,52 +8,20 @@ import ase.io
 from ase.neighborlist import NeighborList
 from ase.neighborlist import neighbor_list
 from ase.geometry import distance, get_angles
-from ase.data import covalent_radii, atomic_numbers
 
 cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85}
 #atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I'}
 atom_types_table = {'C': 'C', 'H': 'H', 'N': 'N', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I', 'Au':'Au', 'S':'S'}
 ERROR_ATP = 'Warning: User-defined atom types provided but the numbers do not match!\n'
 
-class Params():
-    def __init__(self,):
-        self.fname = ''
-        self.cutoff_file = ''
-        self.cutoff_table = {}
-        self.nl = []
-        self.molecules = []
-        self.tolerance = 1.1
-        self.ignore_element = []
-
-def update_cutoff_table(cutoff_table):
-    if os.path.exists(p.cutoff_file):
-        f = open(p.cutoff_file, 'r')
-        for i in f:
-            tokens = i.strip().split()
-            if len(tokens) == 3:
-                p.cutoff_table[(tokens[0], tokens[1])] = float(tokens[2])
-                p.cutoff_table[(tokens[1], tokens[0])] = float(tokens[2])
-        f.close()
-
-def build_cutoff_table(atps, p):
-    for i in range(len(atps)):
-        for j in range(i, len(atps)):
-            if atps[i] in p.ignore_element or atps[j] in p.ignore_element:
-                r0 = 0.1
-            else:
-                ri = covalent_radii[atomic_numbers[atps[i]]]
-                rj = covalent_radii[atomic_numbers[atps[j]]]
-                r0 = p.tolerance*(ri+rj)
-            p.cutoff_table[(atps[i], atps[j])] = r0
-
-def get_lists(atoms, p):
+def get_lists(atoms):
 
     # build neighbor list
     nl = []
     for i in range(len(atoms)):
         nl.append([])
 
-    tokens_i, tokens_j = neighbor_list('ij', atoms, p.cutoff_table)
+    tokens_i, tokens_j = neighbor_list('ij', atoms, cutoff_table)
     for i in range(len(tokens_i)):
         nl[tokens_i[i]].append(tokens_j[i])
 
@@ -181,14 +149,8 @@ if len(sys.argv) > 1:
     fname = sys.argv[1]
     itpfile = fname.split(".")[0] + ".itp"
 
-    p = Params()
-
     atoms = ase.io.read(fname)
-    atps = list(set(atoms.get_chemical_symbols()))
-    build_cutoff_table(atps, p)
-    update_cutoff_table(p)
-
-    nl, bl, al, dl = get_lists(atoms, p)
+    nl, bl, al, dl = get_lists(atoms)
     charges = assign_charges(atoms)
     atomtypes = assign_atom_types_opls(atoms, nl)
 

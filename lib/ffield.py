@@ -517,7 +517,7 @@ class Ffield():
         """
         Generate params file for training
         """
-        scale = 0.4
+        scale = 0.2
         o = open("params_total", "w")
         #@note: need to finish
               # 1        2         3         4      5
