@@ -108,7 +108,7 @@ class G03LogConf():
             flag = 0
             for i in f:
                 flag = 1
-                if "Standard orientation:" == i.strip():
+                if "Input orientation:" == i.strip():
                     self.atoms = []
                     counter = 0
                     break
