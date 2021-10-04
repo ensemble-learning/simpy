@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+import numpy as np
+import matplotlib.pyplot as plt
+import sys
+import matplotlib as mpl
+mpl.use('Agg')
+
+if len(sys.argv) > 1:
+    data = []
+    fname = sys.argv[1]
+    f = open(fname, "r")
+
+    counter = 0
+
+    for i in f:
+        tokens = i.strip().split()
+        if counter < 0:
+            pass
+        elif counter == 2:
+            title = tokens
+            n = len(title)
+        elif counter > 2:
+            if len(tokens) == n:
+                data.append([float(j) for j in tokens])
+        counter += 1
+
+    f.close()
+
+    data = np.array(data)
+    data = data.transpose()
+
+    solid = data[4]+data[7]
+    gas = data[2]
+    total = data[9]
+    plt.plot(data[0], solid, label='solid', lw=2)
+    plt.plot(data[0], gas, label='gas', lw=2)
+    plt.plot(data[0], total, label='total', lw=2)
+
+    plt.xlabel("Frequency (cm$^{-1}$)", size="x-large")
+    plt.ylabel("N", size="x-large")
+    plt.xlim([0,4500])
+    plt.legend()
+    plt.savefig('out.png', dpi=300)
+    plt.show()
+else:
+    print('Usage: plot_2pt_pwr pwrfile')
