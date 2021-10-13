@@ -15,6 +15,7 @@ def preprocess():
     print
     print("-----------------------hint----------------------")
     flag = 1
+    # cmdall "grep F= OSZICAR | tail -1" | cut -b 8-23 > results
     if os.path.exists("results"):
         data = np.loadtxt("results")
         print("The lowest energy in results is: ",)
@@ -75,7 +76,7 @@ else:
             de = (ener[i] - rener) * unit 
             if de < 0.01:
                 de = 0.01
-            o.write(" 0.1 + %s/1 - %s/1  %9.2f\n"%(conf[i], rname, de))
+            o.write(" 1.1 + %s/1 - %s/1  %9.2f\n"%(conf[i], rname, de))
     else:
         print(len(conf), len(ener))
         print("Error!")

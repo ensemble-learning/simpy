@@ -32,6 +32,10 @@ elif socket.gethostname() == "tao-Precision-Tower-3420-ubuntu":
     LIB = "/home/tao/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif "cu" in socket.gethostname():
+    LIB = "/home/tcheng/soft/simpy/lib"
+elif "mu01" in socket.gethostname():
+    LIB = "/home/tcheng/soft/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
     LIB = "/home/tao/Soft/simpy/lib"
 

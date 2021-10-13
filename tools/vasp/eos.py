@@ -66,5 +66,5 @@ sig = os.system("eos")
 if sig == 0:
     os.system("cat PARAM.OUT")
 else:
-    print "Error in calculation!"
+    print("Error in calculation!")
 
