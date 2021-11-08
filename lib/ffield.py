@@ -19,7 +19,7 @@ import os
 import math
 import argparse
 from output_ff import toFfield
-DEBUG = 1
+DEBUG = 0
 
 class Ffield():
     """ reaxFF force field (ffield) file

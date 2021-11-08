@@ -120,6 +120,10 @@ def main(args):
         lines = NVT
     elif rtype == "MIN":
         lines = MIN
+    elif rtype == "MIN_NVT":
+        lines = MIN_NVT
+    elif rtype == "NVT_DATA":
+        lines = NVT_DATA
     elif rtype == "NPT":
         lines = NPT
     elif rtype == "MIN_CELL":
