@@ -5,9 +5,9 @@ if os.path.exists('mixture.pdb'):
 f = open('inp', 'r')
 lines = f.readlines()
 f.close()
-mols = lines[0].strip().split()
-nmols = lines[1].strip().split()
-box = lines[2].strip()
+mols = lines[0].strip().split() # pdb files
+nmols = lines[1].strip().split() # n mols
+box = lines[2].strip() # box size
 
 o = open('pack.inp', 'w')
 o.write('tolerance 2.0\n')
