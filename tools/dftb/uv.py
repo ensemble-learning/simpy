@@ -1,7 +1,7 @@
 import numpy as np
 PRE = 1.3062974e8
 EV2NM = 1239.84193
-DELTA = EV2NM/0.01
+DELTA = EV2NM/0.03
 
 def gen_uv(x, f, l1):
 
@@ -20,7 +20,7 @@ def get_dftb_output():
             tokens = i.strip().split()
             params.append(tokens)
         n += 1
-    print params
+    #print(params)
     return params
 
 def output(x, y):
@@ -34,7 +34,7 @@ def output(x, y):
     o.close()
 
 def main():
-    x = np.linspace(240, 600, 200)
+    x = np.linspace(100, 600, 200)
     y = np.zeros(len(x))
 
     params = get_dftb_output()
