@@ -139,15 +139,6 @@ def gen_inp_opt(gen):
         o.write("    s8 = 0.5883\n")
         o.write("  }\n")
 
-    excited = 0
-    if excited:
-        o.write('ExcitedState = {\mn')
-        o.write('  Casida = {\n')
-        o.write('    NrOfExcitations = 16\n')
-        o.write('    Symmetry = singlet\n')
-        o.write('  }\n')
-        o.write('}\n\n')
-
     # Kpoints
     if gen.cell:
         o.write("  KPointsAndWeights = SupercellFolding {\n")
