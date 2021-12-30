@@ -1,7 +1,15 @@
 import os, shutil
 import socket
+import argparse
 
 print(socket.gethostname())
+
+class Param():
+    def __init__(self,):
+        self.opt = 0
+        self.md = 0
+        self.excited = 0
+        self.d3 = 1
 
 # HubbardDerivs
 # http://www.dftb.org/parameters/download/3ob/3ob-3-1-cc/
@@ -40,7 +48,7 @@ class Gen():
         self.atoms = []
         self.cell = []
 
-def gen_inp_opt(gen):
+def gen_inp(gen, p):
     n = 0
     for i in os.listdir("."):
         if "dftb_in.hsd" in i:
@@ -54,8 +62,7 @@ def gen_inp_opt(gen):
     o.write("}\n")
     o.write("\n")
     # For opt
-    opt = 1
-    if opt:
+    if p.opt:
         o.write("Driver = ConjugateGradient {\n")
         o.write(" MovedAtoms = 1:-1\n")
         o.write(" MaxSteps = 50000\n")
@@ -66,8 +73,7 @@ def gen_inp_opt(gen):
         o.write("}\n")
         o.write("\n")
     # For MD
-    md = 0
-    if md:
+    if p.md:
         o.write("Driver = VelocityVerlet {\n")
         o.write("MovedAtoms = 1:-1\n")
         o.write("Steps = 1000\n")
@@ -112,6 +118,7 @@ def gen_inp_opt(gen):
     o.write('    Separator = "-"\n')
     o.write('    Suffix = ".skf"\n')
     o.write("  } \n")
+
     if 0: # Dispersion SlaterKirkwood
         o.write("  Dispersion = SlaterKirkwood {\n")
         o.write("    PolarRadiusCharge = HybridDependentPol {\n")
@@ -129,7 +136,7 @@ def gen_inp_opt(gen):
             o.write("      }\n")
         o.write("    }\n")
         o.write("  }\n")
-    if 1: # Dispersion D3 Becke-Jonson (BJ)
+    if p.d3: # Dispersion D3 Becke-Jonson (BJ)
         o.write("  Dispersion = DftD3 {\n")
         o.write("    Damping = BeckeJohnson {\n")
         o.write("      a1 = 0.5719\n")
@@ -139,8 +146,7 @@ def gen_inp_opt(gen):
         o.write("    s8 = 0.5883\n")
         o.write("  }\n")
 
-    excited = 0
-    if excited:
+    if p.excited:
         o.write('ExcitedState = {\mn')
         o.write('  Casida = {\n')
         o.write('    NrOfExcitations = 16\n')
@@ -184,11 +190,16 @@ def read_gen(gen):
             tokens = lines[i].strip().split()
             gen.cell.append([float(j) for j in tokens])
 
-def main():
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("runtype", default="sp", nargs=1, help="run type")
+    #parser.add_argument("-q", type=int, help="charge")
+    #parser.add_argument("-nspin", type=int, help="Spin multiplicity")
+    #parser.add_argument("-ncpu", type=int, help="number of cpu for QM calculation")
+    args = parser.parse_args()
+
+    p = Param()
     gen = Gen()
     # assign parameters
     read_gen(gen)
-    gen_inp_opt(gen)
-
-if __name__ == "__main__":
-    main()
+    gen_inp(gen, p)
