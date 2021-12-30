@@ -146,14 +146,6 @@ def gen_inp(gen, p):
         o.write("    s8 = 0.5883\n")
         o.write("  }\n")
 
-    if p.excited:
-        o.write('ExcitedState = {\mn')
-        o.write('  Casida = {\n')
-        o.write('    NrOfExcitations = 16\n')
-        o.write('    Symmetry = singlet\n')
-        o.write('  }\n')
-        o.write('}\n\n')
-
     # Kpoints
     if gen.cell:
         o.write("  KPointsAndWeights = SupercellFolding {\n")
@@ -164,6 +156,15 @@ def gen_inp(gen, p):
         o.write("  }\n")
     o.write("}\n")
     o.write("\n")
+
+    if p.excited:
+        o.write('ExcitedState = {\n')
+        o.write('  Casida = {\n')
+        o.write('    NrOfExcitations = 16\n')
+        o.write('    Symmetry = singlet\n')
+        o.write('  }\n')
+        o.write('}\n\n')
+
     o.write("Analysis = {\n")
     o.write("  WriteEigenvectors = Yes\n")
     o.write("}\n")
@@ -192,7 +193,7 @@ def read_gen(gen):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("runtype", default="sp", nargs=1, help="run type")
+    parser.add_argument("runtype", default="sp", nargs="?", help="run type")
     #parser.add_argument("-q", type=int, help="charge")
     #parser.add_argument("-nspin", type=int, help="Spin multiplicity")
     #parser.add_argument("-ncpu", type=int, help="number of cpu for QM calculation")
@@ -201,5 +202,11 @@ if __name__ == "__main__":
     p = Param()
     gen = Gen()
     # assign parameters
+    if args.runtype == 'opt':
+        p.opt=1
+
+    if args.runtype == 'tddft':
+        p.excited=1
+
     read_gen(gen)
     gen_inp(gen, p)

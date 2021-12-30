@@ -20,7 +20,7 @@ def get_dftb_output():
             tokens = i.strip().split()
             params.append(tokens)
         n += 1
-    print params
+    print(params)
     return params
 
 def output(x, y):
