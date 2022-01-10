@@ -3,6 +3,7 @@
 import sys
 from mytype import System, Molecule, Atom
 from cons import ELEMENT
+import re
 
 class G03Gjf():
     def __init__(self, filename="g03.gjf"):
@@ -207,12 +208,15 @@ class G03tools():
                 break
         tokens = ''
         for i in f:
-            print(i)
             if len(i.strip()) == 0:
                 break
             else:
                 tokens += i.strip()
-        print(tokens)
+        token = (re.findall(r"\\HF=(.*?)\\",tokens))
+        if len(token) > 0:
+            ener = float(token[0])
+        else:
+            print("Error: No energy read")
 
         # get the zpe energy
         zpe = 0
