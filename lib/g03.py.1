@@ -202,17 +202,38 @@ class G03tools():
         flag = 1
         sym = -1
         f = open(self.name, "r")
-        for i in f:
-            if 'l9999' in i:
-                break
-        tokens = ''
-        for i in f:
-            print(i)
-            if len(i.strip()) == 0:
-                break
-            else:
-                tokens += i.strip()
-        print(tokens)
+        counter = 0
+        while(flag):
+            flag = 0
+            for i in f:
+                flag = 1
+                if r"|HF" in i:
+                    sym = 0
+                    lines = ""
+                    lines = i.strip()
+                    break
+                elif r"\HF" in i:
+                    sym = 1
+                    lines = ""
+                    lines = i.strip()
+                    break
+            for i in f:
+                lines += i.strip()
+                if len(i.strip()) == 0:
+                    break
+            counter += 1
+        f.close()
+
+        if sym == 0:
+            for i in lines.split(r"|"):
+                if "HF" in i:
+                    ener = float(i[3:])
+        elif sym == 1:
+            for i in lines.split("\\"):
+                if "HF" in i:
+                    ener = float(i[3:])
+        else:
+            print("Error: No energy read")
 
         # get the zpe energy
         zpe = 0
