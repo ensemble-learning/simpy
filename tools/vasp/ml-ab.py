@@ -23,6 +23,8 @@ class ML_AB():
                 blocks.append([])
                 nb+=1
             blocks[nb].append(i)
+        blocks[nb].append('**************************************************\n')
+
         self.head = blocks[0]
         self.confs = blocks[1:]
         
@@ -37,6 +39,7 @@ class ML_AB():
         o.close()
         o = open('ml-ab-confs.dat', 'w')
         for i in self.confs:
+            print(len(i))
             for j in i:
                 o.write(j)
         o.close()
@@ -45,8 +48,7 @@ class ML_AB():
         o.write(' '.join(['%d'%ii for ii in self.n_basis_sets]))
         o.write('\n')
         o.close()
-
-
-ab = ML_AB()
-ab.read()
-ab.write()
+if __name__ == '__main__':
+    ab = ML_AB()
+    ab.read()
+    ab.write()
