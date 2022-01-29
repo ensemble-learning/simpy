@@ -51,7 +51,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     
     # Diamond A4
     a = a_ref * 1.93
-    atoms = crystal(element, [(-1./8.,-1./8.,-1./8.), (1./8.,1./8.,1./8.)], 
+    atoms = crystal(element, [(0.5,0.5,0.5)], 
                     spacegroup=227, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("DIAMOND"):
         os.mkdir("DIAMOND")
