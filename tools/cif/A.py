@@ -59,7 +59,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     os.chdir("..")
 
 def main():
-    print __doc__
+    print(__doc__)
     if len(sys.argv) > 2:
         element = sys.argv[1]
         distance = float(sys.argv[2])

@@ -11,7 +11,7 @@ import socket
 
 LIB = ''
 
-print(socket.gethostname())
+#print(socket.gethostname())
 if socket.gethostname() == "cluster.hpc.org":
     LIB = "/home/chengtao/packages/simpy/simpy/lib"
 elif socket.gethostname() == "tao-laptop":
@@ -22,6 +22,8 @@ elif socket.gethostname() == "ion.wag.caltech.edu":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant12":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "mu01":
+    LIB = "/home/tcheng/soft/simpy/lib"
 elif socket.gethostname() == "tao-Precision-Tower-3420-ubuntu":
     LIB = "/home/tao/soft/simpy/lib"
 
