@@ -21,6 +21,8 @@ elif socket.gethostname() == "giant1":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif socket.gethostname() == "giant3":
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif socket.gethostname() == "mu01":
+    LIB = "/home/tcheng/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -185,7 +187,7 @@ def main():
     gen_control()
     os.chdir("..")
     
-    if 0:
+    if 1:
         os.system("dump2config.py rerun.lmp ./anal/config.out")
         os.system("trj2reaxbonds.py lammps.trj ./anal/reaxbonds.out")
         os.chdir("anal")
