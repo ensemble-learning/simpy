@@ -11,10 +11,10 @@ from ase.io.vasp import write_vasp
 
 def generate_vaspinput(element="Li", a_ref=3.05):
 
-    # HCP
+    # HCP A3
     a = a_ref
     c = 1.62 * a_ref
-    atoms = crystal(element, [(1./3., 2./3., 3./4.)], spacegroup=194,
+    atoms = crystal(element, [(1./3., 2./3., 1./4.), (2./3.,1./3.,3./4.)], spacegroup=194,
                 cellpar=[a, a, c, 90, 90, 120])
     if not os.path.exists("HCP"):
         os.mkdir("HCP")
@@ -22,7 +22,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     write_vasp("POSCAR", atoms, label="HCP", direct=True, long_format=True, vasp5=True)
     os.chdir("..")
     
-    # FCC structure
+    # FCC structure A1
     a = a_ref * 1.42 
     atoms = crystal(element, [(0,0,0)], spacegroup=225, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("FCC"):
@@ -31,7 +31,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     write_vasp("POSCAR", atoms, label="FCC", direct=True, long_format=True, vasp5=True)
     os.chdir("..")
     
-    # BCC structure
+    # BCC structure A2
     a = a_ref * 1.13
     atoms = crystal(element, [(0,0,0)], spacegroup=229, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("BCC"):
@@ -40,7 +40,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     write_vasp("POSCAR", atoms, label="BCC", direct=True, long_format=True, vasp5=True)
     os.chdir("..")
     
-    # SCC structure
+    # SCC structure Ah
     a = a_ref * 0.90
     atoms = crystal(element, [(0,0,0)], spacegroup=221, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("SCC"):
@@ -49,9 +49,10 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     write_vasp("POSCAR", atoms, label="SCC", direct=True, long_format=True, vasp5=True)
     os.chdir("..")
     
-    # Diamond
+    # Diamond A4
     a = a_ref * 1.93
-    atoms = crystal(element, [(0,0,0)], spacegroup=227, cellpar=[a, a, a, 90, 90, 90])
+    atoms = crystal(element, [(-1./8.,-1./8.,-1./8.), (1./8.,1./8.,1./8.)], 
+                    spacegroup=227, cellpar=[a, a, a, 90, 90, 90])
     if not os.path.exists("DIAMOND"):
         os.mkdir("DIAMOND")
     os.chdir("DIAMOND")
@@ -59,7 +60,7 @@ def generate_vaspinput(element="Li", a_ref=3.05):
     os.chdir("..")
 
 def main():
-    print __doc__
+    print(__doc__)
     if len(sys.argv) > 2:
         element = sys.argv[1]
         distance = float(sys.argv[2])
