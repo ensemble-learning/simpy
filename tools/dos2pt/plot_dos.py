@@ -153,5 +153,3 @@ plot_dos_v()
 plot_dos_t()
 plot_dos_r()
 
-
-

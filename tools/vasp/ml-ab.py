@@ -39,7 +39,6 @@ class ML_AB():
         o.close()
         o = open('ml-ab-confs.dat', 'w')
         for i in self.confs:
-            print(len(i))
             for j in i:
                 o.write(j)
         o.close()

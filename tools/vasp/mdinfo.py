@@ -23,7 +23,7 @@ for i in f:
         tokens = i.strip().split()
         steps.append(int(tokens[0]))
         T.append(float(tokens[2]))
-        potf.append(float(tokens[4]))
+        potf.append(float(tokens[6]))
 
 f.close()
 

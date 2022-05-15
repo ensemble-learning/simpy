@@ -34,7 +34,7 @@ def output(x, y):
     o.close()
 
 def main():
-    x = np.linspace(100, 600, 200)
+    x = np.linspace(350, 800, 200)
     y = np.zeros(len(x))
 
     params = get_dftb_output()
