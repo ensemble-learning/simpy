@@ -37,26 +37,27 @@ def diffusion_to_conductivity(D, zi, T, f, ci):
     d2 = d1*ci*f/L_2_m3 
     d2 = d2/100         # in S/cm
 
+    print('dffusion coefficient of ion i (1e-5 cm^2/s): %.4f'%(D*1e9))
     print('molar limiting conductivity of ion i (S m^2/mol): %.4e'%d1)
     print('conductivity of ion i (S/cm): %.2e'%d2)
     print('conductivity of ion i (uS/cm): %.1f'%(d2*1e6))
     print('conductivity of ion i (mS/cm): %.2f'%(d2*1e3))
 
 def main():
+    #@note: doi:10.1149/2.0461610jes
     """
-    @note: doi:10.1149/2.0461610jes
-    D = 7.2e-11 # diffusion coefficients in 10^-10 m^2/s
+    D = 7.2e-11 # in m^2/s or 7.2e-7 cm^2/s
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 0.64 # fraction of free ions
     ci = 0.52 # ion concentration, in mol/L
     diffusion_to_conductivity(D, zi, T, f, ci) 
     """
-    D = 0.02e-9 # diffusion coefficients in 10^-10 m^2/s
+    D = 0.0129e-9 # diffusion coefficients in 10^-10 m^2/s
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 1.00 # fraction of free ions
-    ci = 3.00 # ion concentration, in mol/L
+    ci = 1.00 # ion concentration, in mol/L
     diffusion_to_conductivity(D, zi, T, f, ci) 
 
 if __name__ == "__main__":

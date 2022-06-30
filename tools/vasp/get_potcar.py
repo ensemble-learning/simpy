@@ -40,6 +40,8 @@ elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
+elif "Tao-MBP-9" in socket.gethostname():
+    LIB = "/Users/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -64,7 +66,7 @@ POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li", "S":"S", "Ti":"Ti", "P":"P
 POT = {"N":"N", "O":"O", "H":"H", "C":"C", "Li":"Li_sv", "S":"S", "Ti":"Ti_pv", "P":"P", 
        "Ca":"Ca_sv", "Al":"Al", "Cu":"Cu_pv", "Na":"Na_pv", "Cl":"Cl", "Ga":"Ga_d",
         "Br":"Br", "D": "H", "Si": "Si", "Ni": "Ni_pv", "Pt":"Pt_pv", "Co":"Co", "Cr":"Cr_pv", 
-       "I":"I", "K":"K_sv", "F":"F", "W":"W_pv", "Au":"Au", "Cs":"Cs_sv", "Mg":"Mg_pv",
+       "I":"I", "K":"K_pv", "F":"F", "W":"W_pv", "Au":"Au", "Cs":"Cs_sv", "Mg":"Mg_pv",
        "Ag":"Ag", "Se":"Se", "B":"B", "He":"He", "Ar":"Ar", "Xe":"Xe", "Kr":"Kr", 
        "Mo": "Mo_pv", "Fe": "Fe_pv", "As": "As", "Ge": "Ge_d", "Sc": "Sc_sv", "Zr": "Zr_sv",
        "Y": "Y_sv", "Zn": "Zn", "Cd": "Cd", "V": "V_pv", "Mn": "Mn_pv", "Co": "Co",
@@ -108,6 +110,8 @@ elif "stampede2" in socket.gethostname():
     POT_DATA_BASE = "/home1/04076/tg833760/soft/vasp/potcar/potpaw_PBE"
 elif "node" in socket.gethostname():
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
+elif "Tao-MBP-9" in socket.gethostname():
+    POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
 
 o = open("POTCAR", "w")
 a = Poscar("POSCAR")
