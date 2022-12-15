@@ -40,7 +40,7 @@ elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
-elif "Tao-MBP-9" in socket.gethostname():
+elif "Tao-MBP-86" in socket.gethostname():
     LIB = "/Users/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)

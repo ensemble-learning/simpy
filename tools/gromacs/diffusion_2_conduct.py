@@ -53,7 +53,7 @@ def main():
     ci = 0.52 # ion concentration, in mol/L
     diffusion_to_conductivity(D, zi, T, f, ci) 
     """
-    D = 0.0129e-9 # diffusion coefficients in 10^-10 m^2/s
+    D = 0.0172e-9 # diffusion coefficients in 10^-10 m^2/s
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 1.00 # fraction of free ions

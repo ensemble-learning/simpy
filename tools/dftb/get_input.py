@@ -196,7 +196,7 @@ if __name__ == "__main__":
     parser.add_argument("runtype", default="sp", nargs="?", help="run type")
     #parser.add_argument("-q", type=int, help="charge")
     #parser.add_argument("-nspin", type=int, help="Spin multiplicity")
-    #parser.add_argument("-ncpu", type=int, help="number of cpu for QM calculation")
+    #parser.add_argument("-ncpu", type=int, help="number of cpu for DFTB calculation")
     args = parser.parse_args()
 
     p = Param()
