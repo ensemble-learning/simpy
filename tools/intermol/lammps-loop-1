@@ -1,0 +1,49 @@
+group   sub id <= 47
+group   sim id > 47
+fix freeze sub setforce 0.0 0.0 0.0
+
+thermo         10
+
+variable temp equal 298
+
+# start the loop
+label loop
+variable a loop 18
+
+log             sim-$a.log
+min_style       cg
+minimize        0 1.0e-8 1000 1000
+
+dump            100 all custom 400 $a.lammpstrj id type x y z vx vy vz
+dump_modify     100 sort id
+thermo_style custom step temp lx ly lz pxx pyy pzz ebond eangle edihed eimp epair evdwl ecoul elong etail pe
+
+reset_timestep  0
+velocity        sim create ${temp} 4928459 rot yes dist gaussian
+
+fix             401 sim nvt temp ${temp} ${temp} 50
+timestep        1
+run             400
+unfix           401
+
+thermo_style custom step temp lz pzz pe
+reset_timestep  0
+fix             401 sim nvt temp ${temp} ${temp} 50
+fix             402 all deform 1 z delta 0.0 -1.0 units box
+run             1000
+unfix           401
+unfix           402
+
+reset_timestep  0
+log             nvt-$a.log
+dump            101 all custom 400 nvt-$a.lammpstrj id type x y z vx vy vz
+fix             401 sim nvt temp ${temp} ${temp} 50
+timestep        1
+run             400
+unfix           401
+undump          101
+undump          100
+
+next a
+jump SELF loop
+

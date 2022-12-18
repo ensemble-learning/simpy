@@ -1,0 +1,22 @@
+#!/usr/bin/env /opt/anaconda3/bin/python3
+
+exe = '/opt/anaconda3/bin/python3'
+
+import os, sys
+
+test_energy = 0
+
+gro = sys.argv[1]
+top = sys.argv[2]
+lmp = sys.argv[3]
+
+cwd = os.getcwd()
+os.makedirs(lmp, exist_ok=True)
+
+#os.chdir('../InterMol/intermol')
+os.chdir('/Users/tao/soft/InterMol/intermol')
+if test_energy:
+    os.system('%s convert.py --gro_in %s/%s %s/%s --lammps --odir %s/%s -e'%(exe, cwd, gro, cwd, top, cwd, lmp))
+else:
+    os.system('%s convert.py --gro_in %s/%s %s/%s --lammps --odir %s/%s'%(exe, cwd, gro, cwd, top, cwd, lmp))
+os.chdir(cwd)
