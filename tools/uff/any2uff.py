@@ -23,6 +23,11 @@ sub      3
         atp = uff_atp[i.symbol]
         o.write('%4d%9s%5d%6s%7s%5d%12.5f%12.5f\n'%
                 (n+1, atp, 1, 'sub', i.symbol, 1, q, i.mass))
+    o.write('\n[ position_restraints ]\n')
+    o.write('; i funct fcx fcy fcz\n')
+    for n, i in enumerate(atoms):
+        o.write('%d 1 100000 100000 10000\n'%(n+1))
+    o.close()
 
 write_itp(atoms)
 
