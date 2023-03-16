@@ -88,19 +88,16 @@ def write_pbs():
     o = open('pbs', 'w')
     o.write("""#!/bin/bash
 #PBS -N jdftx
-#PBS -l nodes=1:ppn=24
+#PBS -l nodes=1:ppn=32
 #PBS -l walltime=90:00:00
 #PBS -q batch
 #PBS -S /bin/bash
 #PBS -j oe
 
-source /opt/intel/compilers_and_libraries_2018/linux/bin/compilervars.sh intel64
-source /opt/intel/mkl/bin/mklvars.sh intel64
-source /opt/intel/impi/2018.1.163/bin64/mpivars.sh
+source /home/tcheng/intel/oneapi/setvars.sh intel64
 
-CLUSTER="ion"
 nProcesses=2
-JDFTx="/opt/sourcecoude/jdftx/jdftx/build/jdftx"
+JDFTx="/home/tcheng/soft/jdftx/jdftx-1.7.0/build/jdftx"
 MPIRUN="mpirun --map-by node --bind-to none"
 nAllocCores=$(wc -l < $PBS_NODEFILE)
 nThreads=$(echo "$nAllocCores/$nProcesses" | bc)

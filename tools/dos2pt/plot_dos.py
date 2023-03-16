@@ -10,7 +10,7 @@ def output_data(data, fname):
     o = open(fname, "w")
     for i in range(len(data[0])):
         for j in range(len(data)):
-            o.write("%12.6f"%data[j][i])
+            o.write("%12.6f "%data[j][i])
         o.write("\n")
     o.close()
 

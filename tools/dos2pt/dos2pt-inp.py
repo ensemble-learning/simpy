@@ -27,6 +27,7 @@ def get_time_step():
     return ts
 
 def get_temperature():
+    tempt = 300
     if os.path.exists('INCAR'):
         f = open("INCAR", "r")
         for i in f:
@@ -35,8 +36,7 @@ def get_temperature():
                 tokens = tokens[1].split()
                 tempt = float(tokens[0])
         f.close()
-    else:
-        tempt = 300
+
     return tempt
 
 def get_npoints(atoms):
@@ -78,6 +78,11 @@ def gen_masses(atoms):
             elements.append(i.symbol)
             masses.append(i.mass)
 
+    o = open('masses', 'w')
+    for n, i in enumerate(elements):
+        o.write('%s %.4f\n'%(elements[n], masses[n]))
+    o.close()
+
 def gen_sh_run():
     o = open("run.sh", "w")
     o.write("DoSPT\n")
@@ -108,6 +113,7 @@ def gen_input(atoms):
     o.write("format = xyz\n")
     o.write("# Estimate velocities from positions\n")
     o.write("estimate_velocities = .true.\n")
+    o.write("smooth = .true.\n")
 
 atoms = read('POSCAR')
 gen_groups(atoms)
