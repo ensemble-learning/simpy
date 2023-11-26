@@ -43,7 +43,7 @@ def diffusion_to_conductivity(D, zi, T, f, ci):
     print('conductivity of ion i (uS/cm): %.1f'%(d2*1e6))
     print('conductivity of ion i (mS/cm): %.2f'%(d2*1e3))
 
-def main():
+def single_ion():
     #@note: doi:10.1149/2.0461610jes
     """
     D = 7.2e-11 # in m^2/s or 7.2e-7 cm^2/s
@@ -57,8 +57,8 @@ def main():
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 1.00 # fraction of free ions
-    ci = 1.00 # ion concentration, in mol/L
+    ci = 10.00 # ion concentration, in mol/L
     diffusion_to_conductivity(D, zi, T, f, ci) 
 
 if __name__ == "__main__":
-    main()
+    single_ion()
