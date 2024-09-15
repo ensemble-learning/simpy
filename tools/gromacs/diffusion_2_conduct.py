@@ -13,6 +13,7 @@
 L_2_m3 = 1e-3
 F = 96485.33212 # Faraday constant, in C/mol
 R = 8.314 # gas constant J/mol/K
+NA = 6.02214076e23 #Avogadro constant
 
 def test():
     D = 5.27e-9 # diffusion coefficients in 10^-10 m^2/s
@@ -37,6 +38,7 @@ def diffusion_to_conductivity(D, zi, T, f, ci):
     d2 = d1*ci*f/L_2_m3 
     d2 = d2/100         # in S/cm
 
+    print('ion concentration (M): %.2f'%(ci))
     print('dffusion coefficient of ion i (1e-5 cm^2/s): %.4f'%(D*1e9))
     print('molar limiting conductivity of ion i (S m^2/mol): %.4e'%d1)
     print('conductivity of ion i (S/cm): %.2e'%d2)
@@ -46,19 +48,40 @@ def diffusion_to_conductivity(D, zi, T, f, ci):
 def single_ion():
     #@note: doi:10.1149/2.0461610jes
     """
+    N = 1   # number of species in N
+    L = 1.184 # the lenght of the cubic cell in nm
     D = 7.2e-11 # in m^2/s or 7.2e-7 cm^2/s
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 0.64 # fraction of free ions
     ci = 0.52 # ion concentration, in mol/L
     diffusion_to_conductivity(D, zi, T, f, ci) 
+
+    # DOI: 10.1149/2.0461610jes
+    N = 300   # number of species in N
+    L = 3.5608 # the lenght of the cubic cell in nm
+    D = 0.072e-9 # diffusion coefficients in 10^-10 m^2/s
+
+    zi = 1.0 # ion valency
+    T = 298.0 # in K
+    f = 0.64 # fraction of free ions
     """
-    D = 0.0172e-9 # diffusion coefficients in 10^-10 m^2/s
+
+    N = 300   # number of species in N
+    L = 3.5608 # the lenght of the cubic cell in nm
+    D = 0.0134e-9 # diffusion coefficients in 10^-10 m^2/s
+
     zi = 1.0 # ion valency
     T = 298.0 # in K
     f = 1.00 # fraction of free ions
-    ci = 10.00 # ion concentration, in mol/L
+    V = L*L*L # the volume of the system in nm^3
+    ci = N/NA/V*1e24 # ion concentration, in mol/L
+
+    if 0:
+        ci = 0.52 # ion concentration, in mol/L
+
     diffusion_to_conductivity(D, zi, T, f, ci) 
 
 if __name__ == "__main__":
+    test()
     single_ion()

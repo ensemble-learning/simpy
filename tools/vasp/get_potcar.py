@@ -40,7 +40,7 @@ elif "stampede2" in socket.gethostname():
     LIB = "/home1/04076/tg833760/soft/simpy/lib"
 elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
-elif "Tao-MBP-86" in socket.gethostname():
+elif "tao-mac" in socket.gethostname():
     LIB = "/Users/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
@@ -111,6 +111,10 @@ elif "stampede2" in socket.gethostname():
 elif "node" in socket.gethostname():
     POT_DATA_BASE = "/project/source/VASP/vasp.5.3.5/potcar/potpaw_PBE"
 elif "Tao-MBP-9" in socket.gethostname():
+    POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
+elif "Tao-MBP-86" in socket.gethostname():
+    POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
+elif "tao-mac" in socket.gethostname():
     POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
 
 o = open("POTCAR", "w")

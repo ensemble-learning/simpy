@@ -9,9 +9,10 @@ from ase.neighborlist import NeighborList
 from ase.neighborlist import neighbor_list
 from ase.geometry import distance, get_angles
 
-cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85}
+cutoff_table = {('H', 'H'):1.1, ('C', 'H'): 1.3, ('C', 'C'): 1.85, ('H', 'N'):1.3, ('N', 'N'):1.85, ('C', 'N'):1.85, ('Al', 'O'):2.0,
+                ('O', 'Al'):2.0}
 #atom_types_table = {'C': 'opls_135', 'H': 'opls_140', 'N': 'opls_237', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I'}
-atom_types_table = {'C': 'C', 'H': 'H', 'N': 'N', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I', 'Au':'Au', 'S':'S'}
+atom_types_table = {'C': 'C', 'H': 'H', 'N': 'N', 'Cs': 'Cs', 'Sn': 'Sn', 'I':'I', 'Au':'Au', 'S':'S', 'Al': 'Al', 'O':'O'}
 ERROR_ATP = 'Warning: User-defined atom types provided but the numbers do not match!\n'
 
 def get_lists(atoms):
@@ -60,19 +61,20 @@ def get_lists(atoms):
     print(n_angle, "angle terms")
     
     dihedral_list = []
-    # build dihedral ist
-    for i in bond_list:
-        dj, dk = i[0], i[1]
-        for j in nl[dj]:
-            if j != dk:
-                di = j
-                for k in nl[dk]:
-                    if k != dj:
-                        dl = k
-                        angle = atoms.get_dihedral(di, dj, dk, dl, mic=True)
-                        dihedral_list.append([di, dj, dk, dl, angle])
-    n_dihedral = len(dihedral_list)
-    print(n_dihedral, "diheral terms")
+    if 0:
+        # build dihedral ist
+        for i in bond_list:
+            dj, dk = i[0], i[1]
+            for j in nl[dj]:
+                if j != dk:
+                    di = j
+                    for k in nl[dk]:
+                        if k != dj:
+                            dl = k
+                            angle = atoms.get_dihedral(di, dj, dk, dl, mic=True)
+                            dihedral_list.append([di, dj, dk, dl, angle])
+        n_dihedral = len(dihedral_list)
+        print(n_dihedral, "diheral terms")
     return nl, bond_list, angle_list, dihedral_list
 
 def to_itp(fname, atoms, nl, bl, al, dl, charges, atomtypes):
@@ -106,17 +108,18 @@ def to_itp(fname, atoms, nl, bl, al, dl, charges, atomtypes):
         o.write("%6d%6d%6d    2"%(i[0]+1, i[1]+1, i[2]+1))
         o.write(' %8.2f %12.2f\n'%(i[3], 1200)) 
 
-    o.write("\n[ dihedrals ]\n")
-    o.write("; ai  aj  ak  al  funct  phi  cp  mult\n")
-    for i in dl:
-        o.write("%6d%6d%6d%6d    2"%(i[0]+1, i[1]+1, i[2]+1, i[3]+1))
-        o.write(' %8.2f %12.2f\n'%(i[4], 0.1)) 
-    o.write("\n[ system ]\n")
-    o.write(";name\n%s\n\n"%molname) 
-    o.write("[ molecules ]\n\n")
-    o.write("; Compound    #mols\n") 
-    o.write("%s    0\n"%molname)
-    o.close()
+    if 0:
+        o.write("\n[ dihedrals ]\n")
+        o.write("; ai  aj  ak  al  funct  phi  cp  mult\n")
+        for i in dl:
+            o.write("%6d%6d%6d%6d    2"%(i[0]+1, i[1]+1, i[2]+1, i[3]+1))
+            o.write(' %8.2f %12.2f\n'%(i[4], 0.1)) 
+        o.write("\n[ system ]\n")
+        o.write(";name\n%s\n\n"%molname) 
+        o.write("[ molecules ]\n\n")
+        o.write("; Compound    #mols\n") 
+        o.write("%s    0\n"%molname)
+        o.close()
 
 def assign_charges(atoms):
     charges = [0.0]*len(atoms)

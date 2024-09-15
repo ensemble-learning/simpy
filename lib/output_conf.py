@@ -34,6 +34,8 @@ def toReaxLammps(system, outfile="lammps.data"):
         o.write(" %12.7f %12.7f ylo yhi\n"%(-25.0, 25.0))
         o.write(" %12.7f %12.7f zlo zhi\n"%(-25.0, 25.0))
     o.write("Masses\n\n")
+
+    print(system.map)
     for i in system.map:
         # atom name 
         atn = ''

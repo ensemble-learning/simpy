@@ -141,6 +141,10 @@ class System():
         @type: list 
         @note: """
         #specify for geo file
+        self.elements = []
+        """@ivar: the chemical elements
+        @type: list
+        @note:"""
         self.geotag = ''
         """@ivar: maps
         @type: list 
