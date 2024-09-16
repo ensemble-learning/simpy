@@ -1,3 +1,5 @@
+#!/usr/bin/env /opt/anaconda3/bin/python3
+
 import os
 from ase.io import read, write
 from ase.data import atomic_masses, atomic_numbers
