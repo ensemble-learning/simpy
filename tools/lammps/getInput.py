@@ -36,6 +36,8 @@ elif "cu" in socket.gethostname():
     LIB = "/home/tcheng/soft/simpy/lib"
 elif "mu01" in socket.gethostname():
     LIB = "/home/tcheng/soft/simpy/lib"
+elif "tao-mac" in socket.gethostname():
+    LIB = "/Users/tao/soft/simpy/lib"
 elif socket.gethostname() == "tao-ThinkCentre-M79":
     LIB = "/home/tao/Soft/simpy/lib"
 

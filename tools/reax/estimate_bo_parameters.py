@@ -23,9 +23,9 @@ def estimate_bo_params(p1=-0.05):
     p1 = p1
     r0 = math.exp(-fit[1]/p2)
 
-    print "r0 = ", r0
-    print "pbo1 = ", p1
-    print "pbo2 = ", p2
+    print("r0 = ", r0)
+    print("pbo1 = ", p1)
+    print("pbo2 = ", p2)
 
     plt.plot(x, y, x,fit_fn(x), '--k')
     plt.show()
