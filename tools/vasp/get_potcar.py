@@ -42,6 +42,8 @@ elif "node" in socket.gethostname():
     LIB = "/net/hulk/home6/chengtao/soft/simpy/lib"
 elif "tao-mac" in socket.gethostname():
     LIB = "/Users/tao/soft/simpy/lib"
+elif "MacBookPro" in socket.gethostname():
+    LIB = "/Users/tao/soft/simpy/lib"
 
 sys.path.insert(0 , LIB)
 
@@ -115,6 +117,8 @@ elif "Tao-MBP-9" in socket.gethostname():
 elif "Tao-MBP-86" in socket.gethostname():
     POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
 elif "tao-mac" in socket.gethostname():
+    POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
+elif "MacBookPro" in socket.gethostname():
     POT_DATA_BASE = "/Users/tao/soft/vasp/vasp.5.4.4/potpaw_PBE"
 
 o = open("POTCAR", "w")
